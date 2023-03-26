@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="orange">#EF3A01</color>
+    <color name="dark_gray">#150D0B</color>
+    <color name="gray_chat_text">#969594</color>
+    <color name="gray_chat_background">#2E2B2A</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="gray_navbar_item">#757575</color>
+    <color name="gray_navbar_background">#1C1A19</color>
+</resources>

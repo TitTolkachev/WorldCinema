@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">World Cinema</string>
+
+    <!-- Bottom Navbar -->
+    <string name="title_home">Главное</string>
+    <string name="title_compilation">Подборка</string>
+    <string name="title_collections">Коллекции</string>
+    <string name="title_profile">Профиль</string>
+    <string name="image_default_description">Image</string>
+
+    <!-- Home -->
+    <string name="home_watch_btn_text"><b>Смотреть</b></string>
+    <string name="home_trends_title"><b>В тренде</b></string>
+    <string name="home_watched_title"><b>Вы смотрели</b></string>
+    <string name="home_new_movies_title"><b>Новое</b></string>
+    <string name="home_for_you_title"><b>Для вас</b></string>
+    <string name="home_set_interesting_topics_text"><b>Указать интересы</b></string>
+</resources>
