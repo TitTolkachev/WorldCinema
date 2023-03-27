@@ -15,4 +15,12 @@
     <string name="home_new_movies_title"><b>Новое</b></string>
     <string name="home_for_you_title"><b>Для вас</b></string>
     <string name="home_set_interesting_topics_text"><b>Указать интересы</b></string>
+
+    <!-- Profile -->
+    <string name="profile_change_btn_text"><b>Изменить</b></string>
+    <string name="profile_messenger_btn_text"><b>Обсуждения</b></string>
+    <string name="profile_history_btn_text"><b>История</b></string>
+    <string name="profile_settings_btn_text"><b>Настройки</b></string>
+    <string name="default_text">Имя Фамилия</string>
+    <string name="profile_exit_btn_text">Выход</string>
 </resources>

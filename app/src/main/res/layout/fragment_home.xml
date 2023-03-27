@@ -86,7 +86,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3"
                 tools:ignore="DuplicateSpeakableTextCheck"
-                tools:src="@drawable/test_image" />
+                tools:src="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/textView5"
