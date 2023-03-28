@@ -9,7 +9,7 @@
         android:id="@+id/imageView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="72dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/image_default_description"
         android:paddingHorizontal="77dp"
@@ -81,13 +81,13 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         app:cornerRadius="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/burronRegistration"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRegistration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="VisualLintButtonSize" />
 
     <Button
-        android:id="@+id/burronRegistration"
+        android:id="@+id/buttonRegistration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
