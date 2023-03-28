@@ -22,7 +22,7 @@
     <string name="profile_history_btn_text"><b>История</b></string>
     <string name="profile_settings_btn_text"><b>Настройки</b></string>
     <string name="default_text">Имя Фамилия</string>
-    <string name="profile_exit_btn_text">Выход</string>
+    <string name="profile_exit_btn_text"><b>Выход</b></string>
 
     <!-- Auth -->
     <string name="name">Имя</string>
@@ -30,8 +30,8 @@
     <string name="email">E-mail</string>
     <string name="password">Пароль</string>
     <string name="repeat_password">Повторите пароль</string>
-    <string name="sign_in_registration_btn_text">Регистрация</string>
-    <string name="sign_in_enter_btn_text">Войти</string>
-    <string name="sign_up_register_btn_text">Зарегистрироваться</string>
-    <string name="sign_up_have_account_text">У меня уже есть аккаунт</string>
+    <string name="sign_in_registration_btn_text"><b>Регистрация</b></string>
+    <string name="sign_in_enter_btn_text"><b>Войти</b></string>
+    <string name="sign_up_register_btn_text"><b>Зарегистрироваться</b></string>
+    <string name="sign_up_have_account_text"><b>У меня уже есть аккаунт</b></string>
 </resources>
