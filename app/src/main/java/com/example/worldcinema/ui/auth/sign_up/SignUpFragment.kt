@@ -32,7 +32,7 @@ class SignUpFragment : Fragment() {
         navController = findNavController()
 
         binding.buttonHaveAccount.setOnClickListener {
-            navController.popBackStack(R.id.signInFragment, false)
+            navController.navigate(R.id.action_signUpFragment_to_signInFragment)
         }
 
         return binding.root

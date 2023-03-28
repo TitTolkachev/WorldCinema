@@ -27,4 +27,9 @@
         android:name="com.example.worldcinema.ui.main.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <activity
+        android:id="@+id/authActivity"
+        android:name="com.example.worldcinema.ui.auth.AuthActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth" />
 </navigation>

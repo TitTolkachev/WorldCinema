@@ -31,8 +31,11 @@ class SignInFragment : Fragment() {
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
         navController = findNavController()
 
+        binding.buttonEnter.setOnClickListener {
+            navController.navigate(R.id.action_signInFragment_to_homeFragment)
+        }
         binding.buttonRegistration.setOnClickListener {
-            navController.navigate(R.id.signUpFragment)
+            navController.navigate(R.id.action_signInFragment_to_signUpFragment)
         }
 
         return binding.root
