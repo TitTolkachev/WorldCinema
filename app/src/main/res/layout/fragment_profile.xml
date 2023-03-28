@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
+    tools:context=".ui.main.profile.ProfileFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -46,7 +46,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:text="@string/default_text"
-        android:textColor="@color/gray_profile_text"
+        android:textColor="@color/gray_a8_text"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/textViewUserName"
         tools:ignore="TextContrastCheck" />
@@ -108,14 +108,14 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonProfileHistory" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/burronRegistration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
-        android:foreground="@drawable/profile_rounded_btn_border"
+        android:foreground="@drawable/rounded_border"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="@string/profile_exit_btn_text"
