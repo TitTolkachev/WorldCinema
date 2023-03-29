@@ -58,7 +58,6 @@
         app:constraintSetEnd="@+id/offScreenLike"
         app:constraintSetStart="@+id/like"
         app:duration="150">
-
     </Transition>
 
     <Transition
@@ -66,7 +65,6 @@
         app:constraintSetEnd="@+id/offScreenPass"
         app:constraintSetStart="@+id/pass"
         app:duration="150">
-
     </Transition>
 
     <ConstraintSet android:id="@id/rest">
@@ -74,28 +72,32 @@
         <Constraint android:id="@id/topCard">
 
             <Layout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="32dp" />
+                android:layout_marginBottom="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </Constraint>
 
         <Constraint android:id="@id/bottomCard">
 
             <Layout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="32dp" />
-
-            <Transform
-                android:scaleX="1"
-                android:scaleY="0.90" />
+                android:layout_marginBottom="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </Constraint>
 
@@ -131,7 +133,6 @@
 
             <PropertySet android:alpha="0" />
 
-
         </Constraint>
 
     </ConstraintSet>
@@ -144,19 +145,9 @@
             android:id="@id/topCard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="200dp"
-            android:layout_marginBottom="80dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintWidth_percent="0.7">
-
-        </Constraint>
-
-        <Constraint android:id="@id/bottomCard">
-            <Transform
-                android:scaleX="0.95"
-                android:scaleY="0.95" />
+            android:rotation="-5">
 
         </Constraint>
 
@@ -188,22 +179,12 @@
             android:id="@id/topCard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="500dp"
-            android:layout_marginBottom="80dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintWidth_percent="0.7">
+            android:layout_marginEnd="50dp"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.5"
+            android:rotation="-15">
 
         </Constraint>
-
-        <Constraint android:id="@id/bottomCard">
-            <Transform
-                android:scaleX="1"
-                android:scaleY="1" />
-
-        </Constraint>
-
 
     </ConstraintSet>
 
@@ -216,18 +197,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="200dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="80dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_percent="0.7" />
-
-        <Constraint android:id="@id/bottomCard">
-            <Transform
-                android:scaleX="0.95"
-                android:scaleY="0.95" />
-
-        </Constraint>
+            android:rotation="5" />
 
         <Constraint android:id="@+id/likeIcon">
 
@@ -257,19 +228,10 @@
             android:id="@id/topCard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="80dp"
+            android:layout_marginStart="50dp"
             app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintWidth_percent="0.7" />
-
-        <Constraint android:id="@id/bottomCard">
-
-            <Transform
-                android:scaleX="1"
-                android:scaleY="1" />
-
-        </Constraint>
+            app:layout_constraintWidth_percent="0.5"
+            android:rotation="15" />
 
     </ConstraintSet>
 

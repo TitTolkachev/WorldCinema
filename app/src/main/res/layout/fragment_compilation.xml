@@ -79,10 +79,10 @@
             android:id="@+id/topCard"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:contentDescription="@string/image_default_description"
             android:scaleType="centerCrop"
             tools:layout_editor_absoluteX="50dp"
-            tools:layout_editor_absoluteY="50dp"
-            android:contentDescription="@string/image_default_description"/>
+            tools:layout_editor_absoluteY="50dp" />
 
         <ImageView
             android:id="@+id/likeIcon"
