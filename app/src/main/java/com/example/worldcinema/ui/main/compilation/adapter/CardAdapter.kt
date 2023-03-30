@@ -26,6 +26,7 @@ class CardAdapter :
 
             with(binding.cardImage) {
                 setImageResource(R.drawable.test_image)
+                clipToOutline = true
                 tag = card.id
             }
         }

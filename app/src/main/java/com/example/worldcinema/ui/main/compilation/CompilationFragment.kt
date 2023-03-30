@@ -38,8 +38,7 @@ class CompilationFragment : Fragment() {
         binding.likeButton.setOnClickListener {
             val setting = SwipeAnimationSetting.Builder()
                 .setDirection(Direction.Right)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(AccelerateInterpolator())
+                .setDuration(Duration.Slow.duration)
                 .build()
             (cardStackView.layoutManager as CardStackLayoutManager).setSwipeAnimationSetting(setting)
             cardStackView.swipe()
@@ -48,8 +47,7 @@ class CompilationFragment : Fragment() {
         binding.skipButton.setOnClickListener {
             val setting = SwipeAnimationSetting.Builder()
                 .setDirection(Direction.Left)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(AccelerateInterpolator())
+                .setDuration(Duration.Slow.duration)
                 .build()
             (cardStackView.layoutManager as CardStackLayoutManager).setSwipeAnimationSetting(setting)
             cardStackView.swipe()
@@ -62,20 +60,42 @@ class CompilationFragment : Fragment() {
         cardAdapter = CardAdapter()
         cardStackView = binding.cardStackView
         cardStackView.adapter = cardAdapter
-        cardStackView.layoutManager = CardStackLayoutManager(binding.root.context)
+        cardStackView.layoutManager =
+            CardStackLayoutManager(binding.root.context, object : CardStackListener {
+                override fun onCardDragging(direction: Direction?, ratio: Float) {}
+
+                override fun onCardSwiped(direction: Direction?) {
+                    if (direction == Direction.Left) {
+                        binding.textView2.text = "Left"
+                    }
+                    if (direction == Direction.Right) {
+                        binding.textView2.text = "Right"
+                    }
+                }
+
+                override fun onCardRewound() {}
+
+                override fun onCardCanceled() {}
+
+                override fun onCardAppeared(view: View?, position: Int) {}
+
+                override fun onCardDisappeared(view: View?, position: Int) {}
+
+            })
         viewModel.cards.observe(viewLifecycleOwner) {
             cardAdapter.data = it
         }
-
-        //TODO(Повозиться еще с настройками)
 
         val setting = SwipeAnimationSetting.Builder()
             .setDuration(Duration.Normal.duration)
             .setInterpolator(AccelerateInterpolator())
             .build()
-        (cardStackView.layoutManager as CardStackLayoutManager).setSwipeAnimationSetting(setting)
-        (cardStackView.layoutManager as CardStackLayoutManager).setCanScrollHorizontal(true)
-        (cardStackView.layoutManager as CardStackLayoutManager).setCanScrollVertical(false)
+        val manager = cardStackView.layoutManager as CardStackLayoutManager
+        manager.setSwipeAnimationSetting(setting)
+        manager.setCanScrollHorizontal(true)
+        manager.setCanScrollVertical(false)
+        manager.setMaxDegree(-35.0f)
+        manager.setSwipeThreshold(0.35f)
     }
 
     override fun onDestroyView() {
