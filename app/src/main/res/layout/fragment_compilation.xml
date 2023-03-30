@@ -57,47 +57,14 @@
         android:src="@drawable/compilation_like_btn"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
-        android:id="@+id/motionLayout"
+    <com.yuyakaido.android.cardstackview.CardStackView
+        android:id="@+id/cardStackView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:clipChildren="false"
-        app:layoutDescription="@xml/compilation_motion_scene"
-        app:layout_constraintBottom_toTopOf="@+id/flow"
+        app:layout_constraintBottom_toTopOf="@id/flow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-        <ImageView
-            android:id="@+id/bottomCard"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/image_default_description"/>
-
-        <ImageView
-            android:id="@+id/topCard"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:contentDescription="@string/image_default_description"
-            android:scaleType="centerCrop"
-            tools:layout_editor_absoluteX="50dp"
-            tools:layout_editor_absoluteY="50dp" />
-
-        <ImageView
-            android:id="@+id/likeIcon"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:contentDescription="@string/image_default_description"
-            android:src="@drawable/compilation_like_icon" />
-
-        <ImageView
-            android:id="@+id/passIcon"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:contentDescription="@string/image_default_description"
-            android:src="@drawable/compilation_skip_icon" />
-
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+        app:layout_constraintTop_toBottomOf="@id/textView2"
+        tools:ignore="SpeakableTextPresentCheck"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

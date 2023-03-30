@@ -59,7 +59,6 @@ class HomeFragment : Fragment() {
         })
         binding.recyclerViewTrends.adapter = trendMoviesAdapter
 
-        // Подписываем adapter на view model
         viewModel.trendMovies.observe(viewLifecycleOwner) {
             if (it != null) {
 
@@ -81,7 +80,6 @@ class HomeFragment : Fragment() {
         })
         binding.recyclerViewNewMovies.adapter = newMoviesAdapter
 
-        // Подписываем adapter на view model
         viewModel.newMovies.observe(viewLifecycleOwner) {
             if (it != null) {
 
@@ -104,7 +102,6 @@ class HomeFragment : Fragment() {
         })
         binding.recyclerViewForYou.adapter = recommendedMoviesAdapter
 
-        // Подписываем adapter на view model
         viewModel.recommendedMovies.observe(viewLifecycleOwner) {
             if (it != null) {
 

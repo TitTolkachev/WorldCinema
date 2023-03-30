@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.constraintlayout.motion.widget.TransitionAdapter
+import android.view.animation.AccelerateInterpolator
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentCompilationBinding
-import com.example.worldcinema.ui.main.compilation.model.SwipeRightModel
+import com.example.worldcinema.ui.main.compilation.adapter.CardAdapter
+import com.yuyakaido.android.cardstackview.*
 
 class CompilationFragment : Fragment() {
 
@@ -20,53 +19,63 @@ class CompilationFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var viewModel: CompilationViewModel
+
+    private lateinit var cardAdapter: CardAdapter
+    private lateinit var cardStackView: CardStackView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val viewModel =
-            ViewModelProvider(this)[CompilationViewModel::class.java]
+        viewModel = ViewModelProvider(this)[CompilationViewModel::class.java]
 
         _binding = FragmentCompilationBinding.inflate(inflater, container, false)
 
-
-        viewModel
-            .modelStream
-            .observe(viewLifecycleOwner) {
-                bindCard(it)
-            }
-
-        binding.motionLayout.setTransitionListener(object : TransitionAdapter() {
-            override fun onTransitionCompleted(motionLayout: MotionLayout, currentId: Int) {
-                when (currentId) {
-                    R.id.offScreenPass,
-                    R.id.offScreenLike -> {
-                        motionLayout.progress = 0f
-                        motionLayout.setTransition(R.id.rest, R.id.like)
-                        viewModel.swipe()
-                    }
-                }
-            }
-
-        })
+        initCardStackView()
 
         binding.likeButton.setOnClickListener {
-            binding.motionLayout.transitionToState(R.id.like)
+            val setting = SwipeAnimationSetting.Builder()
+                .setDirection(Direction.Right)
+                .setDuration(Duration.Normal.duration)
+                .setInterpolator(AccelerateInterpolator())
+                .build()
+            (cardStackView.layoutManager as CardStackLayoutManager).setSwipeAnimationSetting(setting)
+            cardStackView.swipe()
         }
 
         binding.skipButton.setOnClickListener {
-            binding.motionLayout.transitionToState(R.id.pass)
+            val setting = SwipeAnimationSetting.Builder()
+                .setDirection(Direction.Left)
+                .setDuration(Duration.Normal.duration)
+                .setInterpolator(AccelerateInterpolator())
+                .build()
+            (cardStackView.layoutManager as CardStackLayoutManager).setSwipeAnimationSetting(setting)
+            cardStackView.swipe()
         }
 
         return binding.root
     }
 
-    private fun bindCard(model: SwipeRightModel) {
-        binding.bottomCard.setImageResource(R.drawable.test_image)
-        binding.topCard.setImageResource(R.drawable.test_image)
-//        binding.bottomCard.setBackgroundColor(model.bottom.backgroundColor)
-//        binding.topCard.setBackgroundColor(model.top.backgroundColor)
+    private fun initCardStackView() {
+        cardAdapter = CardAdapter()
+        cardStackView = binding.cardStackView
+        cardStackView.adapter = cardAdapter
+        cardStackView.layoutManager = CardStackLayoutManager(binding.root.context)
+        viewModel.cards.observe(viewLifecycleOwner) {
+            cardAdapter.data = it
+        }
+
+        //TODO(Повозиться еще с настройками)
+
+        val setting = SwipeAnimationSetting.Builder()
+            .setDuration(Duration.Normal.duration)
+            .setInterpolator(AccelerateInterpolator())
+            .build()
+        (cardStackView.layoutManager as CardStackLayoutManager).setSwipeAnimationSetting(setting)
+        (cardStackView.layoutManager as CardStackLayoutManager).setCanScrollHorizontal(true)
+        (cardStackView.layoutManager as CardStackLayoutManager).setCanScrollVertical(false)
     }
 
     override fun onDestroyView() {
