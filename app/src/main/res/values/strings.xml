@@ -34,4 +34,5 @@
     <string name="sign_in_enter_btn_text"><b>Войти</b></string>
     <string name="sign_up_register_btn_text"><b>Зарегистрироваться</b></string>
     <string name="sign_up_have_account_text"><b>У меня уже есть аккаунт</b></string>
+    <string name="compilation_empty_stack_text">Новые фильмы в подборке закончились</string>
 </resources>

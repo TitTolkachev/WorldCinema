@@ -23,6 +23,7 @@ class CompilationFragment : Fragment() {
 
     private lateinit var cardAdapter: CardAdapter
     private lateinit var cardStackView: CardStackView
+    private var swipedCardsCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +54,20 @@ class CompilationFragment : Fragment() {
             cardStackView.swipe()
         }
 
+        viewModel.isCardStackEmpty.observe(viewLifecycleOwner) {
+            if(it) {
+                binding.textView2.visibility = View.GONE
+                binding.flow.visibility = View.GONE
+                binding.cardStackView.visibility = View.GONE
+                binding.flowEmptyStack.visibility = View.VISIBLE
+            } else {
+                binding.textView2.visibility = View.VISIBLE
+                binding.flow.visibility = View.VISIBLE
+                binding.cardStackView.visibility = View.VISIBLE
+                binding.flowEmptyStack.visibility = View.GONE
+            }
+        }
+
         return binding.root
     }
 
@@ -70,6 +85,11 @@ class CompilationFragment : Fragment() {
                     }
                     if (direction == Direction.Right) {
                         binding.textView2.text = "Right"
+                    }
+
+                    swipedCardsCount++
+                    if (swipedCardsCount == cardAdapter.itemCount) {
+                        viewModel.isCardStackEmpty.value = true
                     }
                 }
 
@@ -96,6 +116,13 @@ class CompilationFragment : Fragment() {
         manager.setCanScrollVertical(false)
         manager.setMaxDegree(-35.0f)
         manager.setSwipeThreshold(0.35f)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        swipedCardsCount = 0
+        viewModel.isCardStackEmpty.value = false
     }
 
     override fun onDestroyView() {
