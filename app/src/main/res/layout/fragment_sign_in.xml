@@ -39,6 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
             android:textColor="@color/gray_a8_text"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize,TouchTargetSizeCheck" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -63,6 +65,8 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:hint="@string/password"
+            android:inputType="none"
+            android:singleLine="true"
             android:textColor="@color/gray_a8_text"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize,TouchTargetSizeCheck" />
     </com.google.android.material.textfield.TextInputLayout>
