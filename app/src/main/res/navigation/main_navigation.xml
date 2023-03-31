@@ -26,5 +26,10 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.worldcinema.ui.main.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_discussions_navigation"
+            app:destination="@id/discussions_navigation" />
+    </fragment>
+    <include app:graph="@navigation/discussions_navigation" />
 </navigation>
