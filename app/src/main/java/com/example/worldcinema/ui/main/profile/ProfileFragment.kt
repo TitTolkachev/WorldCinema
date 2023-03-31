@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentProfileBinding
 import com.example.worldcinema.ui.auth.AuthActivity
 
@@ -17,6 +20,7 @@ class ProfileFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,20 +32,26 @@ class ProfileFragment : Fragment() {
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
+        navController = findNavController()
+
         binding.buttonExit.setOnClickListener {
             val intent = Intent(view?.context, AuthActivity::class.java)
             intent.addFlags(
                 Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
+        }
+
+        binding.buttonProfileMessenger.setOnClickListener {
+            navController.navigate(R.id.action_navigation_profile_to_discussions_navigation)
         }
 
         return binding.root
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 }
