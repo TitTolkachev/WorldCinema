@@ -38,4 +38,14 @@
 
     <!-- Discussions -->
     <string name="discussions_text"><b>Обсуждения</b></string>
+
+    <!-- Movie -->
+    <string name="age_18">18+</string>
+    <string name="age_16">16+</string>
+    <string name="age_12">12+</string>
+    <string name="age_6">6+</string>
+    <string name="age_0">0+</string>
+    <string name="movie_description_title_text">Описание</string>
+    <string name="movie_images_title_text">Кадры</string>
+    <string name="movie_episodes_title_text">Эпизоды</string>
 </resources>
