@@ -7,6 +7,7 @@
     tools:context=".ui.movie.movie.MovieFragment">
 
     <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:scrollbars="none"
@@ -59,19 +60,6 @@
                 tools:ignore="TextContrastCheck" />
 
             <ImageButton
-                android:id="@+id/imageButtonMovieArrowBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/image_default_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/arrow_back"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
-
-            <ImageButton
                 android:id="@+id/imageButtonMovieChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,7 +71,7 @@
                 android:src="@drawable/profile_messenger"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewMovie"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
             <TextView
                 android:id="@+id/textViewMovieAge"
@@ -102,6 +90,8 @@
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:flow_wrapMode="chain"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageButtonMovieChat" />
@@ -135,9 +125,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewMovieDescription" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/recyclerViewMovieImages"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clipToPadding="false"
+                android:paddingHorizontal="8dp"
+                android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewMovieImagesTitle" />
@@ -149,9 +143,32 @@
                 android:layout_height="wrap_content"
                 android:text="@string/movie_episodes_title_text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewMovieImages" />
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/FlowMovieEpisodes"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMovieEpisodesTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/imageButtonMovieArrowBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/image_default_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,8 @@
         android:id="@+id/imageViewMovieItem"
         android:layout_width="128dp"
         android:layout_height="72dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="@string/image_default_description"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
