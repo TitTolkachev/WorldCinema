@@ -16,13 +16,10 @@ import com.example.worldcinema.ui.discussions.discussions.adapter.IDiscussionAct
 class DiscussionsFragment : Fragment() {
 
     private var _binding: FragmentDiscussionsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var navController: NavController
 
     private lateinit var viewModel: DiscussionsViewModel
+    private lateinit var navController: NavController
 
     private lateinit var adapter: DiscussionAdapter
 
@@ -31,9 +28,7 @@ class DiscussionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDiscussionsBinding.inflate(inflater, container, false)
-
         viewModel = ViewModelProvider(this)[DiscussionsViewModel::class.java]
-
         navController = findNavController()
 
         binding.imageButtonArrowBack.setOnClickListener {

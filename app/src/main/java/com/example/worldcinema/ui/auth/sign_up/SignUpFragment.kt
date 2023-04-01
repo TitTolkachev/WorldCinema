@@ -14,13 +14,9 @@ import com.example.worldcinema.databinding.FragmentSignUpBinding
 class SignUpFragment : Fragment() {
 
     private var _binding: FragmentSignUpBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var viewModel: SignUpViewModel
-
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -39,7 +35,7 @@ class SignUpFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 }

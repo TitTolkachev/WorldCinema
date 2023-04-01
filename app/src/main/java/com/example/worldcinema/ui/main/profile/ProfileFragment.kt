@@ -16,10 +16,9 @@ import com.example.worldcinema.ui.auth.AuthActivity
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: ProfileViewModel
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -27,11 +26,8 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this)[ProfileViewModel::class.java]
-
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-
+        viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
         navController = findNavController()
 
         binding.buttonExit.setOnClickListener {

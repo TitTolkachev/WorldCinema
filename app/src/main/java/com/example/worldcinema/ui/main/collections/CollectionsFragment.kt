@@ -7,36 +7,37 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.example.worldcinema.databinding.FragmentCollectionsBinding
 
 class CollectionsFragment : Fragment() {
 
     private var _binding: FragmentCollectionsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: CollectionsViewModel
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val collectionsViewModel =
-            ViewModelProvider(this)[CollectionsViewModel::class.java]
-
         _binding = FragmentCollectionsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        viewModel = ViewModelProvider(this)[CollectionsViewModel::class.java]
+        navController = findNavController()
 
         val textView: TextView = binding.textCollections
-        collectionsViewModel.text.observe(viewLifecycleOwner) {
+        viewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        return root
+
+        return binding.root
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 }

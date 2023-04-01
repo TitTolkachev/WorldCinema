@@ -17,21 +17,17 @@ import com.example.worldcinema.ui.main.MainActivity
 class SignInFragment : Fragment() {
 
     private var _binding: FragmentSignInBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var viewModel: SignInViewModel
-
     private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[SignInViewModel::class.java]
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[SignInViewModel::class.java]
         navController = findNavController()
 
         binding.buttonEnter.setOnClickListener {
@@ -49,7 +45,7 @@ class SignInFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 }

@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.example.worldcinema.databinding.FragmentCompilationBinding
 import com.example.worldcinema.ui.main.compilation.adapter.CardAdapter
 import com.yuyakaido.android.cardstackview.*
@@ -14,12 +16,10 @@ import com.yuyakaido.android.cardstackview.*
 class CompilationFragment : Fragment() {
 
     private var _binding: FragmentCompilationBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var viewModel: CompilationViewModel
+    private lateinit var navController: NavController
 
     private lateinit var cardAdapter: CardAdapter
     private lateinit var cardStackView: CardStackView
@@ -30,9 +30,9 @@ class CompilationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[CompilationViewModel::class.java]
-
         _binding = FragmentCompilationBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[CompilationViewModel::class.java]
+        navController = findNavController()
 
         initCardStackView()
 
@@ -126,7 +126,7 @@ class CompilationFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 }
