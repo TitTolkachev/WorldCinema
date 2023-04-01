@@ -28,8 +28,11 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
-            android:id="@+id/action_navigation_profile_to_discussions_navigation"
-            app:destination="@id/discussions_navigation" />
+            android:id="@+id/action_navigation_profile_to_discussionsActivity"
+            app:destination="@id/discussionsActivity" />
     </fragment>
-    <include app:graph="@navigation/discussions_navigation" />
+    <activity
+        android:id="@+id/discussionsActivity"
+        android:name="com.example.worldcinema.ui.discussions.DiscussionsActivity"
+        android:label="DiscussionsActivity" />
 </navigation>
