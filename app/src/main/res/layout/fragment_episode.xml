@@ -18,6 +18,131 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <VideoView
+                android:id="@+id/videoView"
+                android:layout_width="0dp"
+                android:layout_height="210dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewEpisodeTitle"
+                style="@style/movie_title_text_style"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:paddingTop="16dp"
+                android:text="@string/default_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/videoView" />
+
+            <ImageView
+                android:id="@+id/imageViewEpisodePoster"
+                android:layout_width="44dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/image_default_description"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewEpisodeTitle" />
+
+            <TextView
+                android:id="@+id/textViewEpisodeMovieName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="4dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/default_text"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/textViewEpisodesSeasonsCount"
+                app:layout_constraintStart_toEndOf="@+id/imageViewEpisodePoster" />
+
+            <TextView
+                android:id="@+id/textViewEpisodesSeasonsCount"
+                style="@style/movie_episode_item_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/default_text"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewEpisodePoster"
+                app:layout_constraintStart_toStartOf="@+id/textViewEpisodeMovieName"
+                app:layout_constraintTop_toTopOf="@+id/imageViewEpisodePoster" />
+
+            <TextView
+                android:id="@+id/textViewEpisodeMovieYears"
+                style="@style/movie_episode_item_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/default_text"
+                app:layout_constraintStart_toStartOf="@+id/textViewEpisodesSeasonsCount"
+                app:layout_constraintTop_toBottomOf="@+id/textViewEpisodesSeasonsCount" />
+
+            <ImageView
+                android:id="@+id/imageViewEpisodeAddToCollection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/image_default_description"
+                android:src="@drawable/episode_plus_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewEpisodeMessenger"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewEpisodeLike"
+                app:layout_constraintTop_toTopOf="@+id/imageViewEpisodeMessenger" />
+
+            <ImageView
+                android:id="@+id/imageViewEpisodeLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/image_default_description"
+                android:src="@drawable/episode_like_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewEpisodeAddToCollection"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageViewEpisodeAddToCollection" />
+
+            <ImageView
+                android:id="@+id/imageViewEpisodeMessenger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/image_default_description"
+                android:src="@drawable/profile_messenger"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewEpisodePoster"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewEpisodeAddToCollection"
+                app:layout_constraintTop_toTopOf="@+id/imageViewEpisodePoster" />
+
+            <TextView
+                android:id="@+id/textViewEpisodeDescriptionTitle"
+                style="@style/movie_title_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewEpisodePoster" />
+
+            <TextView
+                android:id="@+id/textViewEpisodeDescriptionText"
+                style="@style/movie_description_text_style"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="@string/default_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewEpisodeDescriptionTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
