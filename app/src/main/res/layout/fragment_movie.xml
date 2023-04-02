@@ -128,7 +128,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewMovieDescription" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewMovieImages"
+                android:id="@+id/RecyclerViewMovieImages"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -146,17 +146,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/movie_episodes_title_text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewMovieImages" />
+                app:layout_constraintTop_toBottomOf="@+id/RecyclerViewMovieImages" />
 
-            <androidx.constraintlayout.helper.widget.Flow
-                android:id="@+id/FlowMovieEpisodes"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RecyclerViewMovieEpisodes"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:isScrollContainer="false"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:paddingBottom="16dp"
+                android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewMovieEpisodesTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewMovieEpisodesTitle"
+                tools:itemCount="4"
+                tools:listitem="@layout/movie_episodes_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
