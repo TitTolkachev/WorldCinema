@@ -19,4 +19,9 @@
     <color name="age_12_color">#F4A992</color>
     <color name="age_6_color">#FAD5C9</color>
     <color name="age_0_color">#FFFFFF</color>
+
+    <color name="video_time_bar_buffered_color">#4E4E50</color>
+    <color name="video_time_bar_played_color">#EF3A01</color>
+    <color name="video_time_bar_scrubber_color">#EF3A01</color>
+    <color name="video_time_bar_not_played_color">#3A3A3C</color>
 </resources>

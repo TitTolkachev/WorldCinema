@@ -45,4 +45,9 @@
         <item name="android:textColor">@color/gray_af_text</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="video_player_time_bar_text_style">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">10sp</item>
+    </style>
 </resources>
