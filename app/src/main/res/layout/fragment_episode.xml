@@ -18,27 +18,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ProgressBar
-                android:id="@+id/progressBarVideo"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:progressTint="@color/orange"
-                app:layout_constraintBottom_toBottomOf="@+id/videoView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/videoView"
                 android:layout_width="0dp"
                 android:layout_height="210dp"
-                app:use_controller="true"
-                app:player_layout_id="@layout/exo_player_view"
                 app:controller_layout_id="@layout/custom_video_controller"
+                app:keep_content_on_player_reset="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:player_layout_id="@layout/exo_player_view"
+                app:show_buffering="when_playing"
+                app:shutter_background_color="@color/dark_gray"
+                app:use_controller="true" />
 
             <TextView
                 android:id="@+id/textViewEpisodeTitle"
@@ -159,4 +151,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewEpisodeDescriptionTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/imageButtonEpisodeArrowBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/image_default_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck,ImageContrastCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
