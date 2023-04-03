@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentDiscussionsBinding
 import com.example.worldcinema.ui.discussions.discussions.adapter.DiscussionAdapter
 import com.example.worldcinema.ui.discussions.discussions.adapter.IDiscussionActionListener
@@ -33,6 +34,12 @@ class DiscussionsFragment : Fragment() {
 
         binding.imageButtonArrowBack.setOnClickListener {
             activity?.finish()
+        }
+
+        viewModel.showChat.observe(viewLifecycleOwner) {
+            if(it) {
+                navController.navigate(R.id.action_discussionsFragment_to_chatFragment)
+            }
         }
 
         initDiscussionsAdapter()

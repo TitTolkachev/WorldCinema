@@ -48,4 +48,5 @@
     <string name="movie_description_title_text">Описание</string>
     <string name="movie_images_title_text">Кадры</string>
     <string name="movie_episodes_title_text">Эпизоды</string>
+    <string name="chat_message_hint_text">Напишите сообщение...</string>
 </resources>

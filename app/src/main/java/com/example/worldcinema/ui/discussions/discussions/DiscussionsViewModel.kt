@@ -9,8 +9,11 @@ class DiscussionsViewModel : ViewModel() {
 
     private val _discussions: MutableLiveData<MutableList<Discussion>> =
         MutableLiveData(mutableListOf())
-
     val discussions: LiveData<MutableList<Discussion>> = _discussions
+
+    private val _showChat: MutableLiveData<Boolean> =
+        MutableLiveData(false)
+    val showChat: LiveData<Boolean> = _showChat
 
     init {
         loadData()
@@ -82,7 +85,6 @@ class DiscussionsViewModel : ViewModel() {
 
         // TODO(Обрабатывать нормально нажатие)
 
-        _discussions.value = mutableListOf()
+        _showChat.value = true
     }
-
 }

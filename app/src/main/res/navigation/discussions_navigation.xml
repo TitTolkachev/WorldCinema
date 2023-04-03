@@ -9,5 +9,14 @@
         android:id="@+id/discussionsFragment"
         android:name="com.example.worldcinema.ui.discussions.discussions.DiscussionsFragment"
         android:label="fragment_discussions"
-        tools:layout="@layout/fragment_discussions" />
+        tools:layout="@layout/fragment_discussions" >
+        <action
+            android:id="@+id/action_discussionsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.worldcinema.ui.discussions.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>
