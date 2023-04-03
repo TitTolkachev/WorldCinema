@@ -18,19 +18,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.exoplayer2.ui.PlayerView
+            <com.google.android.exoplayer2.ui.StyledPlayerView
                 android:id="@+id/videoView"
                 android:layout_width="0dp"
                 android:layout_height="210dp"
                 app:controller_layout_id="@layout/custom_video_controller"
+                app:use_controller="true"
                 app:keep_content_on_player_reset="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:player_layout_id="@layout/exo_player_view"
                 app:show_buffering="when_playing"
-                app:shutter_background_color="@color/dark_gray"
-                app:use_controller="true" />
+                app:hide_on_touch="true" />
 
             <TextView
                 android:id="@+id/textViewEpisodeTitle"

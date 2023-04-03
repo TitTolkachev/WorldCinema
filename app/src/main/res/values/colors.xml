@@ -24,4 +24,5 @@
     <color name="video_time_bar_played_color">#EF3A01</color>
     <color name="video_time_bar_scrubber_color">#EF3A01</color>
     <color name="video_time_bar_not_played_color">#3A3A3C</color>
+    <color name="video_background">#4D150D0B</color>
 </resources>

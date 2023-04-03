@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -14,8 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.worldcinema.databinding.FragmentEpisodeBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 
 class EpisodeFragment : Fragment() {
 
@@ -28,7 +26,7 @@ class EpisodeFragment : Fragment() {
 
     private lateinit var viewModel: EpisodeViewModel
 
-    private lateinit var videoView: PlayerView
+    private lateinit var videoView: StyledPlayerView
     private lateinit var exoPlayer: ExoPlayer
 
     override fun onCreateView(
@@ -45,6 +43,13 @@ class EpisodeFragment : Fragment() {
             navController.popBackStack()
         }
 
+        initVideoPlayer()
+
+        return binding.root
+    }
+
+    private fun initVideoPlayer() {
+
         videoView = binding.videoView
 
         with(videoView.layoutParams) {
@@ -54,15 +59,7 @@ class EpisodeFragment : Fragment() {
         exoPlayer = ExoPlayer.Builder(requireContext()).build()
         videoView.player = exoPlayer
         videoView.keepScreenOn = true
-        exoPlayer.addListener(object : Player.Listener {
-            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                super.onPlayerStateChanged(playWhenReady, playbackState)
-            }
 
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-
-            }
-        })
         val videoSource =
             Uri.parse("https://drive.google.com/uc?export=view&id=1ra6f2jGr6Jja8UXptmpGDHO9ERiMmE6d")
         val mediaItem = MediaItem.fromUri(videoSource)
@@ -74,12 +71,11 @@ class EpisodeFragment : Fragment() {
                 exoPlayer.pause()
             }
         }
-
-        return binding.root
     }
 
     override fun onStop() {
         exoPlayer.stop()
+        viewModel.saveVideoPosition(exoPlayer.contentPosition, exoPlayer.contentDuration)
         super.onStop()
     }
 

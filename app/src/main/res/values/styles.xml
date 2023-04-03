@@ -50,4 +50,13 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">10sp</item>
     </style>
+
+    <style name="ExoStyledControls.Button.Center.PlayPause">
+        <item name="android:src">@drawable/exo_styled_controls_pause</item>
+        <item name="android:contentDescription">@string/image_default_description</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <drawable name="exo_styled_controls_pause">@android:color/transparent</drawable>
+    <drawable name="exo_styled_controls_play">@drawable/video_play_icon</drawable>
+
 </resources>
