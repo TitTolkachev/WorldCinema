@@ -40,7 +40,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.buttonProfileMessenger.setOnClickListener {
-            navController.navigate(R.id.action_navigation_profile_to_discussions_navigation)
+            navController.navigate(R.id.action_navigation_profile_to_discussionsActivity)
         }
 
         return binding.root

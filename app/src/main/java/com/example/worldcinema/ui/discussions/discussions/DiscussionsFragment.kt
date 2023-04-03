@@ -32,7 +32,7 @@ class DiscussionsFragment : Fragment() {
         navController = findNavController()
 
         binding.imageButtonArrowBack.setOnClickListener {
-            navController.popBackStack()
+            activity?.finish()
         }
 
         initDiscussionsAdapter()
