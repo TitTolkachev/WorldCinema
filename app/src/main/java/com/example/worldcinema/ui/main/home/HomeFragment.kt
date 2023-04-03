@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentHomeBinding
 import com.example.worldcinema.ui.main.home.adapter.GalleryAdapter
 import com.example.worldcinema.ui.main.home.adapter.IMovieActionListener
@@ -34,7 +35,13 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         navController = findNavController()
 
+        navController = findNavController()
+
         initRecyclerViews()
+
+        binding.buttonHomeWatchMovie.setOnClickListener {
+            navController.navigate(R.id.action_navigation_home_to_movieActivity)
+        }
 
         return binding.root
     }
@@ -111,7 +118,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun showMovie(movieId: String) {
-        TODO("Not yet implemented")
+        navController.navigate(R.id.action_navigation_home_to_movieActivity)
+
+        // TODO(Передавать данные при переходе)
     }
 
     override fun onDestroyView() {

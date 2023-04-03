@@ -52,4 +52,10 @@ dependencies {
 
     // Card Stack View
     implementation 'com.github.yuyakaido:CardStackView:2.3.4'
+
+    // Flex Layout
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    // Video Player
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.5'
 }

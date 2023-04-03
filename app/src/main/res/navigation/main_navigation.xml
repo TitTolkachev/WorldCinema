@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.example.worldcinema.ui.main.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_movieActivity"
+            app:destination="@id/movieActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_compilation"
@@ -35,4 +39,9 @@
         android:id="@+id/discussionsActivity"
         android:name="com.example.worldcinema.ui.discussions.DiscussionsActivity"
         android:label="DiscussionsActivity" />
+    <activity
+        android:id="@+id/movieActivity"
+        android:name="com.example.worldcinema.ui.movie.MovieActivity"
+        android:label="activity_movie"
+        tools:layout="@layout/activity_movie" />
 </navigation>
