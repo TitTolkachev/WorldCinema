@@ -39,6 +39,7 @@ class DiscussionsFragment : Fragment() {
         viewModel.showChat.observe(viewLifecycleOwner) {
             if(it) {
                 navController.navigate(R.id.action_discussionsFragment_to_chatFragment)
+                viewModel.chatShowed()
             }
         }
 

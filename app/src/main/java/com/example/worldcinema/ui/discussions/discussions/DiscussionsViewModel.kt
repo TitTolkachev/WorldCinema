@@ -87,4 +87,8 @@ class DiscussionsViewModel : ViewModel() {
 
         _showChat.value = true
     }
+
+    fun chatShowed() {
+        _showChat.value = false
+    }
 }
