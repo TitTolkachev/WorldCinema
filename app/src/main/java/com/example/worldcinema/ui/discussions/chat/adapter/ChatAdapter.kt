@@ -19,15 +19,23 @@ class ChatAdapter :
             notifyDataSetChanged()
         }
 
+    var userId: String = ""
+        @SuppressLint("NotifyDataSetChanged")
+        set(newValue) {
+            field = newValue
+            notifyDataSetChanged()
+        }
+
     class DefaultMessageViewHolder(val binding: ChatDefaultMessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(message: Message) {
+        fun bind(message: Message, position: Int) {
             // TODO(Найти картинку в интернете)
 
-            with(binding.imageViewVerticalGalleryItem) {
-                setImageResource(R.drawable.test_image)
-                tag = poster.message
+            with(binding) {
+                chatMessageAvatar.setImageResource(R.drawable.test_image)
+                textViewDefaultMessageText.text = message.text
+                "${message.authorName} • ${message.creationDateTime}".also { textViewDefaultMessageInfo.text = it }
             }
         }
     }
@@ -35,12 +43,13 @@ class ChatAdapter :
     class UserMessageViewHolder(val binding: ChatUserMessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(message: Message) {
+        fun bind(message: Message, position: Int) {
             // TODO(Найти картинку в интернете)
 
-            with(binding.imageViewHorizontalGalleryItem) {
-                setImageResource(R.drawable.test_image)
-                tag = poster.movieId
+            with(binding) {
+                chatMessageAvatar.setImageResource(R.drawable.test_image)
+                textViewUserMessageText.text = message.text
+                "${message.authorName} • ${message.creationDateTime}".also { textViewUserMessageInfo.text = it }
             }
         }
     }
@@ -48,14 +57,19 @@ class ChatAdapter :
     class DateViewHolder(val binding: ChatDateItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(date: Date) {
+        fun bind(date: Date, position: Int) {
             // TODO(Сделать нормально)
             binding.textViewMessageDate.text = date.day.toString()
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return viewType
+
+        if (data[position].authorId == "")
+            return 3
+        if (userId == data[position].authorId)
+            return 2
+        return 1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -85,18 +99,18 @@ class ChatAdapter :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        when (getItemViewType(holder.itemViewType)) {
+        when (holder.itemViewType) {
             1 -> {
                 val viewHolder = holder as DefaultMessageViewHolder
-                viewHolder.bind(data[position])
+                viewHolder.bind(data[position], position)
             }
             2 -> {
                 val viewHolder = holder as UserMessageViewHolder
-                viewHolder.bind(data[position])
+                viewHolder.bind(data[position], position)
             }
             3 -> {
                 val viewHolder = holder as DateViewHolder
-                viewHolder.bind(data[position].creationDateTime)
+                viewHolder.bind(data[position].creationDateTime, position)
             }
         }
     }

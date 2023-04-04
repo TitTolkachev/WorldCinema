@@ -25,4 +25,8 @@
     <color name="video_time_bar_scrubber_color">#EF3A01</color>
     <color name="video_time_bar_not_played_color">#3A3A3C</color>
     <color name="video_background">#4D150D0B</color>
+
+    <color name="chat_user_message_info_color">#FFBFAB</color>
+    <color name="chat_default_message_info_color">#969594</color>
+    <color name="chat_default_message_background_color">#2E2B2A</color>
 </resources>

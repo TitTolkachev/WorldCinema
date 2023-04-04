@@ -34,6 +34,8 @@ class ChatFragment : Fragment() {
             navController.popBackStack()
         }
 
+        initChatAdapter()
+
         return binding.root
     }
 
@@ -46,6 +48,12 @@ class ChatFragment : Fragment() {
         viewModel.messages.observe(viewLifecycleOwner) {
             if (it != null) {
                 adapter.data = it
+            }
+        }
+
+        viewModel.userId.observe(viewLifecycleOwner) {
+            if (it != null) {
+                adapter.userId = it
             }
         }
     }

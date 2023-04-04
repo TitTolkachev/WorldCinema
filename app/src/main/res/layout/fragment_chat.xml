@@ -11,13 +11,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:ellipsize="end"
         android:letterSpacing="0.03"
+        android:singleLine="true"
         android:text="@string/default_text"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="normal"
-        android:singleLine="true"
-        android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="@+id/imageButtonArrowBack"
         app:layout_constraintStart_toEndOf="@+id/imageButtonArrowBack"
         app:layout_constraintTop_toTopOf="@+id/imageButtonArrowBack" />
@@ -37,31 +37,28 @@
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/chatMessageInputLayout"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/chatMessageInput"
+        style="@style/editTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/chat_input_rounded_border"
+        android:hint="@string/chat_message_hint_text"
+        android:maxHeight="300dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="7dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/gray_a8_text"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         app:hintEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageButtonSendMessage"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/chatMessageInputEditText"
-            style="@style/editTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:hint="@string/chat_message_hint_text"
-            android:textColor="@color/white"
-            android:textColorHint="@color/gray_a8_text"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize,TouchTargetSizeCheck" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck,VisualLintTextFieldSize,TouchTargetSizeCheck" />
 
     <ImageButton
         android:id="@+id/imageButtonSendMessage"
@@ -82,17 +79,19 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="8dp"
         android:scrollbars="none"
         app:flow_verticalAlign="bottom"
-        app:layout_constraintBottom_toTopOf="@+id/chatMessageInputLayout"
+        app:layout_constraintBottom_toTopOf="@+id/imageButtonSendMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewChatTitle">
+        app:layout_constraintTop_toBottomOf="@+id/textViewChatTitle"
+        app:layout_constraintVertical_bias="0.51">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RecyclerViewChat"
@@ -101,7 +100,9 @@
                 android:scrollbars="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:itemCount="8"
+                tools:listitem="@layout/chat_user_message_item" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
