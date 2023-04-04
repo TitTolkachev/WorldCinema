@@ -41,7 +41,11 @@ class ChatFragment : Fragment() {
 
     private fun initChatAdapter() {
 
-        binding.RecyclerViewChat.layoutManager = LinearLayoutManager(binding.root.context)
+        val adapterLayoutManager = LinearLayoutManager(binding.root.context)
+        binding.RecyclerViewChat.layoutManager = adapterLayoutManager.apply {
+            // reverseLayout = true
+            stackFromEnd = true
+        }
         adapter = ChatAdapter()
         binding.RecyclerViewChat.adapter = adapter
 

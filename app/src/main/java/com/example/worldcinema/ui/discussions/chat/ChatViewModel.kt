@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.worldcinema.ui.discussions.chat.model.Message
-import java.util.*
 
 class ChatViewModel : ViewModel() {
 
@@ -28,8 +27,18 @@ class ChatViewModel : ViewModel() {
 
         _messages.value = mutableListOf(
             Message(
+                "",
+                "3 сентября",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ),
+            Message(
                 "1",
-                Date(2021, 11, 11),
+                "3 сентября",
+                "18:00",
                 "123",
                 "Олег Олег",
                 "",
@@ -37,7 +46,8 @@ class ChatViewModel : ViewModel() {
             ),
             Message(
                 "1",
-                Date(2021, 11, 11),
+                "3 сентября",
+                "18:00",
                 "123",
                 "Олег Олег",
                 "",
@@ -45,7 +55,8 @@ class ChatViewModel : ViewModel() {
             ),
             Message(
                 "1",
-                Date(2021, 11, 11),
+                "3 сентября",
+                "18:00",
                 "12",
                 "Олег Олег",
                 "",
@@ -53,15 +64,26 @@ class ChatViewModel : ViewModel() {
             ),
             Message(
                 "1",
-                Date(2021, 11, 11),
+                "3 сентября",
+                "18:00",
                 "123",
                 "Олег Олег",
                 "",
                 "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
             ),
             Message(
+                "",
+                "Сегодня",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ),
+            Message(
                 "1",
-                Date(2021, 11, 11),
+                "4 сентября",
+                "16:00",
                 "12",
                 "Олег Олег",
                 "",
@@ -69,7 +91,62 @@ class ChatViewModel : ViewModel() {
             ),
             Message(
                 "1",
-                Date(2021, 11, 11),
+                "4 сентября",
+                "16:00",
+                "12",
+                "Олег Олег",
+                "",
+                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
+            ),
+            Message(
+                "1",
+                "4 сентября",
+                "16:00",
+                "123",
+                "Олег Олег",
+                "",
+                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
+            ),
+            Message(
+                "1",
+                "4 сентября",
+                "16:00",
+                "123",
+                "Олег Олег",
+                "",
+                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
+            ),
+            Message(
+                "1",
+                "4 сентября",
+                "16:00",
+                "12",
+                "Олег Олег",
+                "",
+                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
+            ),
+            Message(
+                "1",
+                "4 сентября",
+                "16:00",
+                "123",
+                "Олег Олег",
+                "",
+                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
+            ),
+            Message(
+                "1",
+                "4 сентября",
+                "16:00",
+                "12",
+                "Олег Олег",
+                "",
+                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
+            ),
+            Message(
+                "1",
+                "4 сентября",
+                "16:00",
                 "12",
                 "Олег Олег",
                 "",
