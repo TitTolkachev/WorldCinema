@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentCollectionsBinding
+import com.example.worldcinema.ui.main.collections.adapter.CollectionsAdapter
+import com.example.worldcinema.ui.main.collections.adapter.ICollectionActionListener
 
 class CollectionsFragment : Fragment() {
 
@@ -18,6 +21,8 @@ class CollectionsFragment : Fragment() {
 
     private lateinit var viewModel: CollectionsViewModel
     private lateinit var navController: NavController
+
+    private lateinit var collectionsAdapter: CollectionsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,12 +33,37 @@ class CollectionsFragment : Fragment() {
         viewModel = ViewModelProvider(this)[CollectionsViewModel::class.java]
         navController = findNavController()
 
-        val textView: TextView = binding.textCollections
-        viewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        initCollectionsRecyclerView()
+
+        binding.imageButtonAddCollection.setOnClickListener {
+            navController.navigate(R.id.action_navigation_collections_to_collectionActivity)
+        }
+
+        viewModel.showCollection.observe(viewLifecycleOwner) {
+            if(it) {
+                navController.navigate(R.id.action_navigation_collections_to_collectionActivity)
+                viewModel.collectionShowed()
+            }
         }
 
         return binding.root
+    }
+
+    private fun initCollectionsRecyclerView() {
+
+        binding.CollectionsRecyclerView.layoutManager = LinearLayoutManager(binding.root.context)
+        collectionsAdapter = CollectionsAdapter(object : ICollectionActionListener {
+            override fun onItemClicked(collectionId: String) {
+                viewModel.onItemClicked(collectionId)
+            }
+        })
+        binding.CollectionsRecyclerView.adapter = collectionsAdapter
+
+        viewModel.collections.observe(viewLifecycleOwner) {
+            if (it != null) {
+                collectionsAdapter.data = it
+            }
+        }
     }
 
     override fun onDestroyView() {

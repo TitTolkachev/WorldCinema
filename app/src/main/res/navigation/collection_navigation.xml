@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/collection_navigation"
+    app:startDestination="@id/moviesCollectionFragment">
+
+    <fragment
+        android:id="@+id/moviesCollectionFragment"
+        android:name="com.example.worldcinema.ui.collection.movies.MoviesCollectionFragment"
+        android:label="fragment_movies_collection"
+        tools:layout="@layout/fragment_movies_collection" >
+        <action
+            android:id="@+id/action_moviesCollectionFragment_to_updateCollectionFragment"
+            app:destination="@id/updateCollectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/iconCollectionFragment"
+        android:name="com.example.worldcinema.ui.collection.icon.IconCollectionFragment"
+        android:label="fragment_icon_collection"
+        tools:layout="@layout/fragment_icon_collection" />
+    <fragment
+        android:id="@+id/updateCollectionFragment"
+        android:name="com.example.worldcinema.ui.collection.update.UpdateCollectionFragment"
+        android:label="fragment_update_collection"
+        tools:layout="@layout/fragment_update_collection" >
+        <action
+            android:id="@+id/action_updateCollectionFragment_to_iconCollectionFragment"
+            app:destination="@id/iconCollectionFragment" />
+    </fragment>
+</navigation>

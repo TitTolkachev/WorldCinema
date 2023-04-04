@@ -25,7 +25,11 @@
         android:id="@+id/navigation_collections"
         android:name="com.example.worldcinema.ui.main.collections.CollectionsFragment"
         android:label="@string/title_collections"
-        tools:layout="@layout/fragment_collections" />
+        tools:layout="@layout/fragment_collections" >
+        <action
+            android:id="@+id/action_navigation_collections_to_collectionActivity"
+            app:destination="@id/collectionActivity" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.worldcinema.ui.main.profile.ProfileFragment"
@@ -44,4 +48,9 @@
         android:name="com.example.worldcinema.ui.movie.MovieActivity"
         android:label="activity_movie"
         tools:layout="@layout/activity_movie" />
+    <activity
+        android:id="@+id/collectionActivity"
+        android:name="com.example.worldcinema.ui.collection.CollectionActivity"
+        android:label="activity_collection"
+        tools:layout="@layout/activity_collection" />
 </navigation>

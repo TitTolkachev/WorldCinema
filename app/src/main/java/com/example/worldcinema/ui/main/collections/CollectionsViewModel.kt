@@ -3,11 +3,43 @@ package com.example.worldcinema.ui.main.collections
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.worldcinema.ui.main.collections.model.UsersCollection
 
 class CollectionsViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is collections Fragment"
+    private val _collections: MutableLiveData<MutableList<UsersCollection>> =
+        MutableLiveData(mutableListOf())
+    val collections: LiveData<MutableList<UsersCollection>> = _collections
+
+    private val _showCollection: MutableLiveData<Boolean> =
+        MutableLiveData(false)
+    val showCollection: LiveData<Boolean> = _showCollection
+
+    init {
+        loadData()
     }
-    val text: LiveData<String> = _text
+
+    fun onItemClicked(collectionId: String) {
+        _showCollection.value = true
+    }
+
+    fun collectionShowed() {
+        _showCollection.value = false
+    }
+
+    private fun loadData() {
+        _collections.value = mutableListOf(
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+            UsersCollection("1", 1, "SFsdfsFSDfsdFSdfsdfSDfsdF"),
+        )
+    }
 }
