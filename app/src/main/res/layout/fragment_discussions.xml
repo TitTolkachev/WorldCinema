@@ -34,32 +34,18 @@
         app:srcCompat="@drawable/arrow_back"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewDiscussions"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDiscussions">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/RecyclerViewDiscussions"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:itemCount="20"
-                tools:listitem="@layout/discussions_item" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/textViewDiscussions"
+        tools:itemCount="20"
+        tools:listitem="@layout/discussions_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
