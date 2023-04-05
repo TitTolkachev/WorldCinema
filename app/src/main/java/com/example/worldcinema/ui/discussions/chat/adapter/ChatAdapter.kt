@@ -2,6 +2,7 @@ package com.example.worldcinema.ui.discussions.chat.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.worldcinema.R
@@ -57,6 +58,9 @@ class ChatAdapter :
                 )
             }
 
+            if(bottomPadding == ChatItemPadding.Small)
+                binding.chatMessageAvatarCardView.visibility = View.INVISIBLE
+
             with(binding) {
                 chatMessageAvatar.setImageResource(R.drawable.test_image)
                 textViewDefaultMessageText.text = message.text
@@ -99,6 +103,9 @@ class ChatAdapter :
                         .toInt()
                 )
             }
+
+            if(bottomPadding == ChatItemPadding.Small)
+                binding.chatMessageAvatarCardView.visibility = View.INVISIBLE
 
             with(binding) {
                 chatMessageAvatar.setImageResource(R.drawable.test_image)
