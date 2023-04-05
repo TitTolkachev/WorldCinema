@@ -13,7 +13,6 @@ import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentSignInBinding
 import com.example.worldcinema.ui.main.MainActivity
 
-
 class SignInFragment : Fragment() {
 
     private var _binding: FragmentSignInBinding? = null

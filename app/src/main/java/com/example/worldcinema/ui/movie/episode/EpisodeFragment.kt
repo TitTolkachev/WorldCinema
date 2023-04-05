@@ -18,13 +18,10 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 class EpisodeFragment : Fragment() {
 
     private var _binding: FragmentEpisodeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var navController: NavController
 
     private lateinit var viewModel: EpisodeViewModel
+    private lateinit var navController: NavController
 
     private lateinit var videoView: StyledPlayerView
     private lateinit var exoPlayer: ExoPlayer
@@ -34,9 +31,7 @@ class EpisodeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEpisodeBinding.inflate(inflater, container, false)
-
         viewModel = ViewModelProvider(this)[EpisodeViewModel::class.java]
-
         navController = findNavController()
 
         binding.imageButtonEpisodeArrowBack.setOnClickListener {
