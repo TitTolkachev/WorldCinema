@@ -30,7 +30,7 @@ class MoviesCollectionActivity : AppCompatActivity() {
         binding.imageButtonEdit.setOnClickListener {
             val intent =
                 Intent(applicationContext, UpdateCollectionActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION or Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             applicationContext.startActivity(intent)
         }
 

@@ -1,9 +1,11 @@
 package com.example.worldcinema.ui.collection.create
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.databinding.ActivityCreateCollectionBinding
+import com.example.worldcinema.ui.collection.icon.IconCollectionActivity
 
 class CreateCollectionActivity : AppCompatActivity() {
 
@@ -15,6 +17,20 @@ class CreateCollectionActivity : AppCompatActivity() {
 
         binding = ActivityCreateCollectionBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[CreateCollectionViewModel::class.java]
+
+        binding.imageButtonArrowBack.setOnClickListener {
+            finish()
+        }
+        binding.buttonChooseIcon.setOnClickListener {
+            val intent =
+                Intent(applicationContext, IconCollectionActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            applicationContext.startActivity(intent)
+        }
+        binding.buttonSaveIcon.setOnClickListener {
+            // TODO(Сохранить изменения коллекции)
+            finish()
+        }
 
         setContentView(binding.root)
     }

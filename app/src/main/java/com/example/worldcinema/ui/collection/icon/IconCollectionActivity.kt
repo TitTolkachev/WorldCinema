@@ -16,6 +16,10 @@ class IconCollectionActivity : AppCompatActivity() {
         binding = ActivityIconCollectionBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[IconCollectionViewModel::class.java]
 
+        binding.imageButtonArrowBack.setOnClickListener {
+            finish()
+        }
+
         setContentView(binding.root)
     }
 }
