@@ -8,8 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentMoviesCollectionBinding
+import com.example.worldcinema.ui.collection.movies.adapter.IMoviesCollectionActionListener
+import com.example.worldcinema.ui.collection.movies.adapter.MoviesCollectionAdapter
 
 class MoviesCollectionFragment : Fragment() {
 
@@ -18,6 +21,8 @@ class MoviesCollectionFragment : Fragment() {
 
     private lateinit var viewModel: MoviesCollectionViewModel
     private lateinit var navController: NavController
+
+    private lateinit var moviesAdapter: MoviesCollectionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +40,26 @@ class MoviesCollectionFragment : Fragment() {
             navController.navigate(R.id.action_moviesCollectionFragment_to_updateCollectionFragment)
         }
 
+        initMoviesRecyclerView()
+
         return binding.root
+    }
+
+    private fun initMoviesRecyclerView() {
+
+        binding.CollectionRecyclerView.layoutManager = LinearLayoutManager(binding.root.context)
+        moviesAdapter = MoviesCollectionAdapter(object : IMoviesCollectionActionListener {
+            override fun onItemClicked(movieId: String) {
+                viewModel.onItemClicked(movieId)
+            }
+        })
+        binding.CollectionRecyclerView.adapter = moviesAdapter
+
+        viewModel.movies.observe(viewLifecycleOwner) {
+            if (it != null) {
+                moviesAdapter.data = it
+            }
+        }
     }
 
     override fun onDestroyView() {
