@@ -14,7 +14,22 @@
         android:theme="@style/Theme.WorldCinema"
         tools:targetApi="31">
         <activity
-            android:name=".ui.collection.CollectionActivity"
+            android:name=".ui.collection.movies.MoviesCollectionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.collection.update.UpdateCollectionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.collection.icon.IconCollectionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.collection.create.CreateCollectionActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />

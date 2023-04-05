@@ -27,8 +27,11 @@
         android:label="@string/title_collections"
         tools:layout="@layout/fragment_collections" >
         <action
-            android:id="@+id/action_navigation_collections_to_collectionActivity"
-            app:destination="@id/collectionActivity" />
+            android:id="@+id/action_navigation_collections_to_createCollectionActivity"
+            app:destination="@id/createCollectionActivity" />
+        <action
+            android:id="@+id/action_navigation_collections_to_moviesCollectionActivity"
+            app:destination="@id/moviesCollectionActivity" />
     </fragment>
     <fragment
         android:id="@+id/navigation_profile"
@@ -49,8 +52,12 @@
         android:label="activity_movie"
         tools:layout="@layout/activity_movie" />
     <activity
-        android:id="@+id/collectionActivity"
-        android:name="com.example.worldcinema.ui.collection.CollectionActivity"
-        android:label="activity_collection"
-        tools:layout="@layout/activity_collection" />
+        android:id="@+id/createCollectionActivity"
+        android:name="com.example.worldcinema.ui.collection.create.CreateCollectionActivity"
+        android:label="activity_create_collection"
+        tools:layout="@layout/activity_create_collection" />
+    <activity
+        android:id="@+id/moviesCollectionActivity"
+        android:name="com.example.worldcinema.ui.collection.movies.MoviesCollectionActivity"
+        android:label="MoviesCollectionActivity" />
 </navigation>

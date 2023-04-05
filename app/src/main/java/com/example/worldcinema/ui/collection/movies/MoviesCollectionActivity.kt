@@ -1,48 +1,42 @@
 package com.example.worldcinema.ui.collection.movies
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.worldcinema.R
-import com.example.worldcinema.databinding.FragmentMoviesCollectionBinding
+import com.example.worldcinema.databinding.ActivityMoviesCollectionBinding
 import com.example.worldcinema.ui.collection.movies.adapter.IMoviesCollectionActionListener
 import com.example.worldcinema.ui.collection.movies.adapter.MoviesCollectionAdapter
+import com.example.worldcinema.ui.collection.update.UpdateCollectionActivity
 
-class MoviesCollectionFragment : Fragment() {
+class MoviesCollectionActivity : AppCompatActivity() {
 
-    private var _binding: FragmentMoviesCollectionBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding: ActivityMoviesCollectionBinding
     private lateinit var viewModel: MoviesCollectionViewModel
-    private lateinit var navController: NavController
 
     private lateinit var moviesAdapter: MoviesCollectionAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMoviesCollectionBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityMoviesCollectionBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[MoviesCollectionViewModel::class.java]
-        navController = findNavController()
 
         binding.imageButtonArrowBack.setOnClickListener {
-            activity?.finish()
+            finish()
         }
 
         binding.imageButtonEdit.setOnClickListener {
-            navController.navigate(R.id.action_moviesCollectionFragment_to_updateCollectionFragment)
+            val intent =
+                Intent(applicationContext, UpdateCollectionActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION or Intent.FLAG_ACTIVITY_NEW_TASK)
+            applicationContext.startActivity(intent)
         }
 
         initMoviesRecyclerView()
 
-        return binding.root
+        setContentView(binding.root)
     }
 
     private fun initMoviesRecyclerView() {
@@ -55,15 +49,10 @@ class MoviesCollectionFragment : Fragment() {
         })
         binding.CollectionRecyclerView.adapter = moviesAdapter
 
-        viewModel.movies.observe(viewLifecycleOwner) {
+        viewModel.movies.observe(this) {
             if (it != null) {
                 moviesAdapter.data = it
             }
         }
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
     }
 }

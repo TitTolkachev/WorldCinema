@@ -36,12 +36,12 @@ class CollectionsFragment : Fragment() {
         initCollectionsRecyclerView()
 
         binding.imageButtonAddCollection.setOnClickListener {
-            navController.navigate(R.id.action_navigation_collections_to_collectionActivity)
+            navController.navigate(R.id.action_navigation_collections_to_createCollectionActivity)
         }
 
         viewModel.showCollection.observe(viewLifecycleOwner) {
             if(it) {
-                navController.navigate(R.id.action_navigation_collections_to_collectionActivity)
+                navController.navigate(R.id.action_navigation_collections_to_moviesCollectionActivity)
                 viewModel.collectionShowed()
             }
         }
