@@ -13,6 +13,11 @@
         <action
             android:id="@+id/action_moviesCollectionFragment_to_updateCollectionFragment"
             app:destination="@id/updateCollectionFragment" />
+        <action
+            android:id="@+id/action_moviesCollectionFragment_to_createCollectionFragment"
+            app:destination="@id/createCollectionFragment"
+            app:popUpTo="@id/moviesCollectionFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/iconCollectionFragment"
@@ -28,4 +33,9 @@
             android:id="@+id/action_updateCollectionFragment_to_iconCollectionFragment"
             app:destination="@id/iconCollectionFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createCollectionFragment"
+        android:name="com.example.worldcinema.ui.collection.create.CreateCollectionFragment"
+        android:label="fragment_create_collection"
+        tools:layout="@layout/fragment_create_collection" />
 </navigation>
