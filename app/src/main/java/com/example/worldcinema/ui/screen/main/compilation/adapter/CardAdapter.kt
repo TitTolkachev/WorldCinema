@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.worldcinema.R
+import com.bumptech.glide.Glide
 import com.example.worldcinema.databinding.CompilationCardBinding
 import com.example.worldcinema.ui.model.Card
 
@@ -22,10 +22,9 @@ class CardAdapter :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(card: Card) {
-            // TODO(Найти картинку в интернете)
 
             with(binding.cardImage) {
-                setImageResource(R.drawable.test_image)
+                Glide.with(this).load(card.image).into(this)
                 clipToOutline = true
                 tag = card.id
             }

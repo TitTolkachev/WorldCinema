@@ -23,7 +23,6 @@ class CompilationFragment : Fragment() {
 
     private lateinit var cardAdapter: CardAdapter
     private lateinit var cardStackView: CardStackView
-    private var swipedCardsCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +30,10 @@ class CompilationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCompilationBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[CompilationViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            CompilationViewModelFactory(requireContext())
+        )[CompilationViewModel::class.java]
         navController = findNavController()
 
         initCardStackView()
@@ -55,7 +57,7 @@ class CompilationFragment : Fragment() {
         }
 
         viewModel.isCardStackEmpty.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 binding.textView2.visibility = View.GONE
                 binding.flow.visibility = View.GONE
                 binding.cardStackView.visibility = View.GONE
@@ -66,6 +68,10 @@ class CompilationFragment : Fragment() {
                 binding.cardStackView.visibility = View.VISIBLE
                 binding.flowEmptyStack.visibility = View.GONE
             }
+        }
+
+        viewModel.displayedTitle.observe(viewLifecycleOwner) {
+            binding.textView2.text = it ?: ""
         }
 
         return binding.root
@@ -81,15 +87,10 @@ class CompilationFragment : Fragment() {
 
                 override fun onCardSwiped(direction: Direction?) {
                     if (direction == Direction.Left) {
-                        binding.textView2.text = "Left"
+                        viewModel.skip()
                     }
                     if (direction == Direction.Right) {
-                        binding.textView2.text = "Right"
-                    }
-
-                    swipedCardsCount++
-                    if (swipedCardsCount == cardAdapter.itemCount) {
-                        viewModel.isCardStackEmpty.value = true
+                        viewModel.like()
                     }
                 }
 
@@ -121,8 +122,7 @@ class CompilationFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        swipedCardsCount = 0
-        viewModel.isCardStackEmpty.value = false
+        viewModel.onViewResume()
     }
 
     override fun onDestroyView() {
