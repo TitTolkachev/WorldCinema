@@ -8,14 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.R
 import com.example.worldcinema.domain.usecase.network.GetEpisodesUseCase
 import com.example.worldcinema.ui.helper.EpisodeMapper
-import com.example.worldcinema.ui.model.ChatInfo
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MovieEpisode
-import com.example.worldcinema.ui.model.MovieTag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieViewModel(
+    movie: Movie,
     private val getEpisodesUseCase: GetEpisodesUseCase
 ) : ViewModel() {
 
@@ -34,7 +33,10 @@ class MovieViewModel(
     val movieAge: LiveData<String> = _movieAge
 
     init {
-        loadData()
+        _movie.value = movie
+        _movieImages.value = _movie.value?.imageUrls
+        _movieAge.value = _movie.value?.age
+        loadEpisodes()
     }
 
     fun getMovieAgeColor(): Int {
@@ -47,33 +49,6 @@ class MovieViewModel(
         }
 
         return R.color.age_18_color
-    }
-
-    private fun loadData() {
-        _movie.value = Movie(
-            "e7d45225-6cd0-4cf4-937f-ff5c088d495c",
-            "1",
-            "1",
-            "6+",
-            ChatInfo("12", "12"),
-            listOf("123", "123", "123", "123", "123", "123"),
-            "123",
-            listOf(
-                MovieTag("123", "Мультфильм", "123"),
-                MovieTag("123", "Комедия", "123"),
-                MovieTag("123", "Ужасы", "123"),
-                MovieTag("123", "Боевик", "123"),
-                MovieTag("123", "Фантастика", "123"),
-                MovieTag("123", "Короткометраж", "123"),
-                MovieTag("123", "Трейлер", "123"),
-                MovieTag("123", "Советский", "123"),
-                MovieTag("123", "Копатыч", "123")
-            )
-        )
-        _movieImages.value = _movie.value?.imageUrls
-        _movieAge.value = _movie.value?.age
-
-        loadEpisodes()
     }
 
     private fun loadEpisodes() {

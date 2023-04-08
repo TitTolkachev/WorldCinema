@@ -11,7 +11,9 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.get
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentMovieBinding
 import com.example.worldcinema.ui.screen.movie.movie.adapter.IMovieEpisodeActionListener
@@ -26,6 +28,8 @@ class MovieFragment : Fragment() {
     private lateinit var viewModel: MovieViewModel
     private lateinit var navController: NavController
 
+    private val args: MovieFragmentArgs by navArgs()
+
     private lateinit var movieImagesAdapter: MovieImagesAdapter
     private lateinit var movieEpisodesAdapter: MovieEpisodesAdapter
 
@@ -36,7 +40,7 @@ class MovieFragment : Fragment() {
         _binding = FragmentMovieBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(
             this,
-            MovieViewModelFactory(requireContext())
+            MovieViewModelFactory(requireContext(), args.movieData)
         )[MovieViewModel::class.java]
         navController = findNavController()
 
@@ -63,6 +67,10 @@ class MovieFragment : Fragment() {
                     view.id = View.generateViewId()
                     (view as Button).text = t.tagName
                 }
+
+                Glide.with(binding.imageViewMovie).load(it.poster).into(binding.imageViewMovie)
+
+                binding.textViewMovieDescription.text = it.description
             }
         }
 

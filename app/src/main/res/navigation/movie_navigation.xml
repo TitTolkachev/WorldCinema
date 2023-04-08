@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_movieFragment_to_episodeFragment"
             app:destination="@id/episodeFragment" />
+        <argument
+            android:name="movieData"
+            app:argType="com.example.worldcinema.ui.model.Movie" />
     </fragment>
     <fragment
         android:id="@+id/episodeFragment"

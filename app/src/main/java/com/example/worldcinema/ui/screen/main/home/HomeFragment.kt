@@ -10,7 +10,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentHomeBinding
 import com.example.worldcinema.ui.screen.main.home.adapter.GalleryAdapter
 import com.example.worldcinema.ui.screen.main.home.adapter.IMovieActionListener
@@ -59,7 +58,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.buttonHomeWatchMovie.setOnClickListener {
-            navController.navigate(R.id.action_navigation_home_to_movieActivity)
+            // TODO(Показать, что апишка не позваляет получить данные о фильме)
         }
 
         return binding.root
@@ -144,9 +143,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun showMovie(movieId: String) {
-        navController.navigate(R.id.action_navigation_home_to_movieActivity)
-
-        // TODO(Передавать данные при переходе)
+        val action = HomeFragmentDirections.actionNavigationHomeToMovieActivity(viewModel.getMovie(movieId))
+        navController.navigate(action)
     }
 
     override fun onDestroyView() {

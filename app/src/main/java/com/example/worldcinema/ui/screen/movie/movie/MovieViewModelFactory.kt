@@ -12,8 +12,9 @@ import com.example.worldcinema.domain.usecase.network.GetEpisodesUseCase
 import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
+import com.example.worldcinema.ui.model.Movie
 
-class MovieViewModelFactory(context: Context) : ViewModelProvider.Factory {
+class MovieViewModelFactory(context: Context, private val movie: Movie) : ViewModelProvider.Factory {
 
     private val tokenRepository by lazy {
         TokenStorageRepository(SharedPrefTokenStorage(context))
@@ -40,6 +41,7 @@ class MovieViewModelFactory(context: Context) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return MovieViewModel(
+            movie,
             getEpisodesUseCase
         ) as T
     }

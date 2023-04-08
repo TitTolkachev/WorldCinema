@@ -10,6 +10,7 @@ import com.example.worldcinema.domain.usecase.network.GetCoverUseCase
 import com.example.worldcinema.domain.usecase.network.GetMoviesUseCase
 import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.helper.MovieToPosterMapper
+import com.example.worldcinema.ui.model.ChatInfo
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MoviePoster
 import kotlinx.coroutines.Dispatchers
@@ -53,10 +54,10 @@ class HomeViewModel(
     }
 
     private fun loadData() {
-        loadTrendMovies()
-        loadNewMovies()
-        loadRecommendedMovies()
-        loadLastViewMovies()
+        loadMovies(MovieFilter.InTrend, _trendMovies, _trendMoviesPosters)
+        loadMovies(MovieFilter.New, _newMovies, _newMoviesPosters)
+        loadMovies(MovieFilter.ForMe, _recommendedMovies, _recommendedMoviesPosters)
+        loadMovies(MovieFilter.LastView, _lastViewMovies, _lastViewMoviesPosters)
     }
 
     private fun loadCover() {
@@ -70,22 +71,6 @@ class HomeViewModel(
                 }
             }
         }
-    }
-
-    private fun loadTrendMovies() {
-        loadMovies(MovieFilter.InTrend, _trendMovies, _trendMoviesPosters)
-    }
-
-    private fun loadNewMovies() {
-        loadMovies(MovieFilter.New, _newMovies, _newMoviesPosters)
-    }
-
-    private fun loadRecommendedMovies() {
-        loadMovies(MovieFilter.ForMe, _recommendedMovies, _recommendedMoviesPosters)
-    }
-
-    private fun loadLastViewMovies() {
-        loadMovies(MovieFilter.LastView, _lastViewMovies, _lastViewMoviesPosters)
     }
 
     private fun loadMovies(
@@ -108,5 +93,25 @@ class HomeViewModel(
                 }
             }
         }
+    }
+
+    fun getMovie(movieId: String): Movie {
+        for (m in _trendMovies.value!!) {
+            if (m.movieId == movieId)
+                return m
+        }
+        for (m in _newMovies.value!!) {
+            if (m.movieId == movieId)
+                return m
+        }
+        for (m in _recommendedMovies.value!!) {
+            if (m.movieId == movieId)
+                return m
+        }
+        for (m in _lastViewMovies.value!!) {
+            if (m.movieId == movieId)
+                return m
+        }
+        return Movie("", "", "", "", ChatInfo("", ""), listOf(), "", listOf())
     }
 }

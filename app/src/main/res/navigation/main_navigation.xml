@@ -50,7 +50,11 @@
         android:id="@+id/movieActivity"
         android:name="com.example.worldcinema.ui.screen.movie.MovieActivity"
         android:label="activity_movie"
-        tools:layout="@layout/activity_movie" />
+        tools:layout="@layout/activity_movie" >
+        <argument
+            android:name="movieData"
+            app:argType="com.example.worldcinema.ui.model.Movie" />
+    </activity>
     <activity
         android:id="@+id/createCollectionActivity"
         android:name="com.example.worldcinema.ui.screen.collection.create.CreateCollectionActivity"

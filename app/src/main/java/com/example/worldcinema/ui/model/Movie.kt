@@ -1,5 +1,6 @@
 package com.example.worldcinema.ui.model
 
+@kotlinx.serialization.Serializable
 data class Movie(
     val movieId: String,
     val name: String,
@@ -9,4 +10,4 @@ data class Movie(
     val imageUrls: List<String>,
     val poster: String,
     val tags: List<MovieTag>,
-)
+) : java.io.Serializable

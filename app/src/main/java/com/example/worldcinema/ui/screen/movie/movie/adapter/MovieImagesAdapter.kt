@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.MovieImagesItemBinding
 
@@ -21,9 +22,8 @@ class MovieImagesAdapter :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movieImage: String) {
-            // TODO(Найти картинку в интернете)
-
             with(binding.imageViewMovieItem) {
+                Glide.with(this).load(movieImage).into(this)
                 setImageResource(R.drawable.test_image)
             }
         }
