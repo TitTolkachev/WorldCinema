@@ -16,7 +16,7 @@ class AuthInterceptor(
         if (request.header("Authorization") == null) {
             val token = getTokenFromLocalStorageUseCase.execute()
 
-            builder.addHeader("Authorization", "Bearer $token")
+            builder.addHeader("Authorization", "Bearer ${token?.accessToken}")
         }
 
         return chain.proceed(builder.build())

@@ -32,12 +32,20 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-        navController = findNavController()
-
+        viewModel = ViewModelProvider(
+            this,
+            HomeViewModelFactory(requireContext())
+        )[HomeViewModel::class.java]
         navController = findNavController()
 
         initRecyclerViews()
+
+        viewModel.coverImage.observe(viewLifecycleOwner) {
+            if(it.isNotEmpty()) {
+                // TODO(Подгрузить изображение)
+                binding.imageView.setImageResource(R.drawable.logo)
+            }
+        }
 
         binding.buttonHomeWatchMovie.setOnClickListener {
             navController.navigate(R.id.action_navigation_home_to_movieActivity)
@@ -75,7 +83,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun initNewMoviesRecyclerView() {
-        val linearLayoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
+        val linearLayoutManager =
+            LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewNewMovies.layoutManager = linearLayoutManager
 
         newMoviesAdapter = GalleryAdapter(2, object : IMovieActionListener {

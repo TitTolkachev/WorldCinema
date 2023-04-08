@@ -55,6 +55,9 @@ class SignInFragment : Fragment() {
             navController.navigate(R.id.action_signInFragment_to_signUpFragment)
         }
 
+        // TODO(Перенести в лаунч скрин)
+        viewModel.checkToken()
+
         return binding.root
     }
 
