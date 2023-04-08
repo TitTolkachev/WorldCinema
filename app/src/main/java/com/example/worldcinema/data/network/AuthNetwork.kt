@@ -1,7 +1,7 @@
 package com.example.worldcinema.data.network
 
-import com.example.worldcinema.data.network.auth.AuthRefreshApi
-import com.example.worldcinema.data.network.cover.CoverApi
+import com.example.worldcinema.data.network.requests.cover.CoverApi
+import com.example.worldcinema.data.network.requests.movie.MovieApi
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -63,9 +63,9 @@ object AuthNetwork {
 
     private var authRetrofit: Retrofit? = null
 
-    fun getAuthRefreshApi(useCases: AuthNetworkUseCases): AuthRefreshApi =
-        getAuthRetrofit(useCases).create(AuthRefreshApi::class.java)
-
     fun getCoverApi(useCases: AuthNetworkUseCases): CoverApi =
         getAuthRetrofit(useCases).create(CoverApi::class.java)
+
+    fun getMovieApi(useCases: AuthNetworkUseCases): MovieApi =
+        getAuthRetrofit(useCases).create(MovieApi::class.java)
 }

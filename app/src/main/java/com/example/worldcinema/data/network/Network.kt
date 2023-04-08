@@ -1,6 +1,6 @@
 package com.example.worldcinema.data.network
 
-import com.example.worldcinema.data.network.auth.AuthApi
+import com.example.worldcinema.data.network.requests.auth.AuthApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json

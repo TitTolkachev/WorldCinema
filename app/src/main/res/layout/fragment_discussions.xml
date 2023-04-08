@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".ui.discussions.discussions.DiscussionsFragment">
+    tools:context=".ui.screen.discussions.discussions.DiscussionsFragment">
 
     <TextView
         android:id="@+id/textViewDiscussions"

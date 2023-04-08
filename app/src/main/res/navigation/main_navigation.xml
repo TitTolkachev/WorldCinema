@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.worldcinema.ui.main.home.HomeFragment"
+        android:name="com.example.worldcinema.ui.screen.main.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -17,13 +17,13 @@
 
     <fragment
         android:id="@+id/navigation_compilation"
-        android:name="com.example.worldcinema.ui.main.compilation.CompilationFragment"
+        android:name="com.example.worldcinema.ui.screen.main.compilation.CompilationFragment"
         android:label="@string/title_compilation"
         tools:layout="@layout/fragment_compilation" />
 
     <fragment
         android:id="@+id/navigation_collections"
-        android:name="com.example.worldcinema.ui.main.collections.CollectionsFragment"
+        android:name="com.example.worldcinema.ui.screen.main.collections.CollectionsFragment"
         android:label="@string/title_collections"
         tools:layout="@layout/fragment_collections" >
         <action
@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.worldcinema.ui.main.profile.ProfileFragment"
+        android:name="com.example.worldcinema.ui.screen.main.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -44,20 +44,20 @@
     </fragment>
     <activity
         android:id="@+id/discussionsActivity"
-        android:name="com.example.worldcinema.ui.discussions.DiscussionsActivity"
+        android:name="com.example.worldcinema.ui.screen.discussions.DiscussionsActivity"
         android:label="DiscussionsActivity" />
     <activity
         android:id="@+id/movieActivity"
-        android:name="com.example.worldcinema.ui.movie.MovieActivity"
+        android:name="com.example.worldcinema.ui.screen.movie.MovieActivity"
         android:label="activity_movie"
         tools:layout="@layout/activity_movie" />
     <activity
         android:id="@+id/createCollectionActivity"
-        android:name="com.example.worldcinema.ui.collection.create.CreateCollectionActivity"
+        android:name="com.example.worldcinema.ui.screen.collection.create.CreateCollectionActivity"
         android:label="activity_create_collection"
         tools:layout="@layout/activity_create_collection" />
     <activity
         android:id="@+id/moviesCollectionActivity"
-        android:name="com.example.worldcinema.ui.collection.movies.MoviesCollectionActivity"
+        android:name="com.example.worldcinema.ui.screen.collection.movies.MoviesCollectionActivity"
         android:label="MoviesCollectionActivity" />
 </navigation>

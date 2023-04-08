@@ -1,5 +1,6 @@
 package com.example.worldcinema.data.network
 
+import android.util.Log
 import com.example.worldcinema.domain.model.Token
 import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
@@ -23,9 +24,11 @@ class TokenAuthenticator(
 
             var remoteToken: Token? = null
             runBlocking {
-                refreshTokenUseCase.execute(localToken.refreshToken).collect { result ->
+                refreshTokenUseCase.execute().collect { result ->
                     result.onSuccess {
                         remoteToken = it
+                    }.onFailure {
+                        Log.e("REFRESH TOKEN ERROR", it.message.toString())
                     }
                 }
             }
@@ -37,7 +40,7 @@ class TokenAuthenticator(
                 )
             )
 
-            return if (response.responseCount >= 1) {
+            return if (response.responseCount > 1) {
                 null
             } else {
                 response.request.newBuilder()

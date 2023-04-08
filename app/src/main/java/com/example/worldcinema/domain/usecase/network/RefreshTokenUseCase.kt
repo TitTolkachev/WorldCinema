@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 class RefreshTokenUseCase(private val repository: IAuthRefreshRepository) {
 
-    suspend fun execute(refreshToken: String): Flow<Result<Token>> {
-        return repository.refreshToken(refreshToken)
+    suspend fun execute(): Flow<Result<Token>> {
+        return repository.refreshToken()
     }
 }

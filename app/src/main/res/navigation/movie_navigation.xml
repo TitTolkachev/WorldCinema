@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/movieFragment"
-        android:name="com.example.worldcinema.ui.movie.movie.MovieFragment"
+        android:name="com.example.worldcinema.ui.screen.movie.movie.MovieFragment"
         android:label="fragment_movie"
         tools:layout="@layout/fragment_movie" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/episodeFragment"
-        android:name="com.example.worldcinema.ui.movie.episode.EpisodeFragment"
+        android:name="com.example.worldcinema.ui.screen.movie.episode.EpisodeFragment"
         android:label="fragment_episode"
         tools:layout="@layout/fragment_episode" />
 </navigation>
