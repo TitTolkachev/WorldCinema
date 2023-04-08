@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.WorldCinema" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -14,5 +14,11 @@
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:letterSpacing">-0.005</item>
         <item name="android:windowBackground">@color/dark_gray</item>
+    </style>
+
+    <!-- Кастомная AppTheme.Launcher -->
+    <style name="Theme.WorldCinema.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="colorPrimaryDark">@color/dark_gray</item>
     </style>
 </resources>

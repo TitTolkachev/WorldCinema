@@ -27,20 +27,31 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            ProfileViewModelFactory(requireContext())
+        )[ProfileViewModel::class.java]
         navController = findNavController()
 
         binding.buttonExit.setOnClickListener {
-            val intent = Intent(view?.context, AuthActivity::class.java)
-            intent.addFlags(
-                Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
+            viewModel.onExitBtnClick()
         }
 
         binding.buttonProfileMessenger.setOnClickListener {
             navController.navigate(R.id.action_navigation_profile_to_discussionsActivity)
+        }
+
+        viewModel.shouldExit.observe(viewLifecycleOwner) {
+            if (it) {
+                val intent = Intent(view?.context, AuthActivity::class.java)
+                intent.addFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            or Intent.FLAG_ACTIVITY_NEW_TASK
+                )
+                startActivity(intent)
+                viewModel.onExited()
+            }
         }
 
         return binding.root

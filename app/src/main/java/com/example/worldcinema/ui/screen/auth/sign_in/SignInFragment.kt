@@ -28,7 +28,7 @@ class SignInFragment : Fragment() {
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(
             this,
-            SignInViewModelFactory(requireContext()) // TODO(Подумать, мб передавать контекст приложения)
+            SignInViewModelFactory(requireContext())
         )[SignInViewModel::class.java]
         navController = findNavController()
 
@@ -54,9 +54,6 @@ class SignInFragment : Fragment() {
         binding.buttonRegistration.setOnClickListener {
             navController.navigate(R.id.action_signInFragment_to_signUpFragment)
         }
-
-        // TODO(Перенести в лаунч скрин)
-        viewModel.checkToken()
 
         return binding.root
     }

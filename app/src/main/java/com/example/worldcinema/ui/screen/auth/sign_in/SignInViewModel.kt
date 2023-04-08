@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.model.AuthCredentials
-import com.example.worldcinema.domain.usecase.network.GetCoverUseCase
 import com.example.worldcinema.domain.usecase.network.LoginUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
 import kotlinx.coroutines.Dispatchers
@@ -14,27 +13,12 @@ import kotlinx.coroutines.launch
 
 class SignInViewModel(
     private val saveTokenToLocalStorageUseCase: SaveTokenToLocalStorageUseCase,
-    private val loginUseCase: LoginUseCase,
-    private val getCoverUseCase: GetCoverUseCase
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
     private val _navigateToMainScreen: MutableLiveData<Boolean> =
         MutableLiveData(false)
     val navigateToMainScreen: LiveData<Boolean> = _navigateToMainScreen
-
-    // TODO(Перенести в лаунч скрин)
-    fun checkToken() {
-        viewModelScope.launch(Dispatchers.IO) {
-            getCoverUseCase.execute().collect {result->
-                result.onSuccess {
-                    _navigateToMainScreen.postValue(true)
-                }.onFailure {
-                    // TODO(Мб что-то показать)
-                    Log.e("AUTH ERROR", it.message.toString())
-                }
-            }
-        }
-    }
 
     fun login(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -43,7 +27,7 @@ class SignInViewModel(
                     saveTokenToLocalStorageUseCase.execute(it)
                     _navigateToMainScreen.postValue(true)
                 }.onFailure {
-                    //TODO(Сделать ошибку входа)
+                    // TODO(Сделать ошибку входа)
                     Log.e("LOGIN ERROR", it.message.toString())
                 }
             }
