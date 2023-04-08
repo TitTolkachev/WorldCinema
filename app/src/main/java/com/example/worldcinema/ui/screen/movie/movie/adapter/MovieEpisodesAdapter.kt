@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.worldcinema.R
 import com.example.worldcinema.databinding.MovieEpisodesItemBinding
 import com.example.worldcinema.ui.model.MovieEpisode
 
@@ -25,13 +24,15 @@ class MovieEpisodesAdapter(private val episodeActionListener: IMovieEpisodeActio
 
         fun bind(movieEpisode: MovieEpisode) {
             with(binding) {
+                Glide.with(imageViewEpisodeItemImage).load(movieEpisode.preview)
+                    .into(imageViewEpisodeItemImage)
                 root.tag = movieEpisode.episodeId
-                Glide.with(binding.imageViewEpisodeItemImage).load(movieEpisode.preview).into(binding.imageViewEpisodeItemImage)
-                imageViewEpisodeItemImage.setImageResource(R.drawable.test_image)
                 textViewIpisodeItemTitle.text = movieEpisode.name
                 textViewEpisodeItemText.text = movieEpisode.description
                 textViewEpisodeItemYear.text = movieEpisode.year
             }
+
+
         }
     }
 
