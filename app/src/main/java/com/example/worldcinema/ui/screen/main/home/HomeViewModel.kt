@@ -30,6 +30,8 @@ class HomeViewModel(
         MutableLiveData(mutableListOf())
     private val _recommendedMovies: MutableLiveData<MutableList<Movie>> =
         MutableLiveData(mutableListOf())
+    private val _lastViewMovies: MutableLiveData<MutableList<Movie>> =
+        MutableLiveData(mutableListOf())
 
     private val _trendMoviesPosters: MutableLiveData<MutableList<MoviePoster>> =
         MutableLiveData(mutableListOf())
@@ -37,10 +39,13 @@ class HomeViewModel(
         MutableLiveData(mutableListOf())
     private val _recommendedMoviesPosters: MutableLiveData<MutableList<MoviePoster>> =
         MutableLiveData(mutableListOf())
+    private val _lastViewMoviesPosters: MutableLiveData<MutableList<MoviePoster>> =
+        MutableLiveData(mutableListOf())
 
     val trendMovies: LiveData<MutableList<MoviePoster>> = _trendMoviesPosters
     val newMovies: LiveData<MutableList<MoviePoster>> = _newMoviesPosters
     val recommendedMovies: LiveData<MutableList<MoviePoster>> = _recommendedMoviesPosters
+    val lastViewMovies: LiveData<MutableList<MoviePoster>> = _lastViewMoviesPosters
 
     init {
         loadCover()
@@ -51,6 +56,7 @@ class HomeViewModel(
         loadTrendMovies()
         loadNewMovies()
         loadRecommendedMovies()
+        loadLastViewMovies()
     }
 
     private fun loadCover() {
@@ -78,6 +84,10 @@ class HomeViewModel(
         loadMovies(MovieFilter.ForMe, _recommendedMovies, _recommendedMoviesPosters)
     }
 
+    private fun loadLastViewMovies() {
+        loadMovies(MovieFilter.LastView, _lastViewMovies, _lastViewMoviesPosters)
+    }
+
     private fun loadMovies(
         filter: MovieFilter,
         movies: MutableLiveData<MutableList<Movie>>,
@@ -88,7 +98,7 @@ class HomeViewModel(
                 result.onSuccess {
                     val data = MovieMapper.mapMovies(it)
                     movies.postValue(data)
-                    if (filter == MovieFilter.New)
+                    if (filter == MovieFilter.New || filter == MovieFilter.LastView)
                         posters.postValue(MovieToPosterMapper.mapMoviesImagesToPosters(data))
                     else
                         posters.postValue(MovieToPosterMapper.mapMovies(data))
