@@ -2,10 +2,12 @@ package com.example.worldcinema.data.network.requests.movie
 
 import com.example.worldcinema.data.network.AuthNetwork
 import com.example.worldcinema.data.network.dto.ChatDto
+import com.example.worldcinema.data.network.dto.EpisodeDto
 import com.example.worldcinema.data.network.dto.MovieDto
 import com.example.worldcinema.data.network.dto.TagDto
 import com.example.worldcinema.domain.i_repository.network.IMovieRepository
 import com.example.worldcinema.domain.model.Chat
+import com.example.worldcinema.domain.model.Episode
 import com.example.worldcinema.domain.model.Movie
 import com.example.worldcinema.domain.model.Tag
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
@@ -31,6 +33,28 @@ class MovieRepository(useCases: AuthNetworkUseCases) : IMovieRepository {
         }
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun getEpisodes(movieId: String): Flow<Result<List<Episode>>> = flow {
+        try {
+            val data = api.getEpisodes(movieId)
+            val episodes = mutableListOf<Episode>()
+            for (e in data) {
+                episodes.add(mapEpisode(e))
+            }
+            emit(Result.success(episodes.toList()))
+        } catch (e: Exception) {
+            emit(Result.failure(Throwable(e)))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun dislikeMovie(movieId: String): Flow<Result<Boolean>> = flow {
+        try {
+            api.dislikeMovie(movieId)
+            emit(Result.success(true))
+        } catch (e: Exception) {
+            emit(Result.failure(Throwable(e)))
+        }
+    }.flowOn(Dispatchers.IO)
+
     private fun mapMovie(m: MovieDto): Movie {
 
         val tags = mutableListOf<Tag>()
@@ -47,6 +71,21 @@ class MovieRepository(useCases: AuthNetworkUseCases) : IMovieRepository {
             m.imageUrls,
             m.poster,
             tags.toList()
+        )
+    }
+
+    private fun mapEpisode(e: EpisodeDto): Episode {
+        return Episode(
+            e.episodeId,
+            e.name,
+            e.description,
+            e.director,
+            e.stars,
+            e.year,
+            e.images,
+            e.runtime,
+            e.preview,
+            e.filePath
         )
     }
 

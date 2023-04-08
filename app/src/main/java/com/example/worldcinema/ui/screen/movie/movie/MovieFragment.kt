@@ -34,9 +34,10 @@ class MovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMovieBinding.inflate(inflater, container, false)
-
-        viewModel = ViewModelProvider(this)[MovieViewModel::class.java]
-
+        viewModel = ViewModelProvider(
+            this,
+            MovieViewModelFactory(requireContext())
+        )[MovieViewModel::class.java]
         navController = findNavController()
 
         binding.imageButtonMovieArrowBack.setOnClickListener {

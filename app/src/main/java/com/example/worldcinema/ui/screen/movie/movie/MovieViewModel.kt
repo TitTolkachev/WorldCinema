@@ -1,16 +1,23 @@
 package com.example.worldcinema.ui.screen.movie.movie
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.R
+import com.example.worldcinema.domain.usecase.network.GetEpisodesUseCase
+import com.example.worldcinema.ui.helper.EpisodeMapper
 import com.example.worldcinema.ui.model.ChatInfo
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MovieEpisode
 import com.example.worldcinema.ui.model.MovieTag
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class MovieViewModel(application: Application) : AndroidViewModel(application) {
+class MovieViewModel(
+    private val getEpisodesUseCase: GetEpisodesUseCase
+) : ViewModel() {
 
     private val _movie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> = _movie
@@ -44,7 +51,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun loadData() {
         _movie.value = Movie(
-            "1",
+            "e7d45225-6cd0-4cf4-937f-ff5c088d495c",
             "1",
             "1",
             "6+",
@@ -70,29 +77,15 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun loadEpisodes() {
-        _movieEpisodes.value = mutableListOf(
-            MovieEpisode(
-                "1",
-                "Пираты карибского моря и кролик Крош",
-                "бла бла бла бла бла бла бла бла",
-                listOf("1", "2"),
-                "2099",
-                listOf("1", "2"),
-                1000,
-                "",
-                ""
-            ),
-            MovieEpisode(
-                "2",
-                "Пираты карибского моря и Лунтик на странных берегах",
-                "бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла блабла бла бла блабла бла бла бла",
-                listOf("1", "2"),
-                "1234",
-                listOf("1", "2"),
-                1000,
-                "",
-                ""
-            )
-        )
+        viewModelScope.launch(Dispatchers.IO) {
+            getEpisodesUseCase.execute(_movie.value?.movieId ?: "").collect { result ->
+                result.onSuccess {
+                    _movieEpisodes.postValue(EpisodeMapper.mapEpisodes(it))
+                }.onFailure {
+                    // TODO(Показать ошибку)
+                    Log.e("EPISODE LOADING ERROR", it.message.toString())
+                }
+            }
+        }
     }
 }
