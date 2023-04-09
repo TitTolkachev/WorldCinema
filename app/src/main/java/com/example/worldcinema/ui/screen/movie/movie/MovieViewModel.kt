@@ -51,6 +51,36 @@ class MovieViewModel(
         return R.color.age_18_color
     }
 
+
+    fun getEpisode(episodeId: String): MovieEpisode? {
+        if (_movieEpisodes.value != null) {
+
+            for (e in _movieEpisodes.value!!) {
+                if (e.episodeId == episodeId)
+                    return e
+            }
+        }
+        return null
+    }
+
+    fun getEpisodesCount(): Int {
+        return _movieEpisodes.value?.count() ?: 0
+    }
+
+    fun getMovieYears(): String {
+        var min = _movieEpisodes.value?.get(0)?.year ?: 3000
+        var max = _movieEpisodes.value?.get(0)?.year ?: 0
+        if (_movieEpisodes.value != null) {
+            for (e in _movieEpisodes.value!!) {
+                if (e.year > max)
+                    max = e.year
+                if (e.year < min)
+                    min = e.year
+            }
+        }
+        return "$min - $max"
+    }
+
     private fun loadEpisodes() {
         viewModelScope.launch(Dispatchers.IO) {
             getEpisodesUseCase.execute(_movie.value?.movieId ?: "").collect { result ->

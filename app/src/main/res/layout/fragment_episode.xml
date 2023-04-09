@@ -134,7 +134,7 @@
                 style="@style/movie_title_text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/default_text"
+                android:text="@string/movie_description_title_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewEpisodePoster" />
 

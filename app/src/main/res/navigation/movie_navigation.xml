@@ -21,5 +21,17 @@
         android:id="@+id/episodeFragment"
         android:name="com.example.worldcinema.ui.screen.movie.episode.EpisodeFragment"
         android:label="fragment_episode"
-        tools:layout="@layout/fragment_episode" />
+        tools:layout="@layout/fragment_episode" >
+        <argument
+            android:name="movie"
+            app:argType="com.example.worldcinema.ui.model.Movie" />
+        <argument
+            android:name="episode"
+            app:argType="com.example.worldcinema.ui.model.MovieEpisode" />
+        <argument android:name="episodesCount"
+            app:argType="integer" />
+        <argument
+            android:name="movieYears"
+            app:argType="string" />
+    </fragment>
 </navigation>

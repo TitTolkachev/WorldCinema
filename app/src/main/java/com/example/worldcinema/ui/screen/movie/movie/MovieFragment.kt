@@ -94,8 +94,6 @@ class MovieFragment : Fragment() {
 
         viewModel.movieImages.observe(viewLifecycleOwner) {
             if (it != null) {
-                // TODO(Подставлять данные it в view адаптера)
-
                 movieImagesAdapter.data = it
             }
         }
@@ -108,7 +106,16 @@ class MovieFragment : Fragment() {
 
         movieEpisodesAdapter = MovieEpisodesAdapter(object : IMovieEpisodeActionListener {
             override fun onItemClicked(episodeId: String) {
-                navController.navigate(R.id.action_movieFragment_to_episodeFragment)
+                val episode = viewModel.getEpisode(episodeId)
+                if (episode != null && viewModel.movie.value != null) {
+                    val action = MovieFragmentDirections.actionMovieFragmentToEpisodeFragment(
+                        viewModel.movie.value!!,
+                        episode,
+                        viewModel.getEpisodesCount(),
+                        viewModel.getMovieYears()
+                    )
+                    navController.navigate(action)
+                }
             }
         })
         binding.RecyclerViewMovieEpisodes.adapter = movieEpisodesAdapter

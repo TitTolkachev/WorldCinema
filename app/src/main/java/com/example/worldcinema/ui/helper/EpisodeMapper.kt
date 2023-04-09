@@ -11,7 +11,7 @@ object EpisodeMapper {
             e.name,
             e.description,
             e.stars,
-            e.year.toString(),
+            e.year,
             e.images,
             e.runtime,
             e.preview,

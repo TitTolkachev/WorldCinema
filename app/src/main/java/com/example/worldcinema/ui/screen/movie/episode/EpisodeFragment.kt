@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentEpisodeBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -23,6 +26,8 @@ class EpisodeFragment : Fragment() {
     private lateinit var viewModel: EpisodeViewModel
     private lateinit var navController: NavController
 
+    private val args: EpisodeFragmentArgs by navArgs()
+
     private lateinit var videoView: StyledPlayerView
     private lateinit var exoPlayer: ExoPlayer
 
@@ -31,14 +36,42 @@ class EpisodeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEpisodeBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[EpisodeViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            EpisodeViewModelFactory(
+                requireContext(),
+                args.movie,
+                args.episode,
+                args.episodesCount,
+                args.movieYears
+            )
+        )[EpisodeViewModel::class.java]
         navController = findNavController()
 
         binding.imageButtonEpisodeArrowBack.setOnClickListener {
             navController.popBackStack()
         }
 
-        initVideoPlayer()
+        viewModel.movie.observe(viewLifecycleOwner) { movie ->
+            if (movie != null) {
+                binding.textViewEpisodeDescriptionText.text = movie.description
+                Glide.with(binding.imageViewEpisodePoster).load(movie.poster)
+                    .into(binding.imageViewEpisodePoster)
+                binding.textViewEpisodeMovieName.text = movie.name
+                "${getString(R.string.movie_episodes_count_text)} ${viewModel.episodesCount}".also {
+                    binding.textViewEpisodesSeasonsCount.text = it
+                }
+                binding.textViewEpisodeMovieYears.text = viewModel.movieYears
+            }
+        }
+
+        viewModel.episode.observe(viewLifecycleOwner) {
+            if (it != null) {
+                binding.textViewEpisodeTitle.text = it.name
+
+                initVideoPlayer()
+            }
+        }
 
         return binding.root
     }
@@ -56,9 +89,10 @@ class EpisodeFragment : Fragment() {
         videoView.keepScreenOn = true
 
         val videoSource =
-            Uri.parse("https://drive.google.com/uc?export=view&id=1ra6f2jGr6Jja8UXptmpGDHO9ERiMmE6d")
+            Uri.parse(viewModel.episode.value?.filePath)
         val mediaItem = MediaItem.fromUri(videoSource)
         exoPlayer.setMediaItem(mediaItem)
+        exoPlayer.seekTo(120 * 1000) // TODO(Подствалять правильное время)
         exoPlayer.prepare()
 
         videoView.setOnClickListener {

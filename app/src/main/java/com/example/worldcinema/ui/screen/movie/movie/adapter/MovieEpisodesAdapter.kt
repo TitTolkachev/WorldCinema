@@ -29,10 +29,8 @@ class MovieEpisodesAdapter(private val episodeActionListener: IMovieEpisodeActio
                 root.tag = movieEpisode.episodeId
                 textViewIpisodeItemTitle.text = movieEpisode.name
                 textViewEpisodeItemText.text = movieEpisode.description
-                textViewEpisodeItemYear.text = movieEpisode.year
+                textViewEpisodeItemYear.text = movieEpisode.year.toString()
             }
-
-
         }
     }
 
