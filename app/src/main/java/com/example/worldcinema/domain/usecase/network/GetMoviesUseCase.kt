@@ -1,11 +1,11 @@
 package com.example.worldcinema.domain.usecase.network
 
-import com.example.worldcinema.data.network.requests.movie.MovieRepository
+import com.example.worldcinema.domain.i_repository.network.IMovieRepository
 import com.example.worldcinema.domain.model.Movie
 import com.example.worldcinema.domain.usecase.model.MovieFilter
 import kotlinx.coroutines.flow.Flow
 
-class GetMoviesUseCase(private val movieRepository: MovieRepository) {
+class GetMoviesUseCase(private val movieRepository: IMovieRepository) {
 
     suspend fun execute(filter: MovieFilter): Flow<Result<List<Movie>>> {
 
