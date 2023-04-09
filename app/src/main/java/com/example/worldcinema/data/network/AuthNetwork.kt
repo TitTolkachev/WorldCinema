@@ -1,6 +1,7 @@
 package com.example.worldcinema.data.network
 
 import com.example.worldcinema.data.network.requests.cover.CoverApi
+import com.example.worldcinema.data.network.requests.episodes.EpisodesApi
 import com.example.worldcinema.data.network.requests.movie.MovieApi
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -68,4 +69,7 @@ object AuthNetwork {
 
     fun getMovieApi(useCases: AuthNetworkUseCases): MovieApi =
         getAuthRetrofit(useCases).create(MovieApi::class.java)
+
+    fun getEpisodesApi(useCases: AuthNetworkUseCases): EpisodesApi =
+        getAuthRetrofit(useCases).create(EpisodesApi::class.java)
 }

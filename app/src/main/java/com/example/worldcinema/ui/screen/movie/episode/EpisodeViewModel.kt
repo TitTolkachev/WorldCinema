@@ -4,14 +4,21 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.worldcinema.domain.usecase.network.GetEpisodeTimeUseCase
+import com.example.worldcinema.domain.usecase.network.SaveEpisodeTimeUseCase
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MovieEpisode
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class EpisodeViewModel(
     movie: Movie,
     episode: MovieEpisode,
     val episodesCount: Int,
-    val movieYears: String
+    val movieYears: String,
+    private val getEpisodeTimeUseCase: GetEpisodeTimeUseCase,
+    private val saveEpisodeTimeUseCase: SaveEpisodeTimeUseCase
 ) : ViewModel() {
 
     private val _movie: MutableLiveData<Movie> =
@@ -22,12 +29,41 @@ class EpisodeViewModel(
         MutableLiveData(episode)
     val episode: LiveData<MovieEpisode> = _episode
 
-    init {
+    private val _episodeTime: MutableLiveData<Int> =
+        MutableLiveData(0)
+    val episodeTime: LiveData<Int> = _episodeTime
 
+    init {
+        loadEpisodeTime()
     }
 
-    fun saveVideoPosition(contentPosition: Long, contentDuration: Long) {
-        Log.d("Position", contentPosition.toString())
-        Log.d("Duration", contentDuration.toString())
+    private fun loadEpisodeTime() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getEpisodeTimeUseCase.execute(_episode.value!!.episodeId).collect { result ->
+                result.onSuccess {
+                    if (it + 5 >= _episode.value!!.runtime)
+                        _episodeTime.postValue(0)
+                    else
+                        _episodeTime.postValue(it)
+                }.onFailure {
+                    // TODO(Показать ошибку)
+                    Log.e("EPISODE TIME LOADING ERROR", it.message.toString())
+                }
+            }
+        }
+    }
+
+    fun saveVideoPosition(contentPosition: Long) {
+        var time = contentPosition.toInt() / 1000
+        if (time > _episode.value!!.runtime)
+            time = _episode.value!!.runtime
+
+        viewModelScope.launch(Dispatchers.IO) {
+            saveEpisodeTimeUseCase.execute(_episode.value!!.episodeId, time).collect { result ->
+                result.onFailure {
+                    // TODO(Показать ошибку)
+                }
+            }
+        }
     }
 }

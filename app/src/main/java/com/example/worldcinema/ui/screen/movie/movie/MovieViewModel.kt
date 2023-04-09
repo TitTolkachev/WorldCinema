@@ -78,6 +78,8 @@ class MovieViewModel(
                     min = e.year
             }
         }
+        if (min == max)
+            return min.toString()
         return "$min - $max"
     }
 

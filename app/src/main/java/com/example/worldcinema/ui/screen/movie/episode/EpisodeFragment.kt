@@ -73,6 +73,10 @@ class EpisodeFragment : Fragment() {
             }
         }
 
+        viewModel.episodeTime.observe(viewLifecycleOwner) {
+            exoPlayer.seekTo(it.toLong() * 1000)
+        }
+
         return binding.root
     }
 
@@ -92,7 +96,6 @@ class EpisodeFragment : Fragment() {
             Uri.parse(viewModel.episode.value?.filePath)
         val mediaItem = MediaItem.fromUri(videoSource)
         exoPlayer.setMediaItem(mediaItem)
-        exoPlayer.seekTo(120 * 1000) // TODO(Подствалять правильное время)
         exoPlayer.prepare()
 
         videoView.setOnClickListener {
@@ -104,7 +107,7 @@ class EpisodeFragment : Fragment() {
 
     override fun onStop() {
         exoPlayer.stop()
-        viewModel.saveVideoPosition(exoPlayer.contentPosition, exoPlayer.contentDuration)
+        viewModel.saveVideoPosition(exoPlayer.contentPosition)
         super.onStop()
     }
 
