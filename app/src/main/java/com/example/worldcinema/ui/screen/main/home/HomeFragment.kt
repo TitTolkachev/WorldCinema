@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
             if (it != null && it.size > 0) {
                 binding.textView3.visibility = View.VISIBLE
                 binding.imageButton.visibility = View.VISIBLE
-                Glide.with(this).load(it[0].poster).into(binding.imageButton)
+                Glide.with(this).load(it.last().poster).into(binding.imageButton)
             } else {
                 binding.textView3.visibility = View.GONE
                 binding.imageButton.visibility = View.GONE
