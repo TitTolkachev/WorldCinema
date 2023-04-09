@@ -50,11 +50,18 @@ class HomeFragment : Fragment() {
             if (it != null && it.size > 0) {
                 binding.textView3.visibility = View.VISIBLE
                 binding.imageButton.visibility = View.VISIBLE
+                binding.textView7.visibility = View.VISIBLE
+                binding.textView7.text = it.last().name
                 Glide.with(this).load(it.last().poster).into(binding.imageButton)
             } else {
                 binding.textView3.visibility = View.GONE
                 binding.imageButton.visibility = View.GONE
+                binding.textView7.visibility = View.GONE
             }
+        }
+
+        binding.imageButton.setOnClickListener {
+            showMovie(viewModel.lastViewMovies.value!!.last().movieId)
         }
 
         binding.buttonHomeWatchMovie.setOnClickListener {
@@ -143,7 +150,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun showMovie(movieId: String) {
-        val action = HomeFragmentDirections.actionNavigationHomeToMovieActivity(viewModel.getMovie(movieId))
+        val action =
+            HomeFragmentDirections.actionNavigationHomeToMovieActivity(viewModel.getMovie(movieId))
         navController.navigate(action)
     }
 

@@ -7,7 +7,7 @@ import com.example.worldcinema.ui.model.MoviePoster
 object MovieToPosterMapper {
 
     fun mapMovie(m: Movie): MoviePoster {
-        return MoviePoster(m.movieId, m.poster)
+        return MoviePoster(m.movieId, m.poster, m.name)
     }
 
     fun mapMovies(movies: List<Movie>): MutableList<MoviePoster> {
@@ -18,7 +18,7 @@ object MovieToPosterMapper {
     }
 
     fun mapMovieImageToPoster(m: Movie): MoviePoster {
-        return MoviePoster(m.movieId, if (m.imageUrls.isEmpty()) m.poster else m.imageUrls[0])
+        return MoviePoster(m.movieId, if (m.imageUrls.isEmpty()) m.poster else m.imageUrls[0], m.name)
     }
 
     fun mapMoviesImagesToPosters(movies: List<Movie>): MutableList<MoviePoster> {
