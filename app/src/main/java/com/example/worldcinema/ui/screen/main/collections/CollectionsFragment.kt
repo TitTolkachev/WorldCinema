@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentCollectionsBinding
+import com.example.worldcinema.ui.model.UsersCollection
 import com.example.worldcinema.ui.screen.main.collections.adapter.CollectionsAdapter
 import com.example.worldcinema.ui.screen.main.collections.adapter.ICollectionActionListener
 
@@ -30,7 +31,10 @@ class CollectionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCollectionsBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[CollectionsViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            CollectionsViewModelFactory(requireContext())
+        )[CollectionsViewModel::class.java]
         navController = findNavController()
 
         initCollectionsRecyclerView()
@@ -40,8 +44,12 @@ class CollectionsFragment : Fragment() {
         }
 
         viewModel.showCollection.observe(viewLifecycleOwner) {
-            if(it) {
-                navController.navigate(R.id.action_navigation_collections_to_moviesCollectionActivity)
+            if (it) {
+                val action =
+                    CollectionsFragmentDirections.actionNavigationCollectionsToMoviesCollectionActivity(
+                        viewModel.selectedCollection.value!!
+                    )
+                navController.navigate(action)
                 viewModel.collectionShowed()
             }
         }
@@ -53,8 +61,8 @@ class CollectionsFragment : Fragment() {
 
         binding.CollectionsRecyclerView.layoutManager = LinearLayoutManager(binding.root.context)
         collectionsAdapter = CollectionsAdapter(object : ICollectionActionListener {
-            override fun onItemClicked(collectionId: String) {
-                viewModel.onItemClicked(collectionId)
+            override fun onItemClicked(collection: UsersCollection) {
+                viewModel.onItemClicked(collection)
             }
         })
         binding.CollectionsRecyclerView.adapter = collectionsAdapter
@@ -64,6 +72,11 @@ class CollectionsFragment : Fragment() {
                 collectionsAdapter.data = it
             }
         }
+    }
+
+    override fun onResume() {
+        viewModel.loadData()
+        super.onResume()
     }
 
     override fun onDestroyView() {

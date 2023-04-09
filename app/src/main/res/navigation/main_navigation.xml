@@ -63,5 +63,9 @@
     <activity
         android:id="@+id/moviesCollectionActivity"
         android:name="com.example.worldcinema.ui.screen.collection.movies.MoviesCollectionActivity"
-        android:label="MoviesCollectionActivity" />
+        android:label="MoviesCollectionActivity" >
+        <argument
+            android:name="collection"
+            app:argType="com.example.worldcinema.ui.model.UsersCollection" />
+    </activity>
 </navigation>

@@ -49,10 +49,15 @@ class CollectionsAdapter(private val collectionActionListener: ICollectionAction
 
     override fun onClick(view: View) {
         val collectionId: String = view.tag as String
-        collectionActionListener.onItemClicked(collectionId)
+        for (c in data) {
+            if (c.collectionId == collectionId) {
+                collectionActionListener.onItemClicked(c)
+                break
+            }
+        }
     }
 }
 
 interface ICollectionActionListener {
-    fun onItemClicked(collectionId: String)
+    fun onItemClicked(collection: UsersCollection)
 }

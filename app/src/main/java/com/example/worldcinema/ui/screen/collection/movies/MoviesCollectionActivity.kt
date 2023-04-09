@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.worldcinema.databinding.ActivityMoviesCollectionBinding
 import com.example.worldcinema.ui.screen.collection.movies.adapter.IMoviesCollectionActionListener
@@ -14,6 +15,8 @@ class MoviesCollectionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMoviesCollectionBinding
     private lateinit var viewModel: MoviesCollectionViewModel
+
+    private val args: MoviesCollectionActivityArgs by navArgs()
 
     private lateinit var moviesAdapter: MoviesCollectionAdapter
 
@@ -31,6 +34,7 @@ class MoviesCollectionActivity : AppCompatActivity() {
             val intent =
                 Intent(applicationContext, UpdateCollectionActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.putExtra("collection", args.collection)
             applicationContext.startActivity(intent)
         }
 

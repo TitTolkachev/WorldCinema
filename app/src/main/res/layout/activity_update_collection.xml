@@ -47,6 +47,8 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/chat_input_rounded_border"
+        android:clickable="true"
+        android:focusable="false"
         android:hint="@string/collection_name_input_hint"
         android:paddingHorizontal="16dp"
         android:paddingVertical="7dp"

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.databinding.ActivityUpdateCollectionBinding
+import com.example.worldcinema.ui.model.UsersCollection
 import com.example.worldcinema.ui.screen.collection.icon.IconCollectionActivity
 
 class UpdateCollectionActivity : AppCompatActivity() {
@@ -15,9 +16,15 @@ class UpdateCollectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityUpdateCollectionBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[UpdateCollectionViewModel::class.java]
+        val collection = intent.getSerializableExtra("collection") as UsersCollection
 
+        binding = ActivityUpdateCollectionBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(
+            this,
+            UpdateCollectionViewModelFactory(this, collection)
+        )[UpdateCollectionViewModel::class.java]
+
+        binding.collectionNameInput.setText(collection.name)
         binding.imageButtonArrowBack.setOnClickListener {
             finish()
         }
@@ -32,8 +39,12 @@ class UpdateCollectionActivity : AppCompatActivity() {
             finish()
         }
         binding.buttonDeleteIcon.setOnClickListener {
-            // TODO(Удалить коллекцию)
-            finish()
+            viewModel.deleteCollection()
+        }
+
+        viewModel.isCollectionDeleted.observe(this) {
+            if (it)
+                finish()
         }
 
         setContentView(binding.root)

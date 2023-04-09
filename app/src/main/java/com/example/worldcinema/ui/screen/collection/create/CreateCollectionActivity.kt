@@ -16,20 +16,29 @@ class CreateCollectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityCreateCollectionBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[CreateCollectionViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            CreateCollectionViewModelFactory(this)
+        )[CreateCollectionViewModel::class.java]
+
+        viewModel.isCollectionCreated.observe(this) {
+            if (it)
+                finish()
+        }
 
         binding.imageButtonArrowBack.setOnClickListener {
             finish()
         }
+
         binding.buttonChooseIcon.setOnClickListener {
             val intent =
                 Intent(applicationContext, IconCollectionActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             applicationContext.startActivity(intent)
         }
+
         binding.buttonSaveIcon.setOnClickListener {
-            // TODO(Сохранить изменения коллекции)
-            finish()
+            viewModel.createCollection(binding.collectionNameInput.text.toString())
         }
 
         setContentView(binding.root)

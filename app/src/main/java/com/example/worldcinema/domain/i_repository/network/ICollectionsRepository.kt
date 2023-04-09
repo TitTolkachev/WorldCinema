@@ -8,7 +8,7 @@ interface ICollectionsRepository {
 
     suspend fun getCollections(): Flow<Result<List<CollectionListItem>>>
 
-    suspend fun createCollection(collectionId: String): Flow<Result<Boolean>>
+    suspend fun createCollection(name: String): Flow<Result<Boolean>>
 
     suspend fun deleteCollection(collectionId: String): Flow<Result<Boolean>>
 
