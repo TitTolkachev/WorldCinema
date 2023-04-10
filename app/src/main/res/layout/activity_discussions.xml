@@ -3,19 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.screen.discussions.discussions.DiscussionsActivity">
 
-    <fragment
-        android:id="@+id/nav_host_fragment_activity_discussions"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:defaultNavHost="true"
+    <TextView
+        android:id="@+id/textViewDiscussions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:letterSpacing="0.03"
+        android:text="@string/discussions_text"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButtonArrowBack"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonArrowBack"
+        app:layout_constraintTop_toTopOf="@+id/imageButtonArrowBack" />
+
+    <ImageButton
+        android:id="@+id/imageButtonArrowBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/image_default_description"
+        android:padding="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewDiscussions"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/discussions_navigation"
-        tools:ignore="FragmentTagUsage" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewDiscussions"
+        tools:itemCount="20"
+        tools:listitem="@layout/discussions_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,10 +43,6 @@
             app:destination="@id/discussionsActivity" />
     </fragment>
     <activity
-        android:id="@+id/discussionsActivity"
-        android:name="com.example.worldcinema.ui.screen.discussions.DiscussionsActivity"
-        android:label="DiscussionsActivity" />
-    <activity
         android:id="@+id/movieActivity"
         android:name="com.example.worldcinema.ui.screen.movie.MovieActivity"
         android:label="activity_movie"
@@ -68,4 +64,9 @@
             android:name="collection"
             app:argType="com.example.worldcinema.ui.model.UsersCollection" />
     </activity>
+    <activity
+        android:id="@+id/discussionsActivity"
+        android:name="com.example.worldcinema.ui.screen.discussions.discussions.DiscussionsActivity"
+        android:label="activity_discussions"
+        tools:layout="@layout/activity_discussions" />
 </navigation>
