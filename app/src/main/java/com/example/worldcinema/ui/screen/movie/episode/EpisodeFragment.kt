@@ -11,9 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentEpisodeBinding
+import com.example.worldcinema.ui.screen.movie.episode.adapter.EpisodeCollectionsAdapter
+import com.example.worldcinema.ui.screen.movie.episode.adapter.IEpisodeCollectionActionListener
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.StyledPlayerView
@@ -27,6 +30,8 @@ class EpisodeFragment : Fragment() {
     private lateinit var navController: NavController
 
     private val args: EpisodeFragmentArgs by navArgs()
+
+    private lateinit var episodeCollectionsAdapter: EpisodeCollectionsAdapter
 
     private lateinit var videoView: StyledPlayerView
     private lateinit var exoPlayer: ExoPlayer
@@ -50,6 +55,13 @@ class EpisodeFragment : Fragment() {
 
         binding.imageButtonEpisodeArrowBack.setOnClickListener {
             navController.popBackStack()
+        }
+
+        binding.imageViewEpisodeAddToCollection.setOnClickListener {
+            if (binding.EpisodeCollectionsRecyclerView.visibility == View.GONE)
+                binding.EpisodeCollectionsRecyclerView.visibility = View.VISIBLE
+            else
+                binding.EpisodeCollectionsRecyclerView.visibility = View.GONE
         }
 
         viewModel.movie.observe(viewLifecycleOwner) { movie ->
@@ -77,6 +89,8 @@ class EpisodeFragment : Fragment() {
             exoPlayer.seekTo(it.toLong() * 1000)
         }
 
+        initCollectionsRecyclerView()
+
         return binding.root
     }
 
@@ -103,6 +117,30 @@ class EpisodeFragment : Fragment() {
                 exoPlayer.pause()
             }
         }
+    }
+
+    private fun initCollectionsRecyclerView() {
+        val linearLayoutManager = LinearLayoutManager(binding.root.context)
+        binding.EpisodeCollectionsRecyclerView.layoutManager = linearLayoutManager
+
+        episodeCollectionsAdapter =
+            EpisodeCollectionsAdapter(object : IEpisodeCollectionActionListener {
+                override fun onItemClicked(collectionId: String) {
+                    addMovieToCollection(collectionId)
+                }
+            })
+        binding.EpisodeCollectionsRecyclerView.adapter = episodeCollectionsAdapter
+
+        viewModel.episodeCollections.observe(viewLifecycleOwner) {
+            if (it != null) {
+                episodeCollectionsAdapter.data = it
+            }
+        }
+    }
+
+    private fun addMovieToCollection(collectionId: String) {
+        viewModel.addMovieToCollection(collectionId)
+        binding.EpisodeCollectionsRecyclerView.visibility = View.GONE
     }
 
     override fun onStop() {

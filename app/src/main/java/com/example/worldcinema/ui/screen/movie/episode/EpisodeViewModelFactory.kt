@@ -4,13 +4,15 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.data.network.requests.auth.AuthRefreshRepository
+import com.example.worldcinema.data.network.requests.collections.CollectionsRepository
 import com.example.worldcinema.data.network.requests.episodes.EpisodesRepository
+import com.example.worldcinema.data.storage.favourites_collection.FavouritesCollectionStorageRepository
+import com.example.worldcinema.data.storage.favourites_collection.SharedPrefFavouritesCollectionStorage
 import com.example.worldcinema.data.storage.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
-import com.example.worldcinema.domain.usecase.network.GetEpisodeTimeUseCase
-import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
-import com.example.worldcinema.domain.usecase.network.SaveEpisodeTimeUseCase
+import com.example.worldcinema.domain.usecase.network.*
+import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
 import com.example.worldcinema.ui.model.Movie
@@ -59,6 +61,36 @@ class EpisodeViewModelFactory(
         )
     }
 
+    private val getCollectionsUseCase by lazy {
+        GetCollectionsUseCase(
+            CollectionsRepository(
+                AuthNetworkUseCases(
+                    getTokenFromLocalStorageUseCase,
+                    saveTokenToLocalStorageUseCase,
+                    RefreshTokenUseCase(AuthRefreshRepository(getTokenFromLocalStorageUseCase))
+                )
+            )
+        )
+    }
+
+    private val getFavouritesCollectionIdUseCase by lazy {
+        GetFavouritesCollectionIdUseCase(
+            FavouritesCollectionStorageRepository(SharedPrefFavouritesCollectionStorage(context))
+        )
+    }
+
+    private val addMovieToCollectionUseCase by lazy {
+        AddMovieToCollectionUseCase(
+            CollectionsRepository(
+                AuthNetworkUseCases(
+                    getTokenFromLocalStorageUseCase,
+                    saveTokenToLocalStorageUseCase,
+                    RefreshTokenUseCase(AuthRefreshRepository(getTokenFromLocalStorageUseCase))
+                )
+            )
+        )
+    }
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return EpisodeViewModel(
             movie,
@@ -66,7 +98,10 @@ class EpisodeViewModelFactory(
             episodesCount,
             movieYears,
             getEpisodeTimeUseCase,
-            saveEpisodeTimeUseCase
+            saveEpisodeTimeUseCase,
+            getCollectionsUseCase,
+            getFavouritesCollectionIdUseCase,
+            addMovieToCollectionUseCase
         ) as T
     }
 }

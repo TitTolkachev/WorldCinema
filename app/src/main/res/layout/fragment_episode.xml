@@ -16,21 +16,22 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="24dp">
 
             <com.google.android.exoplayer2.ui.StyledPlayerView
                 android:id="@+id/videoView"
                 android:layout_width="0dp"
                 android:layout_height="210dp"
                 app:controller_layout_id="@layout/custom_video_controller"
-                app:use_controller="true"
+                app:hide_on_touch="true"
                 app:keep_content_on_player_reset="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:player_layout_id="@layout/exo_player_view"
                 app:show_buffering="when_playing"
-                app:hide_on_touch="true" />
+                app:use_controller="true" />
 
             <TextView
                 android:id="@+id/textViewEpisodeTitle"
@@ -145,12 +146,28 @@
                 style="@style/movie_description_text_style"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
                 android:text="@string/default_text"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewEpisodeDescriptionTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewEpisodeDescriptionTitle"
+                tools:ignore="VisualLintOverlap" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/EpisodeCollectionsRecyclerView"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_border_with_fill_background"
+                android:overScrollMode="never"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:scrollbars="vertical"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewEpisodeAddToCollection"
+                tools:itemCount="6"
+                tools:listitem="@layout/episode_collection_item" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
