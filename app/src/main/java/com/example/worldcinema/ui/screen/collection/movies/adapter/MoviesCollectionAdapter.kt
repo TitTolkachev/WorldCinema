@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.worldcinema.databinding.CollectionMovieItemBinding
 import com.example.worldcinema.ui.model.MovieInCollection
 
-class MoviesCollectionAdapter(private val moviesCollectionActionListener: IMoviesCollectionActionListener)  :
-    RecyclerView.Adapter<MoviesCollectionAdapter.MoviesCollectionViewHolder>(), View.OnClickListener {
+class MoviesCollectionAdapter(private val moviesCollectionActionListener: IMoviesCollectionActionListener) :
+    RecyclerView.Adapter<MoviesCollectionAdapter.MoviesCollectionViewHolder>(),
+    View.OnClickListener {
 
     var data: MutableList<MovieInCollection> = mutableListOf()
         @SuppressLint("NotifyDataSetChanged")
@@ -22,9 +24,9 @@ class MoviesCollectionAdapter(private val moviesCollectionActionListener: IMovie
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movie: MovieInCollection) {
-            // TODO(Подставлять правильную картинку)
-
             with(binding) {
+                Glide.with(imageViewCollectionMovieItem).load(movie.poster)
+                    .into(imageViewCollectionMovieItem)
                 textViewCollectionMovieItemTitle.text = movie.name
                 textViewCollectionMovieItemText.text = movie.description
                 root.tag = movie.movieId

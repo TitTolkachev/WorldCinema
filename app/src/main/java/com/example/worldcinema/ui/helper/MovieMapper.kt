@@ -1,6 +1,7 @@
 package com.example.worldcinema.ui.helper
 
 import com.example.worldcinema.domain.model.Movie
+import com.example.worldcinema.ui.model.MovieInCollection
 
 object MovieMapper {
 
@@ -19,8 +20,24 @@ object MovieMapper {
 
     fun mapMovies(movies: List<Movie>): MutableList<com.example.worldcinema.ui.model.Movie> {
         val res = mutableListOf<com.example.worldcinema.ui.model.Movie>()
-        for(m in movies)
+        for (m in movies)
             res.add(mapMovie(m))
+        return res
+    }
+
+    fun mapMovieToCollectionMovie(m: Movie): MovieInCollection {
+        return MovieInCollection(
+            m.movieId,
+            m.name,
+            m.description,
+            m.poster
+        )
+    }
+
+    fun mapMoviesToCollectionMovies(movies: List<Movie>): MutableList<MovieInCollection> {
+        val res = mutableListOf<MovieInCollection>()
+        for (m in movies)
+            res.add(mapMovieToCollectionMovie(m))
         return res
     }
 }

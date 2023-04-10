@@ -3,6 +3,7 @@ package com.example.worldcinema.ui.screen.collection.movies
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,11 +25,16 @@ class MoviesCollectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMoviesCollectionBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[MoviesCollectionViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            MoviesCollectionViewModelFactory(this, args.collection)
+        )[MoviesCollectionViewModel::class.java]
 
         binding.imageButtonArrowBack.setOnClickListener {
             finish()
         }
+
+        binding.textViewCollectionTitle.text = args.collection.name
 
         binding.imageButtonEdit.setOnClickListener {
             val intent =
@@ -36,6 +42,14 @@ class MoviesCollectionActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.putExtra("collection", args.collection)
             applicationContext.startActivity(intent)
+        }
+
+        viewModel.isCollectionFavourite.observe(this) {
+            if(it) {
+                binding.imageButtonEdit.visibility = View.GONE
+            } else {
+                binding.imageButtonEdit.visibility = View.VISIBLE
+            }
         }
 
         initMoviesRecyclerView()
