@@ -1,5 +1,6 @@
 package com.example.worldcinema.ui.screen.movie.episode
 
+import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentEpisodeBinding
+import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
 import com.example.worldcinema.ui.screen.movie.episode.adapter.EpisodeCollectionsAdapter
 import com.example.worldcinema.ui.screen.movie.episode.adapter.IEpisodeCollectionActionListener
 import com.google.android.exoplayer2.ExoPlayer
@@ -55,6 +57,15 @@ class EpisodeFragment : Fragment() {
 
         binding.imageButtonEpisodeArrowBack.setOnClickListener {
             navController.popBackStack()
+        }
+
+        binding.imageViewEpisodeMessenger.setOnClickListener {
+            val intent = Intent(view?.context, ChatActivity::class.java)
+            intent.putExtra(
+                getString(R.string.intent_data_for_chat_chat_id),
+                viewModel.movie.value?.chatInfo?.chatId ?: ""
+            )
+            startActivity(intent)
         }
 
         binding.imageViewEpisodeAddToCollection.setOnClickListener {

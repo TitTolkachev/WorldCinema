@@ -15,6 +15,10 @@ class DiscussionsViewModel : ViewModel() {
         MutableLiveData(false)
     val showChat: LiveData<Boolean> = _showChat
 
+    private val _selectedChatId: MutableLiveData<String> =
+        MutableLiveData("")
+    val selectedChatId: LiveData<String> = _selectedChatId
+
     init {
         loadData()
     }
@@ -92,9 +96,7 @@ class DiscussionsViewModel : ViewModel() {
     }
 
     fun onItemClicked(chatId: String) {
-
-        // TODO(Обрабатывать нормально нажатие)
-
+        _selectedChatId.value = chatId
         _showChat.value = true
     }
 

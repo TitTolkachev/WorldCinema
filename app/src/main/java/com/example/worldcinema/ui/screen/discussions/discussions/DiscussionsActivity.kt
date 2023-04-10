@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityDiscussionsBinding
 import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
 import com.example.worldcinema.ui.screen.discussions.discussions.adapter.DiscussionAdapter
@@ -28,8 +29,12 @@ class DiscussionsActivity : AppCompatActivity() {
         }
 
         viewModel.showChat.observe(this) {
-            if(it) {
+            if (it) {
                 val intent = Intent(this, ChatActivity::class.java)
+                intent.putExtra(
+                    getString(R.string.intent_data_for_chat_chat_id),
+                    viewModel.selectedChatId.value
+                )
                 startActivity(intent)
                 viewModel.chatShowed()
             }
