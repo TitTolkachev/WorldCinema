@@ -34,10 +34,6 @@ class SignUpViewModel(
         }
     }
 
-    fun navigatedToMainScreen() {
-        _navigateToMainScreen.value = false
-    }
-
     fun onRegisterBtnClick(
         name: String,
         lastName: String,

@@ -17,7 +17,7 @@ interface CollectionsApi {
     suspend fun getCollections(): List<CollectionListItemDto>
 
     @POST("api/collections")
-    suspend fun createCollection(@Body body: CollectionFormDto)
+    suspend fun createCollection(@Body body: CollectionFormDto): CollectionListItemDto
 
     @DELETE("api/collections/{collectionId}")
     suspend fun deleteCollection(@Path("collectionId") collectionId: String)

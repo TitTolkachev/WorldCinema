@@ -62,4 +62,5 @@
     <string name="collection_choose_icon_btn"><b>Выбрать иконку</b></string>
     <string name="collection_change_title"><b>Изменить коллекцию</b></string>
     <string name="collection_choose_icon_title"><b>Выбрать иконку</b></string>
+    <string name="collection_favourites_default_name">Избранное</string>
 </resources>

@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentProfileBinding
-import com.example.worldcinema.ui.screen.auth.AuthActivity
+import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 
 class ProfileFragment : Fragment() {
 
@@ -43,7 +43,7 @@ class ProfileFragment : Fragment() {
 
         viewModel.shouldExit.observe(viewLifecycleOwner) {
             if (it) {
-                val intent = Intent(view?.context, AuthActivity::class.java)
+                val intent = Intent(view?.context, SignInActivity::class.java)
                 intent.addFlags(
                     Intent.FLAG_ACTIVITY_CLEAR_TOP
                             or Intent.FLAG_ACTIVITY_CLEAR_TASK

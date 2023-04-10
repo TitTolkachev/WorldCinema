@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentHomeBinding
 import com.example.worldcinema.ui.screen.main.home.adapter.GalleryAdapter
 import com.example.worldcinema.ui.screen.main.home.adapter.IMovieActionListener
@@ -34,7 +35,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(
             this,
-            HomeViewModelFactory(requireContext())
+            HomeViewModelFactory(
+                requireContext(),
+                getString(R.string.collection_favourites_default_name)
+            )
         )[HomeViewModel::class.java]
         navController = findNavController()
 

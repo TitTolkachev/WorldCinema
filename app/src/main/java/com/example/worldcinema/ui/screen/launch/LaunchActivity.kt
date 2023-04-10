@@ -6,7 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.R
-import com.example.worldcinema.ui.screen.auth.AuthActivity
+import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
+import com.example.worldcinema.ui.screen.auth.sign_up.SignUpActivity
 import com.example.worldcinema.ui.screen.main.MainActivity
 
 @SuppressLint("CustomSplashScreen")
@@ -19,24 +20,28 @@ class LaunchActivity : AppCompatActivity() {
         val viewModel =
             ViewModelProvider(this, LaunchViewModelFactory(this))[LaunchViewModel::class.java]
 
-        viewModel.navigateToMainScreen.observe(this) {
-            if(it) {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                viewModel.navigatedToMainScreen()
-                finish()
+        if (viewModel.isEnterFirst()) {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            viewModel.navigateToMainScreen.observe(this) {
+                if (it) {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
-        }
 
-        viewModel.navigateToSignInScreen.observe(this) {
-            if(it) {
-                val intent = Intent(this, AuthActivity::class.java)
-                startActivity(intent)
-                viewModel.navigatedToSignInScreen()
-                finish()
+            viewModel.navigateToSignInScreen.observe(this) {
+                if (it) {
+                    val intent = Intent(this, SignInActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
-        }
 
-        viewModel.checkToken()
+            viewModel.checkToken()
+        }
     }
 }

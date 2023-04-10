@@ -33,8 +33,4 @@ class SignInViewModel(
             }
         }
     }
-
-    fun navigatedToMainScreen() {
-        _navigateToMainScreen.value = false
-    }
 }

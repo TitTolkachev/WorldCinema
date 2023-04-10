@@ -6,8 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.usecase.model.MovieFilter
+import com.example.worldcinema.domain.usecase.network.CreateCollectionUseCase
 import com.example.worldcinema.domain.usecase.network.GetCoverUseCase
 import com.example.worldcinema.domain.usecase.network.GetMoviesUseCase
+import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
+import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
 import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.helper.MovieToPosterMapper
 import com.example.worldcinema.ui.model.ChatInfo
@@ -17,8 +20,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
+    private val favouritesCollectionName: String,
     private val getCoverUseCase: GetCoverUseCase,
-    private val getMoviesUseCase: GetMoviesUseCase
+    private val getMoviesUseCase: GetMoviesUseCase,
+    private val getFavouritesCollectionIdUseCase: GetFavouritesCollectionIdUseCase,
+    private val saveFavouritesCollectionIdUseCase: SaveFavouritesCollectionIdUseCase,
+    private val createCollectionUseCase: CreateCollectionUseCase
 ) : ViewModel() {
 
     private val _coverImage: MutableLiveData<String> =
@@ -49,8 +56,21 @@ class HomeViewModel(
     val lastViewMovies: LiveData<MutableList<MoviePoster>> = _lastViewMoviesPosters
 
     init {
+        checkIsFirstEnter()
         loadCover()
         loadData()
+    }
+
+    private fun checkIsFirstEnter() {
+        if (getFavouritesCollectionIdUseCase.execute().isEmpty()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                createCollectionUseCase.execute(favouritesCollectionName).collect { result ->
+                    result.onSuccess {
+                        saveFavouritesCollectionIdUseCase.execute(it)
+                    }
+                }
+            }
+        }
     }
 
     private fun loadData() {

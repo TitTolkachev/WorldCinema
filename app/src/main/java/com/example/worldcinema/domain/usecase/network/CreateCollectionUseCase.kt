@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 class CreateCollectionUseCase(private val collectionsRepository: ICollectionsRepository) {
 
-    suspend fun execute(collectionId: String): Flow<Result<Boolean>> {
-        return collectionsRepository.createCollection(collectionId)
+    suspend fun execute(name: String): Flow<Result<String>> {
+        return collectionsRepository.createCollection(name)
     }
 }

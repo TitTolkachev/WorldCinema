@@ -26,10 +26,10 @@ class CollectionsRepository(useCases: AuthNetworkUseCases) : ICollectionsReposit
         }
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun createCollection(name: String): Flow<Result<Boolean>> = flow {
+    override suspend fun createCollection(name: String): Flow<Result<String>> = flow {
         try {
-            api.createCollection(CollectionFormDto(name))
-            emit(Result.success(true))
+            val data = api.createCollection(CollectionFormDto(name))
+            emit(Result.success(data.collectionId))
         } catch (e: Exception) {
             emit(Result.failure(Throwable(e)))
         }
