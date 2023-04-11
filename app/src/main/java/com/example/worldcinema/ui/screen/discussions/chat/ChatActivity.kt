@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityChatBinding
 import com.example.worldcinema.ui.screen.discussions.chat.adapter.ChatAdapter
 
@@ -18,10 +19,24 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityChatBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[ChatViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            ChatViewModelFactory(
+                this,
+                intent.getStringExtra(getString(R.string.intent_data_for_chat_chat_id)) ?: ""
+            )
+        )[ChatViewModel::class.java]
 
         binding.imageButtonArrowBack.setOnClickListener {
             finish()
+        }
+
+        binding.imageButtonSendMessage.setOnClickListener {
+            viewModel.sendMessage(binding.chatMessageInput.text.toString())
+        }
+
+        viewModel.chatData.observe(this) {
+            viewModel.newData()
         }
 
         initChatAdapter()
@@ -50,5 +65,10 @@ class ChatActivity : AppCompatActivity() {
                 adapter.userId = it
             }
         }
+    }
+
+    override fun onDestroy() {
+        viewModel.onViewDestroyed()
+        super.onDestroy()
     }
 }

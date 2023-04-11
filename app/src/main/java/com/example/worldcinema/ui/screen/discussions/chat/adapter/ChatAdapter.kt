@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.*
 import com.example.worldcinema.ui.model.Message
@@ -12,7 +14,7 @@ import com.example.worldcinema.ui.model.Message
 class ChatAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var data: MutableList<Message> = mutableListOf()
+    var data: List<Message> = mutableListOf()
         @SuppressLint("NotifyDataSetChanged")
         set(newValue) {
             field = newValue
@@ -58,11 +60,15 @@ class ChatAdapter :
                 )
             }
 
-            if(bottomPadding == ChatItemPadding.Small)
+            if (bottomPadding == ChatItemPadding.Small)
                 binding.chatMessageAvatarCardView.visibility = View.INVISIBLE
 
             with(binding) {
-                chatMessageAvatar.setImageResource(R.drawable.test_image)
+                Glide.with(chatMessageAvatar).applyDefaultRequestOptions(
+                    RequestOptions()
+                        .placeholder(R.drawable.test_image)
+                        .error(R.drawable.test_image)
+                ).load(message.authorAvatar).into(chatMessageAvatar)
                 textViewDefaultMessageText.text = message.text
                 "${message.authorName} • ${message.time}".also {
                     textViewDefaultMessageInfo.text = it
@@ -104,7 +110,7 @@ class ChatAdapter :
                 )
             }
 
-            if(bottomPadding == ChatItemPadding.Small)
+            if (bottomPadding == ChatItemPadding.Small)
                 binding.chatMessageAvatarCardView.visibility = View.INVISIBLE
 
             with(binding) {

@@ -1,157 +1,36 @@
 package com.example.worldcinema.ui.screen.discussions.chat
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.worldcinema.domain.usecase.web_sockets.GetChatDataUseCase
+import com.example.worldcinema.domain.usecase.web_sockets.SendChatMessageUseCase
+import com.example.worldcinema.domain.usecase.web_sockets.StopChatConnectionUseCase
+import com.example.worldcinema.ui.helper.ChatDataToMessagesMapper
 import com.example.worldcinema.ui.model.Message
 
-class ChatViewModel : ViewModel() {
+class ChatViewModel(
+    getChatDataUseCase: GetChatDataUseCase,
+    private val sendChatMessageUseCase: SendChatMessageUseCase,
+    private val stopChatConnectionUseCase: StopChatConnectionUseCase
+) : ViewModel() {
 
+    val chatData = getChatDataUseCase.execute()
 
-    private val _messages: MutableLiveData<MutableList<Message>> =
-        MutableLiveData(mutableListOf())
-    val messages: LiveData<MutableList<Message>> = _messages
+    private val _messages = MutableLiveData<List<Message>>(listOf())
+    val messages: LiveData<List<Message>> = _messages
 
     private val _userId: MutableLiveData<String> =
         MutableLiveData("")
     val userId: LiveData<String> = _userId
 
-    init {
-        loadData()
+    fun newData() {
+        _messages.value = ChatDataToMessagesMapper.mapMessages(chatData.value!!)
     }
 
-    private fun loadData() {
-        // TODO("Not yet implemented")
+    fun onViewDestroyed() {
+        stopChatConnectionUseCase.execute()
+    }
 
-        _userId.value = "123"
-
-        _messages.value = mutableListOf(
-            Message(
-                "",
-                "3 сентября",
-                "",
-                "",
-                "",
-                "",
-                ""
-            ),
-            Message(
-                "1",
-                "3 сентября",
-                "18:00",
-                "123",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "1",
-                "3 сентября",
-                "18:00",
-                "123",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "1",
-                "3 сентября",
-                "18:00",
-                "12",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "1",
-                "3 сентября",
-                "18:00",
-                "123",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "",
-                "Сегодня",
-                "",
-                "",
-                "",
-                "",
-                ""
-            ),
-            Message(
-                "1",
-                "4 сентября",
-                "16:00",
-                "12",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "1",
-                "4 сентября",
-                "16:00",
-                "12",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "1",
-                "4 сентября",
-                "16:00",
-                "123",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "1",
-                "4 сентября",
-                "16:00",
-                "123",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "1",
-                "4 сентября",
-                "16:00",
-                "12",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "1",
-                "4 сентября",
-                "16:00",
-                "123",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "1",
-                "4 сентября",
-                "16:00",
-                "12",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            ),
-            Message(
-                "1",
-                "4 сентября",
-                "16:00",
-                "12",
-                "Олег Олег",
-                "",
-                "fsdfsdfsdfsdfsdfsdfdsfsdfsdfsdfsfsdfs"
-            )
-        )
+    fun sendMessage(message: String) {
+        sendChatMessageUseCase.execute(message)
     }
 }
