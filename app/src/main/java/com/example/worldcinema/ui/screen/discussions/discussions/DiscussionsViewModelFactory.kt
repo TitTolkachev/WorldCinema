@@ -8,7 +8,6 @@ import com.example.worldcinema.data.network.requests.chats.ChatRepository
 import com.example.worldcinema.data.storage.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
-import com.example.worldcinema.domain.usecase.network.GetChatInfoUseCase
 import com.example.worldcinema.domain.usecase.network.GetUserChatsUseCase
 import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
@@ -37,17 +36,12 @@ class DiscussionsViewModelFactory(context: Context) : ViewModelProvider.Factory 
         )
     }
 
-    private val getChatInfoUseCase by lazy {
-        GetChatInfoUseCase(chatRepository)
-    }
-
     private val getUserChatsUseCase by lazy {
         GetUserChatsUseCase(chatRepository)
     }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return DiscussionsViewModel(
-            getChatInfoUseCase,
             getUserChatsUseCase
         ) as T
     }

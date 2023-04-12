@@ -4,14 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.worldcinema.domain.usecase.network.GetChatInfoUseCase
 import com.example.worldcinema.domain.usecase.network.GetUserChatsUseCase
 import com.example.worldcinema.ui.model.Discussion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DiscussionsViewModel(
-    private val getChatInfoUseCase: GetChatInfoUseCase,
     private val getUserChatsUseCase: GetUserChatsUseCase
 ) : ViewModel() {
 

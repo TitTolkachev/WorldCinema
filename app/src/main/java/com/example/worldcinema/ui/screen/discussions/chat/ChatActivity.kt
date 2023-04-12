@@ -39,6 +39,10 @@ class ChatActivity : AppCompatActivity() {
             viewModel.newData()
         }
 
+        viewModel.chatName.observe(this) {
+            binding.textViewChatTitle.text = it
+        }
+
         initChatAdapter()
 
         setContentView(binding.root)

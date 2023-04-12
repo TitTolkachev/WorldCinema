@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.DiscussionsItemBinding
 import com.example.worldcinema.ui.model.Discussion
@@ -28,11 +29,9 @@ class DiscussionAdapter(private val discussionActionListener: IDiscussionActionL
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(discussion: Discussion) {
-            // TODO(Найти картинку в интернете)
-
             binding.root.tag = discussion.chatId
             with(binding.discussionsItemImage) {
-                setImageResource(R.drawable.test_image)
+                Glide.with(this).load(discussion.preview).into(this)
                 clipToOutline = true
             }
             binding.discussionsItemTitle.text = discussion.movieName
