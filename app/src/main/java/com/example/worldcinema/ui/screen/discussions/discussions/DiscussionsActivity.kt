@@ -22,7 +22,10 @@ class DiscussionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityDiscussionsBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[DiscussionsViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            DiscussionsViewModelFactory(this)
+        )[DiscussionsViewModel::class.java]
 
         binding.imageButtonArrowBack.setOnClickListener {
             finish()

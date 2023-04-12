@@ -3,10 +3,7 @@ package com.example.worldcinema.data.network.requests.collections
 import com.example.worldcinema.data.network.AuthNetwork
 import com.example.worldcinema.data.network.dto.*
 import com.example.worldcinema.domain.i_repository.network.ICollectionsRepository
-import com.example.worldcinema.domain.model.Chat
-import com.example.worldcinema.domain.model.CollectionListItem
-import com.example.worldcinema.domain.model.Movie
-import com.example.worldcinema.domain.model.Tag
+import com.example.worldcinema.domain.model.*
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -82,6 +79,9 @@ class CollectionsRepository(useCases: AuthNetworkUseCases) : ICollectionsReposit
         }
     }.flowOn(Dispatchers.IO)
 
+
+    // TODO(Переписать все, что ниже, на обычный вызов .map())
+
     private fun mapCollectionListItems(collections: List<CollectionListItemDto>): List<CollectionListItem> {
         val res = mutableListOf<CollectionListItem>()
         for (c in collections)
@@ -94,7 +94,16 @@ class CollectionsRepository(useCases: AuthNetworkUseCases) : ICollectionsReposit
     }
 
     private fun mapChat(c: ChatDto): Chat {
-        return Chat(c.chatId, c.chatName)
+        return Chat(
+            c.chatId, c.chatName, if (c.lastMessage != null) ChatMessage(
+                c.lastMessage.messageId,
+                c.lastMessage.creationDateTime,
+                c.lastMessage.authorId,
+                c.lastMessage.authorName,
+                c.lastMessage.authorAvatar,
+                c.lastMessage.text,
+            ) else null
+        )
     }
 
     private fun mapTag(t: TagDto): Tag {

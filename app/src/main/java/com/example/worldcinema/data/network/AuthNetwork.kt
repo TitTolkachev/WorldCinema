@@ -1,5 +1,6 @@
 package com.example.worldcinema.data.network
 
+import com.example.worldcinema.data.network.requests.chats.ChatsApi
 import com.example.worldcinema.data.network.requests.collections.CollectionsApi
 import com.example.worldcinema.data.network.requests.cover.CoverApi
 import com.example.worldcinema.data.network.requests.episodes.EpisodesApi
@@ -76,4 +77,7 @@ object AuthNetwork {
 
     fun getCollectionsApi(useCases: AuthNetworkUseCases): CollectionsApi =
         getAuthRetrofit(useCases).create(CollectionsApi::class.java)
+
+    fun getChatsApi(useCases: AuthNetworkUseCases): ChatsApi =
+        getAuthRetrofit(useCases).create(ChatsApi::class.java)
 }

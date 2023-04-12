@@ -6,10 +6,7 @@ import com.example.worldcinema.data.network.dto.EpisodeDto
 import com.example.worldcinema.data.network.dto.MovieDto
 import com.example.worldcinema.data.network.dto.TagDto
 import com.example.worldcinema.domain.i_repository.network.IMovieRepository
-import com.example.worldcinema.domain.model.Chat
-import com.example.worldcinema.domain.model.Episode
-import com.example.worldcinema.domain.model.Movie
-import com.example.worldcinema.domain.model.Tag
+import com.example.worldcinema.domain.model.*
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -90,7 +87,16 @@ class MovieRepository(useCases: AuthNetworkUseCases) : IMovieRepository {
     }
 
     private fun mapChat(c: ChatDto): Chat {
-        return Chat(c.chatId, c.chatName)
+        return Chat(
+            c.chatId, c.chatName, if (c.lastMessage != null) ChatMessage(
+                c.lastMessage.messageId,
+                c.lastMessage.creationDateTime,
+                c.lastMessage.authorId,
+                c.lastMessage.authorName,
+                c.lastMessage.authorAvatar,
+                c.lastMessage.text,
+            ) else null
+        )
     }
 
     private fun mapTag(t: TagDto): Tag {
