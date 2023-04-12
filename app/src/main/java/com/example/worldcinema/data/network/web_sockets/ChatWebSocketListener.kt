@@ -1,8 +1,9 @@
-package com.example.worldcinema.data.web_sockets
+package com.example.worldcinema.data.network.web_sockets
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.worldcinema.data.web_sockets.WebServicesProvider.Companion.NORMAL_CLOSURE_STATUS
+import com.example.worldcinema.data.network.web_sockets.WebServicesProvider.Companion.NORMAL_CLOSURE_STATUS
+import kotlinx.coroutines.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.Response
@@ -14,17 +15,17 @@ class ChatWebSocketListener : WebSocketListener() {
     val chat = MutableLiveData<List<ChatMessageDto>>(listOf())
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
-//        webSocket.send("Hi")
-//        webSocket.send("Hi again")
-//        webSocket.send("Hi again again")
-//        webSocket.send("Hi again again again")
+
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onMessage(webSocket: WebSocket, text: String) {
-        Log.d("WEB SOCKET CONNECTION ERROR", text)
-        val data = chat.value?.toMutableList()
-        data?.add(Json.decodeFromString(text))
-        chat.postValue(data?.toList())
+        GlobalScope.launch(Dispatchers.Main) {
+            Log.d("WEB SOCKET DATA RECEIVED", text)
+            val data = chat.value?.toMutableList()
+            data?.add(Json.decodeFromString(text))
+            chat.value = data?.toList()
+        }
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {

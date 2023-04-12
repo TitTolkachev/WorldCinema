@@ -1,4 +1,4 @@
-package com.example.worldcinema.data.web_sockets
+package com.example.worldcinema.data.network.web_sockets
 
 import androidx.lifecycle.MutableLiveData
 import com.example.worldcinema.data.network.AuthInterceptor

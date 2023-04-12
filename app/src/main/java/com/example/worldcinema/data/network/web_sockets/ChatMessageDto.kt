@@ -1,4 +1,4 @@
-package com.example.worldcinema.data.web_sockets
+package com.example.worldcinema.data.network.web_sockets
 
 @kotlinx.serialization.Serializable
 data class ChatMessageDto(

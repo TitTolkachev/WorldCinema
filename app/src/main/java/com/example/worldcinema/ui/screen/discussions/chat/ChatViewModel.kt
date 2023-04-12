@@ -1,9 +1,9 @@
 package com.example.worldcinema.ui.screen.discussions.chat
 
 import androidx.lifecycle.*
-import com.example.worldcinema.domain.usecase.web_sockets.GetChatDataUseCase
-import com.example.worldcinema.domain.usecase.web_sockets.SendChatMessageUseCase
-import com.example.worldcinema.domain.usecase.web_sockets.StopChatConnectionUseCase
+import com.example.worldcinema.domain.usecase.network.web_sockets.GetChatDataUseCase
+import com.example.worldcinema.domain.usecase.network.web_sockets.SendChatMessageUseCase
+import com.example.worldcinema.domain.usecase.network.web_sockets.StopChatConnectionUseCase
 import com.example.worldcinema.ui.helper.ChatDataToMessagesMapper
 import com.example.worldcinema.ui.model.Message
 

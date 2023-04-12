@@ -6,15 +6,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.data.network.requests.auth.AuthRefreshRepository
 import com.example.worldcinema.data.storage.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.token.TokenStorageRepository
-import com.example.worldcinema.data.web_sockets.ChatWebSocketRepository
-import com.example.worldcinema.data.web_sockets.WebServicesProvider
+import com.example.worldcinema.data.network.web_sockets.ChatWebSocketRepository
+import com.example.worldcinema.data.network.web_sockets.WebServicesProvider
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
-import com.example.worldcinema.domain.usecase.web_sockets.GetChatDataUseCase
-import com.example.worldcinema.domain.usecase.web_sockets.SendChatMessageUseCase
-import com.example.worldcinema.domain.usecase.web_sockets.StopChatConnectionUseCase
+import com.example.worldcinema.domain.usecase.network.web_sockets.GetChatDataUseCase
+import com.example.worldcinema.domain.usecase.network.web_sockets.SendChatMessageUseCase
+import com.example.worldcinema.domain.usecase.network.web_sockets.StopChatConnectionUseCase
 
 
 class ChatViewModelFactory(context: Context, chatId: String) : ViewModelProvider.Factory {
