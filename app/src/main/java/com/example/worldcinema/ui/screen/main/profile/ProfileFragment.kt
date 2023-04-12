@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentProfileBinding
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
@@ -51,6 +52,18 @@ class ProfileFragment : Fragment() {
                 )
                 startActivity(intent)
                 viewModel.onExited()
+            }
+        }
+
+        viewModel.userProfile.observe(viewLifecycleOwner) {
+            if (it != null) {
+                binding.textViewUserName.text = buildString {
+                    append(it.firstName)
+                    append(" ")
+                    append(it.lastName)
+                }
+                binding.textViewUserEmail.text = it.email
+                Glide.with(binding.imageViewAvatar).load(it.avatar).into(binding.imageViewAvatar)
             }
         }
 

@@ -5,6 +5,7 @@ import com.example.worldcinema.data.network.requests.collections.CollectionsApi
 import com.example.worldcinema.data.network.requests.cover.CoverApi
 import com.example.worldcinema.data.network.requests.episodes.EpisodesApi
 import com.example.worldcinema.data.network.requests.movie.MovieApi
+import com.example.worldcinema.data.network.requests.profile.ProfileApi
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -80,4 +81,7 @@ object AuthNetwork {
 
     fun getChatsApi(useCases: AuthNetworkUseCases): ChatsApi =
         getAuthRetrofit(useCases).create(ChatsApi::class.java)
+
+    fun getProfileApi(useCases: AuthNetworkUseCases): ProfileApi =
+        getAuthRetrofit(useCases).create(ProfileApi::class.java)
 }
