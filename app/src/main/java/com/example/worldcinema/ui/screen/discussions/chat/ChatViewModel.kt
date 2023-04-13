@@ -1,5 +1,6 @@
 package com.example.worldcinema.ui.screen.discussions.chat
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.worldcinema.domain.usecase.network.GetChatInfoUseCase
 import com.example.worldcinema.domain.usecase.network.web_sockets.GetChatDataUseCase
@@ -42,6 +43,7 @@ class ChatViewModel(
                     _chatName.postValue(it)
                 }.onFailure {
                     // TODO(Показать ошибку)
+                    Log.e("CHAT NAME ERROR", it.message.toString())
                 }
             }
         }

@@ -32,7 +32,10 @@ class ChatActivity : AppCompatActivity() {
         }
 
         binding.imageButtonSendMessage.setOnClickListener {
-            viewModel.sendMessage(binding.chatMessageInput.text.toString())
+            if (binding.chatMessageInput.text.toString().isNotEmpty()) {
+                viewModel.sendMessage(binding.chatMessageInput.text.toString())
+                binding.chatMessageInput.setText("")
+            }
         }
 
         viewModel.chatData.observe(this) {
