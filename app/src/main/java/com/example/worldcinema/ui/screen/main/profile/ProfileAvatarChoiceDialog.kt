@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.ImageDecoder
+import android.graphics.Matrix
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
@@ -74,7 +75,13 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
                 imageUri = uri
-                binding.imageViewAvatarChoice.setImageBitmap(getCapturedImage(imageUri))
+                binding.imageViewAvatarChoice.setImageBitmap(
+                    getResizedBitmap(
+                        getCapturedImage(
+                            imageUri
+                        )
+                    )
+                )
             }
         }
 
@@ -90,6 +97,17 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
                 ImageDecoder.decodeBitmap(source)
             }
         }
+    }
+
+    private fun getResizedBitmap(bm: Bitmap): Bitmap? {
+        val maxHeight = 1000
+        val maxWidth = 1000
+        val scale: Float =
+            (maxHeight.toFloat() / bm.width).coerceAtMost(maxWidth.toFloat() / bm.height)
+
+        val matrix = Matrix()
+        matrix.postScale(scale, scale)
+        return Bitmap.createBitmap(bm, 0, 0, bm.width, bm.height, matrix, true)
     }
 
     private val requestPermissionLauncher =
