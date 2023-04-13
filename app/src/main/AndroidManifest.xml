@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:allowBackup="true"
@@ -16,10 +18,14 @@
         tools:targetApi="31">
         <activity
             android:name=".ui.screen.discussions.discussions.DiscussionsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
         <activity
             android:name=".ui.screen.discussions.chat.ChatActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
         <activity
             android:name=".ui.screen.auth.sign_up.SignUpActivity"
             android:exported="false"
