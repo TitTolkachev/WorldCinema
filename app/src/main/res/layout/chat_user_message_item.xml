@@ -71,7 +71,7 @@
             android:layout_height="32dp"
             android:contentDescription="@string/image_default_description"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/test_image" />
+            app:srcCompat="@drawable/default_avatar_icon" />
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

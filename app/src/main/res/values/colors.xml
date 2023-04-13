@@ -29,4 +29,6 @@
     <color name="chat_user_message_info_color">#FFBFAB</color>
     <color name="chat_default_message_info_color">#969594</color>
     <color name="chat_default_message_background_color">#2E2B2A</color>
+
+    <color name="profile_dialog_fragment_background_color">#2E1D18</color>
 </resources>

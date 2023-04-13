@@ -24,6 +24,12 @@
     <string name="default_text">Имя Фамилия</string>
     <string name="profile_exit_btn_text"><b>Выход</b></string>
 
+    <!-- Profile Dialog Fragment -->
+    <string name="profile_dialog_fragment_gallery_btn"><b>Галерея</b></string>
+    <string name="profile_dialog_fragment_camera_btn"><b>Камера</b></string>
+    <string name="profile_dialog_fragment_save_btn"><b>Сохранить</b></string>
+    <string name="profile_dialog_fragment_cancel_btn"><b>Отмена</b></string>
+
     <!-- Auth -->
     <string name="name">Имя</string>
     <string name="surname">Фамилия</string>

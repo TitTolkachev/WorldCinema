@@ -23,7 +23,7 @@
             android:background="@drawable/circle_shape"
             android:contentDescription="@string/image_default_description"
             android:scaleType="centerCrop"
-            android:src="@drawable/test_image" />
+            android:src="@drawable/default_avatar_icon" />
     </androidx.cardview.widget.CardView>
 
     <TextView

@@ -42,6 +42,10 @@ class ProfileFragment : Fragment() {
             navController.navigate(R.id.action_navigation_profile_to_discussionsActivity)
         }
 
+        binding.buttonChangeProfile.setOnClickListener {
+            showProfileAvatarChoiceDialog()
+        }
+
         viewModel.shouldExit.observe(viewLifecycleOwner) {
             if (it) {
                 val intent = Intent(view?.context, SignInActivity::class.java)
@@ -68,6 +72,11 @@ class ProfileFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun showProfileAvatarChoiceDialog() {
+        val dialog = ProfileAvatarChoiceDialog()
+        dialog.show(childFragmentManager, "profile_avatar_choice")
     }
 
     override fun onDestroyView() {

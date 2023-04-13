@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.DiscussionsItemBinding
 import com.example.worldcinema.ui.model.Discussion
@@ -31,7 +32,11 @@ class DiscussionAdapter(private val discussionActionListener: IDiscussionActionL
         fun bind(discussion: Discussion) {
             binding.root.tag = discussion.chatId
             with(binding.discussionsItemImage) {
-                Glide.with(this).load(discussion.preview).into(this)
+                Glide.with(this).applyDefaultRequestOptions(
+                    RequestOptions()
+                        .placeholder(android.R.color.transparent)
+                        .error(R.drawable.default_avatar_icon)
+                ).load(discussion.preview).into(this)
                 clipToOutline = true
             }
             binding.discussionsItemTitle.text = discussion.movieName

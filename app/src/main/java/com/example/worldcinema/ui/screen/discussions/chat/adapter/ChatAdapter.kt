@@ -66,8 +66,8 @@ class ChatAdapter :
             with(binding) {
                 Glide.with(chatMessageAvatar).applyDefaultRequestOptions(
                     RequestOptions()
-                        .placeholder(R.drawable.test_image)
-                        .error(R.drawable.test_image)
+                        .placeholder(android.R.color.transparent)
+                        .error(R.drawable.default_avatar_icon)
                 ).load(message.authorAvatar).into(chatMessageAvatar)
                 textViewDefaultMessageText.text = message.text
                 "${message.authorName} • ${message.time}".also {
@@ -76,7 +76,6 @@ class ChatAdapter :
             }
         }
     }
-
 
     class UserMessageViewHolder(val binding: ChatUserMessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
