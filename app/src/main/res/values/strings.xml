@@ -72,4 +72,7 @@
 
     <!-- Intent Data -->
     <string name="intent_data_for_chat_chat_id">chatId</string>
+
+    <!-- Dialog Fragment Data -->
+    <string name="dialog_data_for_profile_avatar">profileAvatar</string>
 </resources>

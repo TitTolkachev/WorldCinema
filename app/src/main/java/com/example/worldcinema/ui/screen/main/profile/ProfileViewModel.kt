@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.model.Token
 import com.example.worldcinema.domain.usecase.network.GetUserProfileUseCase
-import com.example.worldcinema.domain.usecase.network.SaveUserAvatarUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
 import com.example.worldcinema.ui.model.UserProfile
 import kotlinx.coroutines.Dispatchers
@@ -14,14 +13,12 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val saveTokenToLocalStorageUseCase: SaveTokenToLocalStorageUseCase,
-    private val getUserProfileUseCase: GetUserProfileUseCase,
-    private val saveUserAvatarUseCase: SaveUserAvatarUseCase
+    private val getUserProfileUseCase: GetUserProfileUseCase
 ) : ViewModel() {
 
     private val _shouldExit: MutableLiveData<Boolean> =
         MutableLiveData(false)
     val shouldExit: LiveData<Boolean> = _shouldExit
-
 
     private val _userProfile: MutableLiveData<UserProfile> =
         MutableLiveData()
@@ -31,7 +28,7 @@ class ProfileViewModel(
         loadProfileData()
     }
 
-    private fun loadProfileData() {
+    fun loadProfileData() {
         viewModelScope.launch(Dispatchers.IO) {
             getUserProfileUseCase.execute().collect { result ->
                 result.onSuccess {

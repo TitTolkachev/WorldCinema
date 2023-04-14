@@ -1,6 +1,7 @@
 package com.example.worldcinema.data.network.requests.profile
 
 import com.example.worldcinema.data.network.dto.UserDto
+import okhttp3.MultipartBody
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -13,5 +14,5 @@ interface ProfileApi {
 
     @Multipart
     @POST("api/profile/avatar")
-    suspend fun saveAvatar(@Part file: String)
+    suspend fun saveAvatar(@Part file: MultipartBody.Part)
 }

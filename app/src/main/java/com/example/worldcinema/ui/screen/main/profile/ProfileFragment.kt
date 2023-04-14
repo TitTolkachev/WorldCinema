@@ -1,20 +1,22 @@
 package com.example.worldcinema.ui.screen.main.profile
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentProfileBinding
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
+import com.example.worldcinema.ui.screen.main.profile.dialog.ProfileAvatarChoiceDialog
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), ProfileAvatarChoiceDialog.IReloadListener  {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
@@ -67,7 +69,10 @@ class ProfileFragment : Fragment() {
                     append(it.lastName)
                 }
                 binding.textViewUserEmail.text = it.email
-                Glide.with(binding.imageViewAvatar).load(it.avatar).into(binding.imageViewAvatar)
+                Glide.with(binding.imageViewAvatar).applyDefaultRequestOptions(
+                    RequestOptions()
+                        .error(R.drawable.default_avatar_icon)
+                ).load(it.avatar).into(binding.imageViewAvatar)
             }
         }
 
@@ -76,7 +81,17 @@ class ProfileFragment : Fragment() {
 
     private fun showProfileAvatarChoiceDialog() {
         val dialog = ProfileAvatarChoiceDialog()
+        val bundle = Bundle()
+        bundle.putString(
+            getString(R.string.dialog_data_for_profile_avatar),
+            viewModel.userProfile.value?.avatar
+        )
+        dialog.arguments = bundle
         dialog.show(childFragmentManager, "profile_avatar_choice")
+    }
+
+    override fun reload() {
+        viewModel.loadProfileData()
     }
 
     override fun onDestroyView() {

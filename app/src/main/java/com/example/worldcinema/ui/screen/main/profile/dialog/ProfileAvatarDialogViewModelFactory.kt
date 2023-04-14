@@ -1,4 +1,4 @@
-package com.example.worldcinema.ui.screen.main.profile
+package com.example.worldcinema.ui.screen.main.profile.dialog
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -8,12 +8,12 @@ import com.example.worldcinema.data.network.requests.profile.ProfileRepository
 import com.example.worldcinema.data.storage.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
-import com.example.worldcinema.domain.usecase.network.GetUserProfileUseCase
 import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
+import com.example.worldcinema.domain.usecase.network.SaveUserAvatarUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
 
-class ProfileViewModelFactory(context: Context) : ViewModelProvider.Factory {
+class ProfileAvatarDialogViewModelFactory(context: Context) : ViewModelProvider.Factory {
 
     private val tokenRepository by lazy {
         TokenStorageRepository(SharedPrefTokenStorage(context))
@@ -27,8 +27,8 @@ class ProfileViewModelFactory(context: Context) : ViewModelProvider.Factory {
         GetTokenFromLocalStorageUseCase(tokenRepository)
     }
 
-    private val getUserProfileUseCase by lazy {
-        GetUserProfileUseCase(
+    private val saveUserAvatarUseCase by lazy {
+        SaveUserAvatarUseCase(
             ProfileRepository(
                 AuthNetworkUseCases(
                     getTokenFromLocalStorageUseCase,
@@ -40,9 +40,8 @@ class ProfileViewModelFactory(context: Context) : ViewModelProvider.Factory {
     }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ProfileViewModel(
-            saveTokenToLocalStorageUseCase,
-            getUserProfileUseCase
+        return ProfileAvatarDialogViewModel(
+            saveUserAvatarUseCase
         ) as T
     }
 }
