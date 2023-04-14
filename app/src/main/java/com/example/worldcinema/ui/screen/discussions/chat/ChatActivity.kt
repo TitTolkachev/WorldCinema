@@ -55,7 +55,6 @@ class ChatActivity : AppCompatActivity() {
 
         val adapterLayoutManager = LinearLayoutManager(binding.root.context)
         binding.RecyclerViewChat.layoutManager = adapterLayoutManager.apply {
-            // reverseLayout = true
             stackFromEnd = true
         }
         adapter = ChatAdapter()
@@ -64,6 +63,8 @@ class ChatActivity : AppCompatActivity() {
         viewModel.messages.observe(this) {
             if (it != null) {
                 adapter.data = it
+
+                // TODO(Когда приходит новое сообщение, вниз не скроллится)
                 binding.RecyclerViewChat.scrollToPosition(-1)
             }
         }

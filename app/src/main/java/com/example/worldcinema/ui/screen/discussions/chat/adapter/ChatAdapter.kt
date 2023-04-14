@@ -11,6 +11,7 @@ import com.example.worldcinema.R
 import com.example.worldcinema.databinding.*
 import com.example.worldcinema.ui.model.Message
 
+
 class ChatAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -32,7 +33,6 @@ class ChatAdapter :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(message: Message, shape: ChatItemShape, bottomPadding: ChatItemPadding) {
-            // TODO(Найти картинку в интернете)
 
             if (shape == ChatItemShape.Rounded) {
                 binding.ChatDefaultMessageConstraintLayout.setBackgroundResource(R.drawable.chat_top_default_message_card_background)
@@ -62,13 +62,16 @@ class ChatAdapter :
 
             if (bottomPadding == ChatItemPadding.Small)
                 binding.chatMessageAvatarCardView.visibility = View.INVISIBLE
+            else
+                with(binding) {
+                    Glide.with(chatMessageAvatar).applyDefaultRequestOptions(
+                        RequestOptions()
+                            .placeholder(android.R.color.transparent)
+                            .error(R.drawable.default_avatar_icon)
+                    ).load(message.authorAvatar).into(chatMessageAvatar)
+                }
 
             with(binding) {
-                Glide.with(chatMessageAvatar).applyDefaultRequestOptions(
-                    RequestOptions()
-                        .placeholder(android.R.color.transparent)
-                        .error(R.drawable.default_avatar_icon)
-                ).load(message.authorAvatar).into(chatMessageAvatar)
                 textViewDefaultMessageText.text = message.text
                 "${message.authorName} • ${message.time}".also {
                     textViewDefaultMessageInfo.text = it
@@ -81,7 +84,6 @@ class ChatAdapter :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(message: Message, shape: ChatItemShape, bottomPadding: ChatItemPadding) {
-            // TODO(Найти картинку в интернете)
 
             if (shape == ChatItemShape.Rounded) {
                 binding.ChatUserMessageConstraintLayout.setBackgroundResource(R.drawable.chat_top_user_message_card_background)
@@ -111,9 +113,16 @@ class ChatAdapter :
 
             if (bottomPadding == ChatItemPadding.Small)
                 binding.chatMessageAvatarCardView.visibility = View.INVISIBLE
+            else
+                with(binding) {
+                    Glide.with(chatMessageAvatar).applyDefaultRequestOptions(
+                        RequestOptions()
+                            .placeholder(android.R.color.transparent)
+                            .error(R.drawable.default_avatar_icon)
+                    ).load(message.authorAvatar).into(chatMessageAvatar)
+                }
 
             with(binding) {
-                chatMessageAvatar.setImageResource(R.drawable.test_image)
                 textViewUserMessageText.text = message.text
                 "${message.authorName} • ${message.time}".also {
                     textViewUserMessageInfo.text = it
@@ -172,6 +181,9 @@ class ChatAdapter :
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        // TODO(Нужно поменять на что-то адекватное)
+        holder.setIsRecyclable(false)
 
         when (holder.itemViewType) {
             1 -> {
