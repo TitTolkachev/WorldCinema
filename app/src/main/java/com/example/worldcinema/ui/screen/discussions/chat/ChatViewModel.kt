@@ -3,6 +3,7 @@ package com.example.worldcinema.ui.screen.discussions.chat
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.worldcinema.domain.usecase.network.GetChatInfoUseCase
+import com.example.worldcinema.domain.usecase.network.GetUserProfileUseCase
 import com.example.worldcinema.domain.usecase.network.web_sockets.GetChatDataUseCase
 import com.example.worldcinema.domain.usecase.network.web_sockets.SendChatMessageUseCase
 import com.example.worldcinema.domain.usecase.network.web_sockets.StopChatConnectionUseCase
@@ -16,7 +17,8 @@ class ChatViewModel(
     private val chatId: String,
     private val getChatInfoUseCase: GetChatInfoUseCase,
     private val sendChatMessageUseCase: SendChatMessageUseCase,
-    private val stopChatConnectionUseCase: StopChatConnectionUseCase
+    private val stopChatConnectionUseCase: StopChatConnectionUseCase,
+    private val getUserProfileUseCase: GetUserProfileUseCase
 ) : ViewModel() {
 
     val chatData = getChatDataUseCase.execute()
@@ -32,8 +34,24 @@ class ChatViewModel(
         MutableLiveData("")
     val chatName: LiveData<String> = _chatName
 
+
+
     init {
         loadChatName()
+        loadUserProfile()
+    }
+
+    private fun loadUserProfile() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getUserProfileUseCase.execute().collect { result ->
+                result.onSuccess {
+                    _userId.postValue(it.userId)
+                }.onFailure {
+                    // TODO(Показать ошибку)
+                    Log.e("PROFILE LOADING ERROR", it.message.toString())
+                }
+            }
+        }
     }
 
     private fun loadChatName() {

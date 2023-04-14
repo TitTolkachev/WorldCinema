@@ -64,6 +64,7 @@ class ChatActivity : AppCompatActivity() {
         viewModel.messages.observe(this) {
             if (it != null) {
                 adapter.data = it
+                binding.RecyclerViewChat.scrollToPosition(-1)
             }
         }
 

@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.data.network.requests.auth.AuthRefreshRepository
 import com.example.worldcinema.data.network.requests.chats.ChatRepository
+import com.example.worldcinema.data.network.requests.profile.ProfileRepository
 import com.example.worldcinema.data.storage.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.token.TokenStorageRepository
 import com.example.worldcinema.data.network.web_sockets.ChatWebSocketRepository
 import com.example.worldcinema.data.network.web_sockets.WebServicesProvider
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import com.example.worldcinema.domain.usecase.network.GetChatInfoUseCase
+import com.example.worldcinema.domain.usecase.network.GetUserProfileUseCase
 import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
@@ -74,13 +76,26 @@ class ChatViewModelFactory(
         GetChatInfoUseCase(chatRepository)
     }
 
+    private val getUserProfileUseCase by lazy {
+        GetUserProfileUseCase(
+            ProfileRepository(
+                AuthNetworkUseCases(
+                    getTokenFromLocalStorageUseCase,
+                    saveTokenToLocalStorageUseCase,
+                    RefreshTokenUseCase(AuthRefreshRepository(getTokenFromLocalStorageUseCase))
+                )
+            )
+        )
+    }
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ChatViewModel(
             getChatDataUseCase,
             chatId,
             getChatInfoUseCase,
             sendChatMessageUseCase,
-            stopChatConnectionUseCase
+            stopChatConnectionUseCase,
+            getUserProfileUseCase
         ) as T
     }
 }
