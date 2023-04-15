@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentMovieBinding
+import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
 import com.example.worldcinema.ui.screen.movie.movie.adapter.IMovieEpisodeActionListener
 import com.example.worldcinema.ui.screen.movie.movie.adapter.MovieEpisodesAdapter
@@ -30,7 +31,10 @@ class MovieFragment : Fragment() {
     private lateinit var viewModel: MovieViewModel
     private lateinit var navController: NavController
 
-    private val args: MovieFragmentArgs by navArgs()
+    // Intent Data
+    private var movieData: Movie? = null
+    private var movieId: String? = null
+    private var collectionId: String? = null
 
     private lateinit var movieImagesAdapter: MovieImagesAdapter
     private lateinit var movieEpisodesAdapter: MovieEpisodesAdapter
@@ -40,15 +44,37 @@ class MovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMovieBinding.inflate(inflater, container, false)
+        getIntentData()
         viewModel = ViewModelProvider(
             this,
-            MovieViewModelFactory(requireContext(), args.movieData)
+            MovieViewModelFactory(
+                requireContext(),
+                movieId,
+                collectionId,
+                movieData
+            )
         )[MovieViewModel::class.java]
         navController = findNavController()
 
         binding.imageButtonMovieArrowBack.setOnClickListener {
             activity?.finish()
         }
+
+        viewModel.isMovieDataLoading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.movieContent.visibility = View.GONE
+                binding.progressBarMovie.visibility = View.VISIBLE
+            } else {
+                binding.movieContent.visibility = View.VISIBLE
+                binding.progressBarMovie.visibility = View.GONE
+                onMovieDataLoaded(inflater)
+            }
+        }
+
+        return binding.root
+    }
+
+    private fun onMovieDataLoaded(inflater: LayoutInflater) {
 
         binding.imageButtonMovieChat.setOnClickListener {
             val intent = Intent(view?.context, ChatActivity::class.java)
@@ -57,6 +83,26 @@ class MovieFragment : Fragment() {
                 viewModel.movie.value?.chatInfo?.chatId ?: ""
             )
             startActivity(intent)
+        }
+
+        viewModel.isEpisodesDataLoading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.progressBarMovieEpisodes.visibility = View.VISIBLE
+                binding.textViewMovieEpisodesTitle.visibility = View.GONE
+                binding.RecyclerViewMovieEpisodes.visibility = View.GONE
+            } else {
+                if (viewModel.movieEpisodes.value!!.isEmpty()) {
+                    binding.progressBarMovieEpisodes.visibility = View.GONE
+                    binding.textViewMovieEpisodesTitle.visibility = View.GONE
+                    binding.RecyclerViewMovieEpisodes.visibility = View.GONE
+                    initEpisodesRecyclerView()
+                } else {
+                    binding.progressBarMovieEpisodes.visibility = View.GONE
+                    binding.textViewMovieEpisodesTitle.visibility = View.VISIBLE
+                    binding.RecyclerViewMovieEpisodes.visibility = View.VISIBLE
+                    initEpisodesRecyclerView()
+                }
+            }
         }
 
         viewModel.movieAge.observe(viewLifecycleOwner) {
@@ -85,14 +131,7 @@ class MovieFragment : Fragment() {
             }
         }
 
-        initRecyclerViews()
-
-        return binding.root
-    }
-
-    private fun initRecyclerViews() {
         initImagesRecyclerView()
-        initEpisodesRecyclerView()
     }
 
     private fun initImagesRecyclerView() {
@@ -132,12 +171,21 @@ class MovieFragment : Fragment() {
         binding.RecyclerViewMovieEpisodes.adapter = movieEpisodesAdapter
 
         viewModel.movieEpisodes.observe(viewLifecycleOwner) {
-            if (it != null) {
-                // TODO(Подставлять данные it в view адаптера)
-
+            if (it != null)
                 movieEpisodesAdapter.data = it
-            }
         }
+    }
+
+    private fun getIntentData() {
+        try {
+            val args: MovieFragmentArgs by navArgs()
+            movieData = args.movieData
+        } catch (_: Exception) {
+        }
+        movieId =
+            arguments?.getString(getString(R.string.intent_data_for_movies_collection_movie_id))
+        collectionId =
+            arguments?.getString(getString(R.string.intent_data_for_movies_collection_collection_id))
     }
 
     override fun onDestroyView() {

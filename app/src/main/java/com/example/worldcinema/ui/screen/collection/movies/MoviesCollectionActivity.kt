@@ -7,10 +7,12 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityMoviesCollectionBinding
 import com.example.worldcinema.ui.screen.collection.movies.adapter.IMoviesCollectionActionListener
 import com.example.worldcinema.ui.screen.collection.movies.adapter.MoviesCollectionAdapter
 import com.example.worldcinema.ui.screen.collection.update.UpdateCollectionActivity
+import com.example.worldcinema.ui.screen.movie.MovieActivity
 
 class MoviesCollectionActivity : AppCompatActivity() {
 
@@ -45,7 +47,7 @@ class MoviesCollectionActivity : AppCompatActivity() {
         }
 
         viewModel.isCollectionFavourite.observe(this) {
-            if(it) {
+            if (it) {
                 binding.imageButtonEdit.visibility = View.GONE
             } else {
                 binding.imageButtonEdit.visibility = View.VISIBLE
@@ -62,7 +64,7 @@ class MoviesCollectionActivity : AppCompatActivity() {
         binding.CollectionRecyclerView.layoutManager = LinearLayoutManager(binding.root.context)
         moviesAdapter = MoviesCollectionAdapter(object : IMoviesCollectionActionListener {
             override fun onItemClicked(movieId: String) {
-                viewModel.onItemClicked(movieId)
+                showMovie(movieId)
             }
         })
         binding.CollectionRecyclerView.adapter = moviesAdapter
@@ -72,5 +74,16 @@ class MoviesCollectionActivity : AppCompatActivity() {
                 moviesAdapter.data = it
             }
         }
+    }
+
+    private fun showMovie(movieId: String) {
+        val intent = Intent(applicationContext, MovieActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra(getString(R.string.intent_data_for_movies_collection_movie_id), movieId)
+        intent.putExtra(
+            getString(R.string.intent_data_for_movies_collection_collection_id),
+            viewModel.getCollectionId()
+        )
+        applicationContext.startActivity(intent)
     }
 }

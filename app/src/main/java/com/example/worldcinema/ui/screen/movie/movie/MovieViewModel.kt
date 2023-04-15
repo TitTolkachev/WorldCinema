@@ -7,15 +7,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.R
 import com.example.worldcinema.domain.usecase.network.GetEpisodesUseCase
+import com.example.worldcinema.domain.usecase.network.GetMoviesInCollectionUseCase
 import com.example.worldcinema.ui.helper.EpisodeMapper
+import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MovieEpisode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieViewModel(
-    movie: Movie,
-    private val getEpisodesUseCase: GetEpisodesUseCase
+    movie: Movie?,
+    private val movieId: String,
+    private val collectionId: String,
+    private val getEpisodesUseCase: GetEpisodesUseCase,
+    private val getMoviesInCollectionUseCase: GetMoviesInCollectionUseCase
 ) : ViewModel() {
 
     private val _movie = MutableLiveData<Movie>()
@@ -32,11 +37,21 @@ class MovieViewModel(
         MutableLiveData()
     val movieAge: LiveData<String> = _movieAge
 
+    private val _isMovieDataLoading = MutableLiveData(movie == null)
+    val isMovieDataLoading: LiveData<Boolean> = _isMovieDataLoading
+
+    private val _isEpisodesDataLoading = MutableLiveData(true)
+    val isEpisodesDataLoading: LiveData<Boolean> = _isEpisodesDataLoading
+
     init {
-        _movie.value = movie
-        _movieImages.value = _movie.value?.imageUrls
-        _movieAge.value = _movie.value?.age
-        loadEpisodes()
+        if (movie == null) {
+            loadMovieAndEpisodes()
+        } else {
+            _movie.value = movie!!
+            _movieImages.value = _movie.value?.imageUrls
+            _movieAge.value = _movie.value?.age
+            loadEpisodes(movie.movieId)
+        }
     }
 
     fun getMovieAgeColor(): Int {
@@ -50,7 +65,6 @@ class MovieViewModel(
 
         return R.color.age_18_color
     }
-
 
     fun getEpisode(episodeId: String): MovieEpisode? {
         if (_movieEpisodes.value != null) {
@@ -83,16 +97,45 @@ class MovieViewModel(
         return "$min - $max"
     }
 
-    private fun loadEpisodes() {
+    private fun movieDataLoaded() {
+        _isMovieDataLoading.postValue(false)
+    }
+
+    private fun episodesDataLoaded() {
+        _isEpisodesDataLoading.postValue(false)
+    }
+
+    private fun loadEpisodes(movieId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            getEpisodesUseCase.execute(_movie.value?.movieId ?: "").collect { result ->
+            getEpisodesUseCase.execute(movieId).collect { result ->
                 result.onSuccess {
                     _movieEpisodes.postValue(EpisodeMapper.mapEpisodes(it))
+                    episodesDataLoaded()
                 }.onFailure {
                     // TODO(Показать ошибку)
                     Log.e("EPISODE LOADING ERROR", it.message.toString())
                 }
             }
         }
+    }
+
+    private fun loadMovieAndEpisodes() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            getMoviesInCollectionUseCase.execute(collectionId).collect{result->
+                result.onSuccess { movieList ->
+                    val loadedMovie = movieList.single { it.movieId == movieId }
+                    _movie.postValue(MovieMapper.mapMovie(loadedMovie))
+                    _movieImages.postValue(loadedMovie.imageUrls)
+                    _movieAge.postValue(loadedMovie.age)
+                    movieDataLoaded()
+                }.onFailure {
+                    // TODO(Показать ошибку!!!!)
+                }
+            }
+        }
+
+        loadEpisodes(movieId)
     }
 }

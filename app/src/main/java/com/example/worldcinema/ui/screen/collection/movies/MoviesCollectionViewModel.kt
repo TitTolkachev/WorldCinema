@@ -31,8 +31,8 @@ class MoviesCollectionViewModel(
         loadMovies()
     }
 
-    fun onItemClicked(movieId: String) {
-        // TODO(По идее что-то должно происходить, но в тз пусто)
+    fun getCollectionId(): String {
+        return collection.collectionId
     }
 
     private fun loadMovies() {
