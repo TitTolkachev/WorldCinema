@@ -6,7 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.usecase.model.MovieFilter
-import com.example.worldcinema.domain.usecase.network.GetMoviesUseCase
+import com.example.worldcinema.domain.usecase.network.*
+import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
 import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.helper.MovieToCardMapper
 import com.example.worldcinema.ui.model.Card
@@ -14,7 +15,16 @@ import com.example.worldcinema.ui.model.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CompilationViewModel(private val getMoviesUseCase: GetMoviesUseCase) : ViewModel() {
+class CompilationViewModel(
+    getFavouritesCollectionIdUseCase: GetFavouritesCollectionIdUseCase,
+    private val getMoviesUseCase: GetMoviesUseCase,
+    private val getMoviesInCollectionUseCase: GetMoviesInCollectionUseCase,
+    private val dislikeMovieUseCase: DislikeMovieUseCase,
+    private val addMovieToCollectionUseCase: AddMovieToCollectionUseCase,
+    private val deleteMovieFromCollectionUseCase: DeleteMovieFromCollectionUseCase
+) : ViewModel() {
+
+    private val favouritesCollectionId = getFavouritesCollectionIdUseCase.execute()
 
     private val _isCardStackEmpty: MutableLiveData<Boolean> =
         MutableLiveData(true)
@@ -47,6 +57,20 @@ class CompilationViewModel(private val getMoviesUseCase: GetMoviesUseCase) : Vie
     }
 
     fun like() {
+
+        val movieId = _movies.value!![swipedCardsCount].movieId
+        viewModelScope.launch(Dispatchers.IO) {
+            addMovieToCollectionUseCase.execute(
+                favouritesCollectionId,
+                movieId
+            ).collect { result ->
+                result.onFailure {
+                    // TODO(Показать ошибку)
+                    Log.e("LIKE ERROR", it.message.toString())
+                }
+            }
+        }
+
         swipedCardsCount++
         if (swipedCardsCount == _movies.value?.size) {
             _isCardStackEmpty.value = true
@@ -56,6 +80,26 @@ class CompilationViewModel(private val getMoviesUseCase: GetMoviesUseCase) : Vie
     }
 
     fun skip() {
+
+        val movieId = _movies.value!![swipedCardsCount].movieId
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteMovieFromCollectionUseCase.execute(
+                favouritesCollectionId,
+                movieId
+            ).collect { result ->
+                result.onFailure {
+                    // TODO(Показать ошибку)
+                    Log.e("DELETE FROM FAVOURITES ERROR", it.message.toString())
+                }
+            }
+            dislikeMovieUseCase.execute(movieId).collect { result ->
+                result.onFailure {
+                    // TODO(Показать ошибку)
+                    Log.e("DISLIKE ERROR", it.message.toString())
+                }
+            }
+        }
+
         swipedCardsCount++
         if (swipedCardsCount == _cards.value?.size) {
             _isCardStackEmpty.value = true
@@ -67,10 +111,25 @@ class CompilationViewModel(private val getMoviesUseCase: GetMoviesUseCase) : Vie
     private fun loadData() {
 
         viewModelScope.launch(Dispatchers.IO) {
+
+            var favouriteMovies = listOf<String>()
+
+            getMoviesInCollectionUseCase.execute(favouritesCollectionId).collect { result ->
+                result.onSuccess { it ->
+                    favouriteMovies = it.map { it.movieId }
+                }
+            }
+
             getMoviesUseCase.execute(MovieFilter.Compilation).collect { result ->
-                result.onSuccess {
+                result.onSuccess { movieList ->
+
+                    val collectedMovies = movieList.toMutableList()
+                    collectedMovies.removeAll {
+                        it.movieId in favouriteMovies
+                    }
+
                     dataLoaded()
-                    val data = MovieMapper.mapMovies(it)
+                    val data = MovieMapper.mapMovies(collectedMovies)
                     _movies.postValue(data)
                     _cards.postValue(MovieToCardMapper.mapMovies(data))
                     if (data.isNotEmpty()) {
