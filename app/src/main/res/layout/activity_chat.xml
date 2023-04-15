@@ -8,9 +8,10 @@
 
     <TextView
         android:id="@+id/textViewChatTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:ellipsize="end"
         android:letterSpacing="0.03"
         android:singleLine="true"
@@ -19,6 +20,7 @@
         android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="@+id/imageButtonArrowBack"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButtonArrowBack"
         app:layout_constraintTop_toTopOf="@+id/imageButtonArrowBack" />
 

@@ -5,12 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.data.network.requests.auth.AuthRefreshRepository
 import com.example.worldcinema.data.network.requests.profile.ProfileRepository
+import com.example.worldcinema.data.storage.favourites_collection.FavouritesCollectionStorageRepository
+import com.example.worldcinema.data.storage.favourites_collection.SharedPrefFavouritesCollectionStorage
 import com.example.worldcinema.data.storage.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import com.example.worldcinema.domain.usecase.network.GetUserProfileUseCase
 import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
+import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
 
 class ProfileViewModelFactory(context: Context) : ViewModelProvider.Factory {
@@ -39,10 +42,19 @@ class ProfileViewModelFactory(context: Context) : ViewModelProvider.Factory {
         )
     }
 
+    private val saveFavouritesCollectionIdUseCase by lazy {
+        SaveFavouritesCollectionIdUseCase(
+            FavouritesCollectionStorageRepository(
+                SharedPrefFavouritesCollectionStorage(context)
+            )
+        )
+    }
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ProfileViewModel(
             saveTokenToLocalStorageUseCase,
-            getUserProfileUseCase
+            getUserProfileUseCase,
+            saveFavouritesCollectionIdUseCase
         ) as T
     }
 }

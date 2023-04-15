@@ -14,6 +14,7 @@ import com.example.worldcinema.domain.usecase.network.GetCoverUseCase
 import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
+import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
 
 class LaunchViewModelFactory(context: Context) : ViewModelProvider.Factory {
@@ -48,10 +49,19 @@ class LaunchViewModelFactory(context: Context) : ViewModelProvider.Factory {
         )
     }
 
+    private val saveFavouritesCollectionIdUseCase by lazy {
+        SaveFavouritesCollectionIdUseCase(
+            FavouritesCollectionStorageRepository(
+                SharedPrefFavouritesCollectionStorage(context)
+            )
+        )
+    }
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return LaunchViewModel(
             getCoverUseCase,
-            getFavouritesCollectionIdUseCase
+            getFavouritesCollectionIdUseCase,
+            saveFavouritesCollectionIdUseCase
         ) as T
     }
 }

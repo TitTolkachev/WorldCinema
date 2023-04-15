@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.model.Token
 import com.example.worldcinema.domain.usecase.network.GetUserProfileUseCase
+import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
 import com.example.worldcinema.ui.model.UserProfile
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val saveTokenToLocalStorageUseCase: SaveTokenToLocalStorageUseCase,
-    private val getUserProfileUseCase: GetUserProfileUseCase
+    private val getUserProfileUseCase: GetUserProfileUseCase,
+    private val saveFavouritesCollectionIdUseCase: SaveFavouritesCollectionIdUseCase
 ) : ViewModel() {
 
     private val _shouldExit: MutableLiveData<Boolean> =
@@ -35,7 +37,7 @@ class ProfileViewModel(
     }
 
     private fun dataLoaded() {
-        if(++dataLoadedCounter == requestsCount)
+        if (++dataLoadedCounter == requestsCount)
             _isLoading.postValue(false)
     }
 
@@ -64,6 +66,7 @@ class ProfileViewModel(
 
     fun onExitBtnClick() {
         saveTokenToLocalStorageUseCase.execute(Token("", ""))
+        saveFavouritesCollectionIdUseCase.execute("")
         _shouldExit.value = true
     }
 

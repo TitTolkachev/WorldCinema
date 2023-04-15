@@ -6,12 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.usecase.network.GetCoverUseCase
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
+import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LaunchViewModel(
     private val getCoverUseCase: GetCoverUseCase,
-    private val getFavouritesCollectionIdUseCase: GetFavouritesCollectionIdUseCase
+    private val getFavouritesCollectionIdUseCase: GetFavouritesCollectionIdUseCase,
+    private val saveFavouritesCollectionIdUseCase: SaveFavouritesCollectionIdUseCase
 ) : ViewModel() {
 
     private val _navigateToMainScreen: MutableLiveData<Boolean> =
@@ -31,6 +33,7 @@ class LaunchViewModel(
                 result.onSuccess {
                     _navigateToMainScreen.postValue(true)
                 }.onFailure {
+                    saveFavouritesCollectionIdUseCase.execute("")
                     _navigateToSignInScreen.postValue(true)
                 }
             }
