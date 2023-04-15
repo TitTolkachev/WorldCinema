@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
         binding.homeContent.visibility = View.GONE
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 binding.progressBarHome.visibility = View.VISIBLE
                 binding.homeContent.visibility = View.GONE
             } else {
@@ -170,9 +170,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun showMovie(movieId: String) {
-        val action =
-            HomeFragmentDirections.actionNavigationHomeToMovieActivity(viewModel.getMovie(movieId))
-        navController.navigate(action)
+        val selectedMovie = viewModel.getMovie(movieId)
+        if (selectedMovie != null) {
+            val action =
+                HomeFragmentDirections.actionNavigationHomeToMovieActivity(selectedMovie)
+            navController.navigate(action)
+        }
     }
 
     override fun onDestroyView() {

@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentMovieBinding
 import com.example.worldcinema.ui.model.Movie
+import com.example.worldcinema.ui.model.MovieEpisode
 import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
 import com.example.worldcinema.ui.screen.movie.movie.adapter.IMovieEpisodeActionListener
 import com.example.worldcinema.ui.screen.movie.movie.adapter.MovieEpisodesAdapter
@@ -83,6 +84,11 @@ class MovieFragment : Fragment() {
                 viewModel.movie.value?.chatInfo?.chatId ?: ""
             )
             startActivity(intent)
+        }
+
+        binding.buttonWatchMovie.setOnClickListener {
+            if (!viewModel.movieEpisodes.value.isNullOrEmpty())
+                showEpisode(viewModel.movieEpisodes.value!![0])
         }
 
         viewModel.isEpisodesDataLoading.observe(viewLifecycleOwner) {
@@ -157,14 +163,8 @@ class MovieFragment : Fragment() {
         movieEpisodesAdapter = MovieEpisodesAdapter(object : IMovieEpisodeActionListener {
             override fun onItemClicked(episodeId: String) {
                 val episode = viewModel.getEpisode(episodeId)
-                if (episode != null && viewModel.movie.value != null) {
-                    val action = MovieFragmentDirections.actionMovieFragmentToEpisodeFragment(
-                        viewModel.movie.value!!,
-                        episode,
-                        viewModel.getEpisodesCount(),
-                        viewModel.getMovieYears()
-                    )
-                    navController.navigate(action)
+                if (episode != null) {
+                    showEpisode(episode)
                 }
             }
         })
@@ -173,6 +173,18 @@ class MovieFragment : Fragment() {
         viewModel.movieEpisodes.observe(viewLifecycleOwner) {
             if (it != null)
                 movieEpisodesAdapter.data = it
+        }
+    }
+
+    private fun showEpisode(episode: MovieEpisode) {
+        if (viewModel.movie.value != null) {
+            val action = MovieFragmentDirections.actionMovieFragmentToEpisodeFragment(
+                viewModel.movie.value!!,
+                episode,
+                viewModel.getEpisodesCount(),
+                viewModel.getMovieYears()
+            )
+            navController.navigate(action)
         }
     }
 

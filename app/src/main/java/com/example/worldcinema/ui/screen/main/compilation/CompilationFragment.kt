@@ -63,6 +63,10 @@ class CompilationFragment : Fragment() {
             cardStackView.swipe()
         }
 
+        binding.playButton.setOnClickListener {
+            showMovie()
+        }
+
         binding.skipButton.setOnClickListener {
             val setting = SwipeAnimationSetting.Builder()
                 .setDirection(Direction.Left)
@@ -131,6 +135,17 @@ class CompilationFragment : Fragment() {
         manager.setCanScrollVertical(false)
         manager.setMaxDegree(-35.0f)
         manager.setSwipeThreshold(0.35f)
+    }
+
+    private fun showMovie() {
+        val currentMovie = viewModel.getCurrentMovie()
+        if (currentMovie != null) {
+            val action =
+                CompilationFragmentDirections.actionNavigationCompilationToMovieActivity(
+                    currentMovie
+                )
+            navController.navigate(action)
+        }
     }
 
     override fun onResume() {

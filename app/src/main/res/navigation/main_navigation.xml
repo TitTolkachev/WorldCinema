@@ -19,7 +19,11 @@
         android:id="@+id/navigation_compilation"
         android:name="com.example.worldcinema.ui.screen.main.compilation.CompilationFragment"
         android:label="@string/title_compilation"
-        tools:layout="@layout/fragment_compilation" />
+        tools:layout="@layout/fragment_compilation" >
+        <action
+            android:id="@+id/action_navigation_compilation_to_movieActivity"
+            app:destination="@id/movieActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_collections"

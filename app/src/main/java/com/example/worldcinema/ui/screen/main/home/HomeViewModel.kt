@@ -14,7 +14,6 @@ import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdU
 import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
 import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.helper.MovieToPosterMapper
-import com.example.worldcinema.ui.model.ChatInfo
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MoviePoster
 import kotlinx.coroutines.Dispatchers
@@ -147,7 +146,7 @@ class HomeViewModel(
         }
     }
 
-    fun getMovie(movieId: String): Movie {
+    fun getMovie(movieId: String): Movie? {
         for (m in _trendMovies.value!!) {
             if (m.movieId == movieId)
                 return m
@@ -164,6 +163,6 @@ class HomeViewModel(
             if (m.movieId == movieId)
                 return m
         }
-        return Movie("", "", "", "", ChatInfo("", ""), listOf(), "", listOf())
+        return null
     }
 }

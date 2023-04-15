@@ -148,4 +148,10 @@ class CompilationViewModel(
         if (++dataLoadedCounter == requestsCount)
             _isLoading.postValue(false)
     }
+
+    fun getCurrentMovie(): Movie? {
+        if(swipedCardsCount < _movies.value!!.size)
+            return _movies.value!![swipedCardsCount]
+        return null
+    }
 }
