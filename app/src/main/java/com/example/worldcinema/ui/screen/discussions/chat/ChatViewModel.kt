@@ -35,7 +35,6 @@ class ChatViewModel(
     val chatName: LiveData<String> = _chatName
 
 
-
     init {
         loadChatName()
         loadUserProfile()
@@ -76,6 +75,7 @@ class ChatViewModel(
     }
 
     fun sendMessage(message: String) {
-        sendChatMessageUseCase.execute(message)
+        if (message.trim().isNotEmpty())
+            sendChatMessageUseCase.execute(message)
     }
 }
