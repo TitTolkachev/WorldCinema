@@ -1,22 +1,30 @@
 package com.example.worldcinema.ui.helper
 
-import android.util.Log
 import com.example.worldcinema.domain.model.ChatMessage
 import com.example.worldcinema.ui.model.Message
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 object ChatDataToMessagesMapper {
 
+    private val zoneOffset: Long = getZoneOffset()
+
+    private fun getZoneOffset(): Long {
+        val mCalendar: Calendar = GregorianCalendar()
+        val mTimeZone = mCalendar.timeZone
+        val mGMTOffset = mTimeZone.rawOffset.toLong()
+        return TimeUnit.HOURS.convert(mGMTOffset, TimeUnit.MILLISECONDS)
+    }
+
     private fun mapMessage(m: ChatMessage): Message {
+        val dt = LocalDateTime.parse(m.creationDateTime).plusHours(zoneOffset)
         return Message(
             m.messageId,
-            LocalDateTime.parse(m.creationDateTime).plusHours(19)
-                .format(DateTimeFormatter.ofPattern("dd MMMM")),
-            LocalDateTime.parse(m.creationDateTime).plusHours(19)
-                .format(DateTimeFormatter.ofPattern("hh:mm")),
+            dt.format(DateTimeFormatter.ofPattern("dd MMMM")),
+            dt.format(DateTimeFormatter.ofPattern("HH:mm")),
             m.authorId ?: "",
             m.authorName,
             m.authorAvatar ?: "",
@@ -28,18 +36,18 @@ object ChatDataToMessagesMapper {
         val res = mutableListOf<Message>()
         messages.forEachIndexed { index, m ->
             if (index == 0) {
-                val dateTime = LocalDateTime.parse(m.creationDateTime).plusHours(19)
-                res.add(createChatDateItem(dateTime))
+                val dt = LocalDateTime.parse(m.creationDateTime).plusHours(zoneOffset)
+                res.add(createChatDateItem(dt))
                 res.add(mapMessage(m))
             } else {
-                val dateTime = LocalDateTime.parse(m.creationDateTime).plusHours(19)
+                val dt = LocalDateTime.parse(m.creationDateTime).plusHours(zoneOffset)
                 val prevItemDateTime =
-                    LocalDateTime.parse(messages[index - 1].creationDateTime).plusHours(19)
-                if (dateTime.format(DateTimeFormatter.ISO_DATE) != prevItemDateTime.format(
+                    LocalDateTime.parse(messages[index - 1].creationDateTime).plusHours(zoneOffset)
+                if (dt.format(DateTimeFormatter.ISO_DATE) != prevItemDateTime.format(
                         DateTimeFormatter.ISO_DATE
                     )
                 )
-                    res.add(createChatDateItem(dateTime))
+                    res.add(createChatDateItem(dt))
                 res.add(mapMessage(m))
             }
         }
@@ -47,14 +55,6 @@ object ChatDataToMessagesMapper {
     }
 
     private fun createChatDateItem(dateTime: LocalDateTime): Message {
-
-        Log.e("DATE 1", dateTime.format(DateTimeFormatter.ofPattern("ddMMyyyy")))
-        Log.e(
-            "DATE 2", SimpleDateFormat(
-                "ddMMyyyy",
-                Locale.getDefault()
-            ).format(Date())
-        )
 
         return Message(
             "",

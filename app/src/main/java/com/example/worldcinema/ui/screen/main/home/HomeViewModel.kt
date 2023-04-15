@@ -55,7 +55,15 @@ class HomeViewModel(
     val recommendedMovies: LiveData<MutableList<MoviePoster>> = _recommendedMoviesPosters
     val lastViewMovies: LiveData<MutableList<MoviePoster>> = _lastViewMoviesPosters
 
+    private val _isLoading = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private var dataLoadedCounter = 0
+    private val requestsCount = 5
+
     init {
+        _isLoading.value = true
+        dataLoadedCounter = 0
         checkIsFirstEnter()
         loadCover()
         loadData()
@@ -80,10 +88,16 @@ class HomeViewModel(
         loadMovies(MovieFilter.LastView, _lastViewMovies, _lastViewMoviesPosters)
     }
 
+    private fun dataLoaded() {
+        if(++dataLoadedCounter == requestsCount)
+            _isLoading.postValue(false)
+    }
+
     private fun loadCover() {
         viewModelScope.launch(Dispatchers.IO) {
             getCoverUseCase.execute().collect { result ->
                 result.onSuccess {
+                    dataLoaded()
                     _coverImage.postValue(it.backgroundImage)
                 }.onFailure {
                     // TODO(Обработать ошибку)
@@ -101,6 +115,7 @@ class HomeViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             getMoviesUseCase.execute(filter).collect { result ->
                 result.onSuccess {
+                    dataLoaded()
                     val data = MovieMapper.mapMovies(it)
                     movies.postValue(data)
                     if (filter == MovieFilter.New || filter == MovieFilter.LastView)

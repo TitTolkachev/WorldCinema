@@ -11,7 +11,6 @@ import com.example.worldcinema.R
 import com.example.worldcinema.databinding.*
 import com.example.worldcinema.ui.model.Message
 
-
 class ChatAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

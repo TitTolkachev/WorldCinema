@@ -33,7 +33,16 @@ class CompilationViewModel(private val getMoviesUseCase: GetMoviesUseCase) : Vie
         MutableLiveData()
     var displayedTitle: LiveData<String> = _displayedTitle
 
-    init {
+    private val _isLoading = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private var dataLoadedCounter = 0
+    private val requestsCount = 1
+
+    fun onViewResume() {
+        _isLoading.value = true
+        dataLoadedCounter = 0
+        swipedCardsCount = 0
         loadData()
     }
 
@@ -55,15 +64,12 @@ class CompilationViewModel(private val getMoviesUseCase: GetMoviesUseCase) : Vie
         }
     }
 
-    fun onViewResume() {
-
-    }
-
     private fun loadData() {
 
         viewModelScope.launch(Dispatchers.IO) {
             getMoviesUseCase.execute(MovieFilter.Compilation).collect { result ->
                 result.onSuccess {
+                    dataLoaded()
                     val data = MovieMapper.mapMovies(it)
                     _movies.postValue(data)
                     _cards.postValue(MovieToCardMapper.mapMovies(data))
@@ -77,5 +83,10 @@ class CompilationViewModel(private val getMoviesUseCase: GetMoviesUseCase) : Vie
                 }
             }
         }
+    }
+
+    private fun dataLoaded() {
+        if (++dataLoadedCounter == requestsCount)
+            _isLoading.postValue(false)
     }
 }

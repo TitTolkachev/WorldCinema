@@ -37,6 +37,22 @@ class CollectionsFragment : Fragment() {
         )[CollectionsViewModel::class.java]
         navController = findNavController()
 
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.collectionsContent.visibility = View.GONE
+                binding.progressBarCollections.visibility = View.VISIBLE
+            } else {
+                binding.collectionsContent.visibility = View.VISIBLE
+                binding.progressBarCollections.visibility = View.GONE
+                onDataLoaded()
+            }
+        }
+
+        return binding.root
+    }
+
+    private fun onDataLoaded() {
+
         initCollectionsRecyclerView()
 
         binding.imageButtonAddCollection.setOnClickListener {
@@ -53,8 +69,6 @@ class CollectionsFragment : Fragment() {
                 viewModel.collectionShowed()
             }
         }
-
-        return binding.root
     }
 
     private fun initCollectionsRecyclerView() {

@@ -42,6 +42,24 @@ class HomeFragment : Fragment() {
         )[HomeViewModel::class.java]
         navController = findNavController()
 
+        binding.progressBarHome.visibility = View.VISIBLE
+        binding.homeContent.visibility = View.GONE
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            if(it) {
+                binding.progressBarHome.visibility = View.VISIBLE
+                binding.homeContent.visibility = View.GONE
+            } else {
+                binding.progressBarHome.visibility = View.GONE
+                binding.homeContent.visibility = View.VISIBLE
+                onDataLoaded()
+            }
+        }
+
+        return binding.root
+    }
+
+    private fun onDataLoaded() {
         initRecyclerViews()
 
         viewModel.coverImage.observe(viewLifecycleOwner) {
@@ -71,8 +89,6 @@ class HomeFragment : Fragment() {
         binding.buttonHomeWatchMovie.setOnClickListener {
             // TODO(Показать, что апишка не позваляет получить данные о фильме)
         }
-
-        return binding.root
     }
 
     private fun initRecyclerViews() {

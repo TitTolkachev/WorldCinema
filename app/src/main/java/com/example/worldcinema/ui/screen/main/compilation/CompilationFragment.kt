@@ -36,6 +36,22 @@ class CompilationFragment : Fragment() {
         )[CompilationViewModel::class.java]
         navController = findNavController()
 
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.progressBarCompilation.visibility = View.VISIBLE
+                binding.compilationContent.visibility = View.GONE
+            } else {
+                binding.progressBarCompilation.visibility = View.GONE
+                binding.compilationContent.visibility = View.VISIBLE
+                onDataLoaded()
+            }
+        }
+
+        return binding.root
+    }
+
+    private fun onDataLoaded() {
+
         initCardStackView()
 
         binding.likeButton.setOnClickListener {
@@ -73,8 +89,6 @@ class CompilationFragment : Fragment() {
         viewModel.displayedTitle.observe(viewLifecycleOwner) {
             binding.textView2.text = it ?: ""
         }
-
-        return binding.root
     }
 
     private fun initCardStackView() {
@@ -120,8 +134,10 @@ class CompilationFragment : Fragment() {
     }
 
     override fun onResume() {
-        super.onResume()
+        binding.progressBarCompilation.visibility = View.VISIBLE
+        binding.compilationContent.visibility = View.GONE
         viewModel.onViewResume()
+        super.onResume()
     }
 
     override fun onDestroyView() {
