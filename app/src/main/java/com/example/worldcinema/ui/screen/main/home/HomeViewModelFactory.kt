@@ -12,10 +12,7 @@ import com.example.worldcinema.data.storage.favourites_collection.SharedPrefFavo
 import com.example.worldcinema.data.storage.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
-import com.example.worldcinema.domain.usecase.network.CreateCollectionUseCase
-import com.example.worldcinema.domain.usecase.network.GetCoverUseCase
-import com.example.worldcinema.domain.usecase.network.GetMoviesUseCase
-import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
+import com.example.worldcinema.domain.usecase.network.*
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
@@ -76,16 +73,22 @@ class HomeViewModelFactory(
         )
     }
 
-    private val createCollectionUseCase by lazy {
-        CreateCollectionUseCase(
-            CollectionsRepository(
-                AuthNetworkUseCases(
-                    getTokenFromLocalStorageUseCase,
-                    saveTokenToLocalStorageUseCase,
-                    RefreshTokenUseCase(AuthRefreshRepository(getTokenFromLocalStorageUseCase))
-                )
+    private val collectionsRepository by lazy {
+        CollectionsRepository(
+            AuthNetworkUseCases(
+                getTokenFromLocalStorageUseCase,
+                saveTokenToLocalStorageUseCase,
+                RefreshTokenUseCase(AuthRefreshRepository(getTokenFromLocalStorageUseCase))
             )
         )
+    }
+
+    private val createCollectionUseCase by lazy {
+        CreateCollectionUseCase(collectionsRepository)
+    }
+
+    private val getCollectionsUseCase by lazy {
+        GetCollectionsUseCase(collectionsRepository)
     }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -95,7 +98,8 @@ class HomeViewModelFactory(
             getMoviesUseCase,
             getFavouritesCollectionIdUseCase,
             saveFavouritesCollectionIdUseCase,
-            createCollectionUseCase
+            createCollectionUseCase,
+            getCollectionsUseCase
         ) as T
     }
 }

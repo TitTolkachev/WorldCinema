@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.usecase.model.MovieFilter
 import com.example.worldcinema.domain.usecase.network.CreateCollectionUseCase
+import com.example.worldcinema.domain.usecase.network.GetCollectionsUseCase
 import com.example.worldcinema.domain.usecase.network.GetCoverUseCase
 import com.example.worldcinema.domain.usecase.network.GetMoviesUseCase
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
@@ -25,7 +26,8 @@ class HomeViewModel(
     private val getMoviesUseCase: GetMoviesUseCase,
     private val getFavouritesCollectionIdUseCase: GetFavouritesCollectionIdUseCase,
     private val saveFavouritesCollectionIdUseCase: SaveFavouritesCollectionIdUseCase,
-    private val createCollectionUseCase: CreateCollectionUseCase
+    private val createCollectionUseCase: CreateCollectionUseCase,
+    private val getCollectionsUseCase: GetCollectionsUseCase
 ) : ViewModel() {
 
     private val _coverImage: MutableLiveData<String> =
@@ -72,9 +74,24 @@ class HomeViewModel(
     private fun checkIsFirstEnter() {
         if (getFavouritesCollectionIdUseCase.execute().isEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
-                createCollectionUseCase.execute(favouritesCollectionName).collect { result ->
-                    result.onSuccess {
-                        saveFavouritesCollectionIdUseCase.execute(it)
+                getCollectionsUseCase.execute().collect { result ->
+                    result.onSuccess { collectionListItems ->
+                        val favouritesCollection =
+                            collectionListItems.singleOrNull { el -> el.name == favouritesCollectionName }
+                        if (favouritesCollection == null) {
+                            createCollectionUseCase.execute(favouritesCollectionName)
+                                .collect { result ->
+                                    result.onSuccess {
+                                        saveFavouritesCollectionIdUseCase.execute(it)
+                                    }.onFailure {
+                                        // TODO(Показать ошибку)
+                                    }
+                                }
+                        } else {
+                            saveFavouritesCollectionIdUseCase.execute(favouritesCollection.collectionId)
+                        }
+                    }.onFailure {
+                        // TODO(Показать ошибку)
                     }
                 }
             }
@@ -89,7 +106,7 @@ class HomeViewModel(
     }
 
     private fun dataLoaded() {
-        if(++dataLoadedCounter == requestsCount)
+        if (++dataLoadedCounter == requestsCount)
             _isLoading.postValue(false)
     }
 
