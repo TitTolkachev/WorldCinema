@@ -24,14 +24,28 @@ class ProfileViewModel(
         MutableLiveData()
     val userProfile: LiveData<UserProfile> = _userProfile
 
+    private val _isLoading = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private var dataLoadedCounter = 0
+    private val requestsCount = 1
+
     init {
         loadProfileData()
     }
 
+    private fun dataLoaded() {
+        if(++dataLoadedCounter == requestsCount)
+            _isLoading.postValue(false)
+    }
+
     fun loadProfileData() {
+        _isLoading.value = true
+        dataLoadedCounter = 0
         viewModelScope.launch(Dispatchers.IO) {
             getUserProfileUseCase.execute().collect { result ->
                 result.onSuccess {
+                    dataLoaded()
                     _userProfile.postValue(
                         UserProfile(
                             it.userId,

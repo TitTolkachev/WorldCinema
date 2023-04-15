@@ -35,13 +35,14 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
     private lateinit var binding: DialogFragmentProfilePictureChoiceBinding
     private lateinit var viewModel: ProfileAvatarDialogViewModel
 
-    private var imageUri: Uri = Uri.EMPTY
+    private lateinit var imageUri: Uri
+    private var newImageLoaded = false
 
     interface IReloadListener {
         fun reload()
     }
 
-    var reloadListener: IReloadListener? = null
+    private var reloadListener: IReloadListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,13 +80,16 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
             dialog?.dismiss()
         }
         binding.profileDialogSaveBnt.setOnClickListener {
-            viewModel.sendAvatarImage(
-                getResizedBitmap(
-                    getCapturedImage(
-                        imageUri
+            if (newImageLoaded)
+                viewModel.sendAvatarImage(
+                    getResizedBitmap(
+                        getCapturedImage(
+                            imageUri
+                        )
                     )
                 )
-            )
+            else
+                dialog?.dismiss()
         }
 
         binding.profileDialogCameraBnt.setOnClickListener {
@@ -111,6 +115,12 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
                 viewModel.profileReloaded()
             }
         }
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            if (it)
+                binding.progressBarProfileDialog.visibility = View.VISIBLE
+            else
+                binding.progressBarProfileDialog.visibility = View.INVISIBLE
+        }
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
@@ -127,6 +137,7 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
     private val getCameraImageActivityResultLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
             if (success) {
+                newImageLoaded = true
                 binding.imageViewAvatarChoice.setImageBitmap(getCapturedImage(imageUri))
             }
         }
@@ -135,6 +146,7 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
                 imageUri = uri
+                newImageLoaded = true
                 binding.imageViewAvatarChoice.setImageBitmap(
                     getResizedBitmap(
                         getCapturedImage(

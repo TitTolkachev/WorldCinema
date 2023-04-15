@@ -36,6 +36,22 @@ class ProfileFragment : Fragment(), ProfileAvatarChoiceDialog.IReloadListener  {
         )[ProfileViewModel::class.java]
         navController = findNavController()
 
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.profileContent.visibility = View.GONE
+                binding.progressBarProfile.visibility = View.VISIBLE
+            } else {
+                binding.profileContent.visibility = View.VISIBLE
+                binding.progressBarProfile.visibility = View.GONE
+                onDataLoaded()
+            }
+        }
+
+        return binding.root
+    }
+
+    private fun onDataLoaded() {
+
         binding.buttonExit.setOnClickListener {
             viewModel.onExitBtnClick()
         }
@@ -75,8 +91,6 @@ class ProfileFragment : Fragment(), ProfileAvatarChoiceDialog.IReloadListener  {
                 ).load(it.avatar).into(binding.imageViewAvatar)
             }
         }
-
-        return binding.root
     }
 
     private fun showProfileAvatarChoiceDialog() {

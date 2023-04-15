@@ -20,9 +20,13 @@ class ProfileAvatarDialogViewModel(
     private val _remoteImageChanged = MutableLiveData(false)
     val remoteImageChanged: LiveData<Boolean> = _remoteImageChanged
 
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun sendAvatarImage(image: Bitmap?) {
         if (image != null)
             viewModelScope.launch(Dispatchers.IO) {
+                _isLoading.postValue(true)
                 saveUserAvatarUseCase.execute(image).collect { result ->
                     result.onSuccess {
                         _remoteImageChanged.postValue(true)
@@ -31,6 +35,7 @@ class ProfileAvatarDialogViewModel(
                         Log.e("AVATAR CHANGE IMAGE RESPONSE", it.message.toString())
                     }
                 }
+                _isLoading.postValue(false)
             }
     }
 
