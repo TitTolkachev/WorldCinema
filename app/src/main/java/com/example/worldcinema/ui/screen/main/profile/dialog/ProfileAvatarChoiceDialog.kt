@@ -94,9 +94,15 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
 
         binding.profileDialogCameraBnt.setOnClickListener {
             when (ContextCompat.checkSelfPermission(requireContext(), CAMERA_PERMISSION)) {
-                PackageManager.PERMISSION_GRANTED -> getCameraImageActivityResultLauncher.launch(
-                    imageUri
-                )
+                PackageManager.PERMISSION_GRANTED -> {
+                    val file = createImageFile()
+                    imageUri = FileProvider.getUriForFile(
+                        requireActivity(),
+                        "com.example.worldcinema.fileprovider",
+                        file
+                    )
+                    getCameraImageActivityResultLauncher.launch(imageUri)
+                }
                 else -> requestPermissionLauncher.launch(CAMERA_PERMISSION)
             }
         }
