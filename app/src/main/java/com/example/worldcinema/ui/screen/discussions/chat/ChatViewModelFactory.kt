@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.data.network.requests.auth.AuthRefreshRepository
 import com.example.worldcinema.data.network.requests.chats.ChatRepository
 import com.example.worldcinema.data.network.requests.profile.ProfileRepository
-import com.example.worldcinema.data.storage.token.SharedPrefTokenStorage
-import com.example.worldcinema.data.storage.token.TokenStorageRepository
+import com.example.worldcinema.data.storage.shared_prefs.token.SharedPrefTokenStorage
+import com.example.worldcinema.data.storage.shared_prefs.token.TokenStorageRepository
 import com.example.worldcinema.data.network.web_sockets.ChatWebSocketRepository
 import com.example.worldcinema.data.network.web_sockets.WebServicesProvider
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases

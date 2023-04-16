@@ -7,10 +7,10 @@ import com.example.worldcinema.data.network.requests.auth.AuthRefreshRepository
 import com.example.worldcinema.data.network.requests.collections.CollectionsRepository
 import com.example.worldcinema.data.network.requests.cover.CoverRepository
 import com.example.worldcinema.data.network.requests.movie.MovieRepository
-import com.example.worldcinema.data.storage.favourites_collection.FavouritesCollectionStorageRepository
-import com.example.worldcinema.data.storage.favourites_collection.SharedPrefFavouritesCollectionStorage
-import com.example.worldcinema.data.storage.token.SharedPrefTokenStorage
-import com.example.worldcinema.data.storage.token.TokenStorageRepository
+import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.FavouritesCollectionStorageRepository
+import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.SharedPrefFavouritesCollectionStorage
+import com.example.worldcinema.data.storage.shared_prefs.token.SharedPrefTokenStorage
+import com.example.worldcinema.data.storage.shared_prefs.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import com.example.worldcinema.domain.usecase.network.*
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase

@@ -1,8 +1,8 @@
-package com.example.worldcinema.data.storage.token
+package com.example.worldcinema.data.storage.shared_prefs.token
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.worldcinema.data.storage.model.TokenModel
+import com.example.worldcinema.data.storage.shared_prefs.model.TokenModel
 
 private const val APP_PREFERENCES = "preferences_settings"
 private const val ACCESS_TOKEN_NAME = "access_token"

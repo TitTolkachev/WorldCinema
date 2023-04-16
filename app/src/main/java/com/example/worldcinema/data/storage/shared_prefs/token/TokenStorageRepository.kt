@@ -1,6 +1,6 @@
-package com.example.worldcinema.data.storage.token
+package com.example.worldcinema.data.storage.shared_prefs.token
 
-import com.example.worldcinema.data.storage.model.TokenModel
+import com.example.worldcinema.data.storage.shared_prefs.model.TokenModel
 import com.example.worldcinema.domain.i_repository.storage.ITokenStorageRepository
 import com.example.worldcinema.domain.model.Token
 

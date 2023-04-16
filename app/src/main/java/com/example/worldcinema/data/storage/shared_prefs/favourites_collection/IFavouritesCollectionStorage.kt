@@ -1,4 +1,4 @@
-package com.example.worldcinema.data.storage.favourites_collection
+package com.example.worldcinema.data.storage.shared_prefs.favourites_collection
 
 interface IFavouritesCollectionStorage {
 
