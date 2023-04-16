@@ -66,13 +66,14 @@ class EpisodeViewModel(
     fun addMovieToCollection(collectionId: String) {
         if (_movie.value != null) {
             viewModelScope.launch(Dispatchers.IO) {
-                addMovieToCollectionUseCase.execute(collectionId, _movie.value!!.movieId).collect {result ->
-                    result.onSuccess {
-                        // TODO(Мб кинуть тост)
-                    }.onFailure {
-                        // TODO(Показать ошибку)
+                addMovieToCollectionUseCase.execute(collectionId, _movie.value!!.movieId)
+                    .collect { result ->
+                        result.onSuccess {
+                            // TODO(Мб кинуть тост)
+                        }.onFailure {
+                            // TODO(Показать ошибку)
+                        }
                     }
-                }
             }
         }
     }
@@ -81,7 +82,7 @@ class EpisodeViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             getCollectionsUseCase.execute().collect { result ->
                 result.onSuccess {
-                    _episodeCollections.postValue(CollectionMapper.mapCollections(it))
+                    _episodeCollections.postValue(CollectionMapper.mapCollections(it, listOf()))
                 }
             }
         }

@@ -19,4 +19,7 @@ interface CollectionIconDao {
 
     @Query("DELETE FROM CollectionIcon")
     fun deleteIcons()
+
+    @Query("DELETE FROM CollectionIcon WHERE collectionId = :collectionId")
+    fun deleteIcon(collectionId: String)
 }

@@ -74,6 +74,7 @@
     <string name="intent_data_for_chat_chat_id">chatId</string>
     <string name="intent_data_for_movies_collection_movie_id">movieIdFromCollection</string>
     <string name="intent_data_for_movies_collection_collection_id">collectionIdFromCollection</string>
+    <string name="intent_data_for_collection_icon">collectionIconIndex</string>
 
     <!-- Dialog Fragment Data -->
     <string name="dialog_data_for_profile_avatar">profileAvatar</string>

@@ -3,20 +3,20 @@ package com.example.worldcinema.ui.screen.main.home
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.example.worldcinema.data.network.requests.auth.AuthRefreshRepository
 import com.example.worldcinema.data.network.requests.collections.CollectionsRepository
 import com.example.worldcinema.data.network.requests.cover.CoverRepository
 import com.example.worldcinema.data.network.requests.movie.MovieRepository
+import com.example.worldcinema.data.storage.db.CollectionIconRepository
+import com.example.worldcinema.data.storage.db.CollectionsDatabase
 import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.FavouritesCollectionStorageRepository
 import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.SharedPrefFavouritesCollectionStorage
 import com.example.worldcinema.data.storage.shared_prefs.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.shared_prefs.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import com.example.worldcinema.domain.usecase.network.*
-import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
-import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
-import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
-import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
+import com.example.worldcinema.domain.usecase.storage.*
 
 class HomeViewModelFactory(
     context: Context, private val favouritesCollectionName: String
@@ -91,6 +91,20 @@ class HomeViewModelFactory(
         GetCollectionsUseCase(collectionsRepository)
     }
 
+    private val collectionIconRepository by lazy {
+        CollectionIconRepository(
+            Room.databaseBuilder(
+                context,
+                CollectionsDatabase::class.java,
+                CollectionsDatabase.DB_NAME
+            ).build()
+        )
+    }
+
+    private val deleteCollectionsIconsUseCase by lazy {
+        DeleteCollectionsIconsUseCase(collectionIconRepository)
+    }
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return HomeViewModel(
             favouritesCollectionName,
@@ -99,7 +113,8 @@ class HomeViewModelFactory(
             getFavouritesCollectionIdUseCase,
             saveFavouritesCollectionIdUseCase,
             createCollectionUseCase,
-            getCollectionsUseCase
+            getCollectionsUseCase,
+            deleteCollectionsIconsUseCase
         ) as T
     }
 }

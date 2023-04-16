@@ -54,4 +54,13 @@ class CollectionIconRepository(
             Result.failure(e)
         }
     }
+
+    override fun deleteIcon(collectionId: String): Result<Boolean> {
+        return try {
+            database.collectionIconDao().deleteIcon(collectionId)
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

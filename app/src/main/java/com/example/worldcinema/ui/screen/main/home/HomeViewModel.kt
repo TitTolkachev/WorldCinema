@@ -10,6 +10,7 @@ import com.example.worldcinema.domain.usecase.network.CreateCollectionUseCase
 import com.example.worldcinema.domain.usecase.network.GetCollectionsUseCase
 import com.example.worldcinema.domain.usecase.network.GetCoverUseCase
 import com.example.worldcinema.domain.usecase.network.GetMoviesUseCase
+import com.example.worldcinema.domain.usecase.storage.DeleteCollectionsIconsUseCase
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
 import com.example.worldcinema.ui.helper.MovieMapper
@@ -26,7 +27,8 @@ class HomeViewModel(
     private val getFavouritesCollectionIdUseCase: GetFavouritesCollectionIdUseCase,
     private val saveFavouritesCollectionIdUseCase: SaveFavouritesCollectionIdUseCase,
     private val createCollectionUseCase: CreateCollectionUseCase,
-    private val getCollectionsUseCase: GetCollectionsUseCase
+    private val getCollectionsUseCase: GetCollectionsUseCase,
+    private val deleteCollectionsIconsUseCase: DeleteCollectionsIconsUseCase
 ) : ViewModel() {
 
     private val _coverImage: MutableLiveData<String> =
@@ -73,6 +75,9 @@ class HomeViewModel(
     private fun checkIsFirstEnter() {
         if (getFavouritesCollectionIdUseCase.execute().isEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
+
+                deleteCollectionsIconsUseCase.execute()
+
                 getCollectionsUseCase.execute().collect { result ->
                     result.onSuccess { collectionListItems ->
                         val favouritesCollection =

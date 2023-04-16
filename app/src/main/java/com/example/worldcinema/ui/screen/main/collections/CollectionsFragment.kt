@@ -25,6 +25,8 @@ class CollectionsFragment : Fragment() {
 
     private lateinit var collectionsAdapter: CollectionsAdapter
 
+    private val collectionsIcons = getIcons()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,7 +80,7 @@ class CollectionsFragment : Fragment() {
             override fun onItemClicked(collection: UsersCollection) {
                 viewModel.onItemClicked(collection)
             }
-        })
+        }, collectionsIcons)
         binding.CollectionsRecyclerView.adapter = collectionsAdapter
 
         viewModel.collections.observe(viewLifecycleOwner) {
@@ -86,6 +88,47 @@ class CollectionsFragment : Fragment() {
                 collectionsAdapter.data = it
             }
         }
+    }
+
+    private fun getIcons(): List<Int> {
+        return listOf(
+            R.drawable.ic_1,
+            R.drawable.ic_2,
+            R.drawable.ic_3,
+            R.drawable.ic_4,
+            R.drawable.ic_5,
+            R.drawable.ic_6,
+            R.drawable.ic_7,
+            R.drawable.ic_8,
+            R.drawable.ic_9,
+            R.drawable.ic_10,
+            R.drawable.ic_11,
+            R.drawable.ic_12,
+            R.drawable.ic_13,
+            R.drawable.ic_14,
+            R.drawable.ic_15,
+            R.drawable.ic_16,
+            R.drawable.ic_17,
+            R.drawable.ic_18,
+            R.drawable.ic_19,
+            R.drawable.ic_20,
+            R.drawable.ic_21,
+            R.drawable.ic_22,
+            R.drawable.ic_23,
+            R.drawable.ic_24,
+            R.drawable.ic_25,
+            R.drawable.ic_26,
+            R.drawable.ic_27,
+            R.drawable.ic_28,
+            R.drawable.ic_29,
+            R.drawable.ic_30,
+            R.drawable.ic_31,
+            R.drawable.ic_32,
+            R.drawable.ic_33,
+            R.drawable.ic_34,
+            R.drawable.ic_35,
+            R.drawable.ic_36,
+        )
     }
 
     override fun onResume() {

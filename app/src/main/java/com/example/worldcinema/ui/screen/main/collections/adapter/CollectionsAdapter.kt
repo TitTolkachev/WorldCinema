@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.worldcinema.databinding.CollectionsItemBinding
 import com.example.worldcinema.ui.model.UsersCollection
 
-class CollectionsAdapter(private val collectionActionListener: ICollectionActionListener) :
-    RecyclerView.Adapter<CollectionsAdapter.CollectionsViewHolder>(), View.OnClickListener {
+class CollectionsAdapter(
+    private val collectionActionListener: ICollectionActionListener,
+    private val icons: List<Int>
+) : RecyclerView.Adapter<CollectionsAdapter.CollectionsViewHolder>(), View.OnClickListener {
 
     var data: MutableList<UsersCollection> = mutableListOf()
         @SuppressLint("NotifyDataSetChanged")
@@ -21,10 +23,9 @@ class CollectionsAdapter(private val collectionActionListener: ICollectionAction
     class CollectionsViewHolder(val binding: CollectionsItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(collection: UsersCollection) {
-            // TODO(Подставлять правильную картинку)
-
+        fun bind(collection: UsersCollection, icons: List<Int>) {
             with(binding) {
+                imageView3.setImageResource(icons[collection.imageIndex])
                 textView4.text = collection.name
                 root.tag = collection.collectionId
             }
@@ -43,7 +44,7 @@ class CollectionsAdapter(private val collectionActionListener: ICollectionAction
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: CollectionsViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], icons)
         holder.binding.root.setOnClickListener(this@CollectionsAdapter)
     }
 

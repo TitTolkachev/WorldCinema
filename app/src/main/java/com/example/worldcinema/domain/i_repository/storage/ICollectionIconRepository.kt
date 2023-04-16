@@ -11,4 +11,6 @@ interface ICollectionIconRepository {
     fun updateCollectionIcon(collectionIcon: CollectionIcon): Result<Boolean>
 
     fun deleteIcons(): Result<Boolean>
+
+    fun deleteIcon(collectionId: String): Result<Boolean>
 }

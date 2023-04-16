@@ -1,24 +1,22 @@
 package com.example.worldcinema.ui.screen.collection.icon
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.core.view.get
-import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityIconCollectionBinding
 
 class IconCollectionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityIconCollectionBinding
-    private lateinit var viewModel: IconCollectionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityIconCollectionBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[IconCollectionViewModel::class.java]
 
         binding.imageButtonArrowBack.setOnClickListener {
             finish()
@@ -76,26 +74,45 @@ class IconCollectionActivity : AppCompatActivity() {
                     val view = binding.FlexboxIcons1[binding.FlexboxIcons1.childCount - 1]
                     view.id = View.generateViewId()
                     (view as ImageView).setImageResource(i)
+                    view.setOnClickListener {
+                        onItemClick(index)
+                    }
                 }
                 1 -> {
                     layoutInflater.inflate(R.layout.collection_icon, binding.FlexboxIcons2)
                     val view = binding.FlexboxIcons2[binding.FlexboxIcons2.childCount - 1]
                     view.id = View.generateViewId()
                     (view as ImageView).setImageResource(i)
+                    view.setOnClickListener {
+                        onItemClick(index)
+                    }
                 }
                 2 -> {
                     layoutInflater.inflate(R.layout.collection_icon, binding.FlexboxIcons3)
                     val view = binding.FlexboxIcons3[binding.FlexboxIcons3.childCount - 1]
                     view.id = View.generateViewId()
                     (view as ImageView).setImageResource(i)
+                    view.setOnClickListener {
+                        onItemClick(index)
+                    }
                 }
                 3 -> {
                     layoutInflater.inflate(R.layout.collection_icon, binding.FlexboxIcons4)
                     val view = binding.FlexboxIcons4[binding.FlexboxIcons4.childCount - 1]
                     view.id = View.generateViewId()
                     (view as ImageView).setImageResource(i)
+                    view.setOnClickListener {
+                        onItemClick(index)
+                    }
                 }
             }
         }
+    }
+
+    private fun onItemClick(index: Int) {
+        val data = Intent()
+        data.putExtra(getString(R.string.intent_data_for_collection_icon), index)
+        setResult(RESULT_OK, data)
+        finish()
     }
 }

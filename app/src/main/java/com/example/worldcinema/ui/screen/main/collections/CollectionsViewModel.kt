@@ -4,14 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.worldcinema.domain.model.CollectionIcon
 import com.example.worldcinema.domain.usecase.network.GetCollectionsUseCase
+import com.example.worldcinema.domain.usecase.storage.GetCollectionsIconsUseCase
 import com.example.worldcinema.ui.helper.CollectionMapper
 import com.example.worldcinema.ui.model.UsersCollection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CollectionsViewModel(
-    private val getCollectionsUseCase: GetCollectionsUseCase
+    private val getCollectionsUseCase: GetCollectionsUseCase,
+    private val getCollectionsIconsUseCase: GetCollectionsIconsUseCase
 ) : ViewModel() {
 
     private val _collections: MutableLiveData<MutableList<UsersCollection>> =
@@ -45,10 +48,16 @@ class CollectionsViewModel(
         _isLoading.value = true
         dataLoadedCounter = 0
         viewModelScope.launch(Dispatchers.IO) {
+
+            var icons = listOf<CollectionIcon>()
+            getCollectionsIconsUseCase.execute().onSuccess {
+                icons = it
+            }
+
             getCollectionsUseCase.execute().collect { result ->
                 result.onSuccess {
                     dataLoaded()
-                    _collections.postValue(CollectionMapper.mapCollections(it))
+                    _collections.postValue(CollectionMapper.mapCollections(it, icons))
                 }.onFailure {
                     // TODO(Показать ошибку)
                 }
