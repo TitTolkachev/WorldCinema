@@ -46,6 +46,17 @@ class MoviesCollectionActivity : AppCompatActivity() {
             applicationContext.startActivity(intent)
         }
 
+        viewModel.isLoading.observe(this) {
+            if (it) {
+                binding.progressBarMoviesCollection.visibility = View.VISIBLE
+                binding.CollectionRecyclerView.visibility = View.GONE
+            } else {
+                binding.progressBarMoviesCollection.visibility = View.GONE
+                binding.CollectionRecyclerView.visibility = View.VISIBLE
+                onDataLoaded()
+            }
+        }
+
         viewModel.isCollectionFavourite.observe(this) {
             if (it) {
                 binding.imageButtonEdit.visibility = View.GONE
@@ -54,9 +65,11 @@ class MoviesCollectionActivity : AppCompatActivity() {
             }
         }
 
-        initMoviesRecyclerView()
-
         setContentView(binding.root)
+    }
+
+    private fun onDataLoaded() {
+        initMoviesRecyclerView()
     }
 
     private fun initMoviesRecyclerView() {

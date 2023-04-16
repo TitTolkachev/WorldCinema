@@ -49,10 +49,12 @@ class CompilationViewModel(
     private var dataLoadedCounter = 0
     private val requestsCount = 1
 
-    fun onViewResume() {
+    init {
         _isLoading.value = true
         dataLoadedCounter = 0
-        swipedCardsCount = 0
+    }
+
+    fun onViewResume() {
         loadData()
     }
 
@@ -129,6 +131,8 @@ class CompilationViewModel(
                     }
 
                     dataLoaded()
+                    swipedCardsCount = 0
+
                     val data = MovieMapper.mapMovies(collectedMovies)
                     _movies.postValue(data)
                     _cards.postValue(MovieToCardMapper.mapMovies(data))

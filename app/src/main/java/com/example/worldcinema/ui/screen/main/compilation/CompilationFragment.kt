@@ -149,8 +149,6 @@ class CompilationFragment : Fragment() {
     }
 
     override fun onResume() {
-        binding.progressBarCompilation.visibility = View.VISIBLE
-        binding.compilationContent.visibility = View.GONE
         viewModel.onViewResume()
         super.onResume()
     }

@@ -35,6 +35,11 @@ class CollectionsViewModel(
     private var dataLoadedCounter = 0
     private val requestsCount = 1
 
+    init {
+        _isLoading.value = true
+        dataLoadedCounter = 0
+    }
+
     fun onItemClicked(collection: UsersCollection) {
         _selectedCollection.value = collection
         _showCollection.value = true
@@ -45,8 +50,6 @@ class CollectionsViewModel(
     }
 
     fun loadData() {
-        _isLoading.value = true
-        dataLoadedCounter = 0
         viewModelScope.launch(Dispatchers.IO) {
 
             var icons = listOf<CollectionIcon>()

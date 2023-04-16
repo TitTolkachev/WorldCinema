@@ -25,7 +25,15 @@ class MoviesCollectionViewModel(
     private val _isCollectionFavourite = MutableLiveData(false)
     val isCollectionFavourite: LiveData<Boolean> = _isCollectionFavourite
 
+    private val _isLoading = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private var dataLoadedCounter = 0
+    private val requestsCount = 1
+
     init {
+        _isLoading.value = true
+        dataLoadedCounter = 0
         if (collection.collectionId == getFavouritesCollectionIdUseCase.execute())
             _isCollectionFavourite.value = true
         loadMovies()
@@ -39,11 +47,17 @@ class MoviesCollectionViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             getMoviesInCollectionUseCase.execute(collection.collectionId).collect { result ->
                 result.onSuccess {
+                    dataLoaded()
                     _movies.postValue(MovieMapper.mapMoviesToCollectionMovies(it))
                 }.onFailure {
                     // TODO(Показать ошибку)
                 }
             }
         }
+    }
+
+    private fun dataLoaded() {
+        if (++dataLoadedCounter == requestsCount)
+            _isLoading.postValue(false)
     }
 }
