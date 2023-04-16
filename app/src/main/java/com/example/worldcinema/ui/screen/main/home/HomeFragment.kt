@@ -1,5 +1,6 @@
 package com.example.worldcinema.ui.screen.main.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentHomeBinding
 import com.example.worldcinema.ui.screen.main.home.adapter.GalleryAdapter
 import com.example.worldcinema.ui.screen.main.home.adapter.IMovieActionListener
+import com.example.worldcinema.ui.screen.movie.episode.EpisodeActivity
 
 class HomeFragment : Fragment() {
 
@@ -68,13 +70,13 @@ class HomeFragment : Fragment() {
             }
         }
 
-        viewModel.lastViewMovies.observe(viewLifecycleOwner) {
-            if (it != null && it.size > 0) {
+        viewModel.lastViewEpisode.observe(viewLifecycleOwner) {
+            if (it != null) {
                 binding.textView3.visibility = View.VISIBLE
                 binding.imageButton.visibility = View.VISIBLE
                 binding.textView7.visibility = View.VISIBLE
-                binding.textView7.text = it.last().name
-                Glide.with(this).load(it.last().poster).into(binding.imageButton)
+                binding.textView7.text = viewModel.lastViewMovie.value?.name ?: ""
+                Glide.with(this).load(it.preview).into(binding.imageButton)
             } else {
                 binding.textView3.visibility = View.GONE
                 binding.imageButton.visibility = View.GONE
@@ -83,7 +85,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.imageButton.setOnClickListener {
-            showMovie(viewModel.lastViewMovies.value!!.last().movieId)
+            showLastViewEpisode()
         }
 
         binding.buttonHomeWatchMovie.setOnClickListener {
@@ -175,6 +177,33 @@ class HomeFragment : Fragment() {
             val action =
                 HomeFragmentDirections.actionNavigationHomeToMovieActivity(selectedMovie)
             navController.navigate(action)
+        }
+    }
+
+    private fun showLastViewEpisode() {
+        if (viewModel.lastViewMovie.value != null &&
+            viewModel.lastViewEpisode.value != null &&
+            viewModel.lastViewMovieEpisodesCount.value != null &&
+            viewModel.lastViewMovieYears.value != null
+        ) {
+            val intent = Intent(requireContext(), EpisodeActivity::class.java)
+            intent.putExtra(
+                getString(R.string.intent_data_for_episode_movie),
+                viewModel.lastViewMovie.value!!
+            )
+            intent.putExtra(
+                getString(R.string.intent_data_for_episode_episode),
+                viewModel.lastViewEpisode.value!!
+            )
+            intent.putExtra(
+                getString(R.string.intent_data_for_episode_episodes_count),
+                viewModel.lastViewMovieEpisodesCount.value!!
+            )
+            intent.putExtra(
+                getString(R.string.intent_data_for_episode_movie_years),
+                viewModel.lastViewMovieYears.value!!
+            )
+            startActivity(intent)
         }
     }
 

@@ -7,6 +7,7 @@ import androidx.room.Room
 import com.example.worldcinema.data.network.requests.auth.AuthRefreshRepository
 import com.example.worldcinema.data.network.requests.collections.CollectionsRepository
 import com.example.worldcinema.data.network.requests.cover.CoverRepository
+import com.example.worldcinema.data.network.requests.history.HistoryRepository
 import com.example.worldcinema.data.network.requests.movie.MovieRepository
 import com.example.worldcinema.data.storage.db.CollectionIconRepository
 import com.example.worldcinema.data.storage.db.CollectionsDatabase
@@ -45,16 +46,18 @@ class HomeViewModelFactory(
         )
     }
 
-    private val getMoviesUseCase by lazy {
-        GetMoviesUseCase(
-            MovieRepository(
-                AuthNetworkUseCases(
-                    getTokenFromLocalStorageUseCase,
-                    saveTokenToLocalStorageUseCase,
-                    RefreshTokenUseCase(AuthRefreshRepository(getTokenFromLocalStorageUseCase))
-                )
+    private val movieRepository by lazy {
+        MovieRepository(
+            AuthNetworkUseCases(
+                getTokenFromLocalStorageUseCase,
+                saveTokenToLocalStorageUseCase,
+                RefreshTokenUseCase(AuthRefreshRepository(getTokenFromLocalStorageUseCase))
             )
         )
+    }
+
+    private val getMoviesUseCase by lazy {
+        GetMoviesUseCase(movieRepository)
     }
 
     private val getFavouritesCollectionIdUseCase by lazy {
@@ -105,6 +108,22 @@ class HomeViewModelFactory(
         DeleteCollectionsIconsUseCase(collectionIconRepository)
     }
 
+    private val getHistoryUseCase by lazy {
+        GetHistoryUseCase(
+            HistoryRepository(
+                AuthNetworkUseCases(
+                    getTokenFromLocalStorageUseCase,
+                    saveTokenToLocalStorageUseCase,
+                    RefreshTokenUseCase(AuthRefreshRepository(getTokenFromLocalStorageUseCase))
+                )
+            )
+        )
+    }
+
+    private val getEpisodesUseCase by lazy {
+        GetEpisodesUseCase(movieRepository)
+    }
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return HomeViewModel(
             favouritesCollectionName,
@@ -114,7 +133,9 @@ class HomeViewModelFactory(
             saveFavouritesCollectionIdUseCase,
             createCollectionUseCase,
             getCollectionsUseCase,
-            deleteCollectionsIconsUseCase
+            deleteCollectionsIconsUseCase,
+            getHistoryUseCase,
+            getEpisodesUseCase
         ) as T
     }
 }

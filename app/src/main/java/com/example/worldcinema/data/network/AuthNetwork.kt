@@ -4,6 +4,7 @@ import com.example.worldcinema.data.network.requests.chats.ChatsApi
 import com.example.worldcinema.data.network.requests.collections.CollectionsApi
 import com.example.worldcinema.data.network.requests.cover.CoverApi
 import com.example.worldcinema.data.network.requests.episodes.EpisodesApi
+import com.example.worldcinema.data.network.requests.history.HistoryApi
 import com.example.worldcinema.data.network.requests.movie.MovieApi
 import com.example.worldcinema.data.network.requests.profile.ProfileApi
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
@@ -84,4 +85,7 @@ object AuthNetwork {
 
     fun getProfileApi(useCases: AuthNetworkUseCases): ProfileApi =
         getAuthRetrofit(useCases).create(ProfileApi::class.java)
+
+    fun getHistoryApi(useCases: AuthNetworkUseCases): HistoryApi =
+        getAuthRetrofit(useCases).create(HistoryApi::class.java)
 }

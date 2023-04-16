@@ -36,10 +36,16 @@ class EpisodeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val intentMovie = getSerializable(getString(R.string.intent_data_for_episode_movie), Movie::class.java)
-        val intentEpisode =getSerializable(getString(R.string.intent_data_for_episode_episode), MovieEpisode::class.java)
-        val intentEpisodesCount = intent.getIntExtra(getString(R.string.intent_data_for_episode_episodes_count), 1)
-        val intentMovieYears = intent.getStringExtra(getString(R.string.intent_data_for_episode_movie_years))!!
+        val intentMovie =
+            getSerializable(getString(R.string.intent_data_for_episode_movie), Movie::class.java)
+        val intentEpisode = getSerializable(
+            getString(R.string.intent_data_for_episode_episode),
+            MovieEpisode::class.java
+        )
+        val intentEpisodesCount =
+            intent.getIntExtra(getString(R.string.intent_data_for_episode_episodes_count), 1)
+        val intentMovieYears =
+            intent.getStringExtra(getString(R.string.intent_data_for_episode_movie_years))!!
 
         _binding = ActivityEpisodeBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(
@@ -152,9 +158,8 @@ class EpisodeActivity : AppCompatActivity() {
         binding.EpisodeCollectionsRecyclerView.visibility = View.GONE
     }
 
-    private fun <T : java.io.Serializable?> getSerializable(name: String, clazz: Class<T>): T
-    {
-        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+    private fun <T : java.io.Serializable?> getSerializable(name: String, clazz: Class<T>): T {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             intent.getSerializableExtra(name, clazz)!!
         else
             intent.getSerializableExtra(name) as T
