@@ -3,19 +3,17 @@ package com.example.worldcinema.ui.screen.movie.episode
 import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.worldcinema.R
-import com.example.worldcinema.databinding.FragmentEpisodeBinding
+import com.example.worldcinema.databinding.ActivityEpisodeBinding
+import com.example.worldcinema.ui.model.Movie
+import com.example.worldcinema.ui.model.MovieEpisode
 import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
 import com.example.worldcinema.ui.screen.movie.episode.adapter.EpisodeCollectionsAdapter
 import com.example.worldcinema.ui.screen.movie.episode.adapter.IEpisodeCollectionActionListener
@@ -23,44 +21,44 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.StyledPlayerView
 
-class EpisodeFragment : Fragment() {
+class EpisodeActivity : AppCompatActivity() {
 
-    private var _binding: FragmentEpisodeBinding? = null
+    private var _binding: ActivityEpisodeBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: EpisodeViewModel
-    private lateinit var navController: NavController
-
-    private val args: EpisodeFragmentArgs by navArgs()
 
     private lateinit var episodeCollectionsAdapter: EpisodeCollectionsAdapter
 
     private lateinit var videoView: StyledPlayerView
     private lateinit var exoPlayer: ExoPlayer
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentEpisodeBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val intentMovie = getSerializable(getString(R.string.intent_data_for_episode_movie), Movie::class.java)
+        val intentEpisode =getSerializable(getString(R.string.intent_data_for_episode_episode), MovieEpisode::class.java)
+        val intentEpisodesCount = intent.getIntExtra(getString(R.string.intent_data_for_episode_episodes_count), 1)
+        val intentMovieYears = intent.getStringExtra(getString(R.string.intent_data_for_episode_movie_years))!!
+
+        _binding = ActivityEpisodeBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(
             this,
             EpisodeViewModelFactory(
-                requireContext(),
-                args.movie,
-                args.episode,
-                args.episodesCount,
-                args.movieYears
+                this,
+                intentMovie,
+                intentEpisode,
+                intentEpisodesCount,
+                intentMovieYears
             )
         )[EpisodeViewModel::class.java]
-        navController = findNavController()
 
         binding.imageButtonEpisodeArrowBack.setOnClickListener {
-            navController.popBackStack()
+            finish()
         }
 
         binding.imageViewEpisodeMessenger.setOnClickListener {
-            val intent = Intent(view?.context, ChatActivity::class.java)
+            val intent = Intent(this, ChatActivity::class.java)
             intent.putExtra(
                 getString(R.string.intent_data_for_chat_chat_id),
                 viewModel.movie.value?.chatInfo?.chatId ?: ""
@@ -75,7 +73,7 @@ class EpisodeFragment : Fragment() {
                 binding.EpisodeCollectionsRecyclerView.visibility = View.GONE
         }
 
-        viewModel.movie.observe(viewLifecycleOwner) { movie ->
+        viewModel.movie.observe(this) { movie ->
             if (movie != null) {
                 binding.textViewEpisodeDescriptionText.text = movie.description
                 Glide.with(binding.imageViewEpisodePoster).load(movie.poster)
@@ -88,7 +86,7 @@ class EpisodeFragment : Fragment() {
             }
         }
 
-        viewModel.episode.observe(viewLifecycleOwner) {
+        viewModel.episode.observe(this) {
             if (it != null) {
                 binding.textViewEpisodeTitle.text = it.name
 
@@ -96,13 +94,13 @@ class EpisodeFragment : Fragment() {
             }
         }
 
-        viewModel.episodeTime.observe(viewLifecycleOwner) {
+        viewModel.episodeTime.observe(this) {
             exoPlayer.seekTo(it.toLong() * 1000)
         }
 
         initCollectionsRecyclerView()
 
-        return binding.root
+        setContentView(binding.root)
     }
 
     private fun initVideoPlayer() {
@@ -113,7 +111,7 @@ class EpisodeFragment : Fragment() {
             height = Resources.getSystem().displayMetrics.widthPixels * 7 / 12
         }
 
-        exoPlayer = ExoPlayer.Builder(requireContext()).build()
+        exoPlayer = ExoPlayer.Builder(this).build()
         videoView.player = exoPlayer
         videoView.keepScreenOn = true
 
@@ -142,7 +140,7 @@ class EpisodeFragment : Fragment() {
             })
         binding.EpisodeCollectionsRecyclerView.adapter = episodeCollectionsAdapter
 
-        viewModel.episodeCollections.observe(viewLifecycleOwner) {
+        viewModel.episodeCollections.observe(this) {
             if (it != null) {
                 episodeCollectionsAdapter.data = it
             }
@@ -152,6 +150,14 @@ class EpisodeFragment : Fragment() {
     private fun addMovieToCollection(collectionId: String) {
         viewModel.addMovieToCollection(collectionId)
         binding.EpisodeCollectionsRecyclerView.visibility = View.GONE
+    }
+
+    private fun <T : java.io.Serializable?> getSerializable(name: String, clazz: Class<T>): T
+    {
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            intent.getSerializableExtra(name, clazz)!!
+        else
+            intent.getSerializableExtra(name) as T
     }
 
     override fun onStop() {
@@ -165,9 +171,9 @@ class EpisodeFragment : Fragment() {
         super.onPause()
     }
 
-    override fun onDestroyView() {
+    override fun onDestroy() {
         exoPlayer.stop()
         _binding = null
-        super.onDestroyView()
+        super.onDestroy()
     }
 }

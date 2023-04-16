@@ -12,7 +12,7 @@ import com.example.worldcinema.databinding.ActivityMoviesCollectionBinding
 import com.example.worldcinema.ui.screen.collection.movies.adapter.IMoviesCollectionActionListener
 import com.example.worldcinema.ui.screen.collection.movies.adapter.MoviesCollectionAdapter
 import com.example.worldcinema.ui.screen.collection.update.UpdateCollectionActivity
-import com.example.worldcinema.ui.screen.movie.MovieActivity
+import com.example.worldcinema.ui.screen.movie.movie.MovieActivity
 
 class MoviesCollectionActivity : AppCompatActivity() {
 

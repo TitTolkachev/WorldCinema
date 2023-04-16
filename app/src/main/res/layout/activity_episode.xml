@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screen.movie.episode.EpisodeFragment">
+    tools:context=".ui.screen.movie.episode.EpisodeActivity">
 
     <ScrollView
         android:layout_width="0dp"

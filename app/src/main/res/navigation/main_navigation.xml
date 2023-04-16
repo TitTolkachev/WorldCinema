@@ -48,7 +48,7 @@
     </fragment>
     <activity
         android:id="@+id/movieActivity"
-        android:name="com.example.worldcinema.ui.screen.movie.MovieActivity"
+        android:name="com.example.worldcinema.ui.screen.movie.movie.MovieActivity"
         android:label="activity_movie"
         tools:layout="@layout/activity_movie" >
         <argument

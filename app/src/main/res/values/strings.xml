@@ -75,6 +75,10 @@
     <string name="intent_data_for_movies_collection_movie_id">movieIdFromCollection</string>
     <string name="intent_data_for_movies_collection_collection_id">collectionIdFromCollection</string>
     <string name="intent_data_for_collection_icon">collectionIconIndex</string>
+    <string name="intent_data_for_episode_movie">episodeMovie</string>
+    <string name="intent_data_for_episode_episode">episodeEpisode</string>
+    <string name="intent_data_for_episode_episodes_count">episodeEpisodesCount</string>
+    <string name="intent_data_for_episode_movie_years">episodeMovieYears</string>
 
     <!-- Dialog Fragment Data -->
     <string name="dialog_data_for_profile_avatar">profileAvatar</string>

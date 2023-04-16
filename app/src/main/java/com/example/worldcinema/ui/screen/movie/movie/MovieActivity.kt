@@ -1,84 +1,83 @@
 package com.example.worldcinema.ui.screen.movie.movie
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.worldcinema.R
-import com.example.worldcinema.databinding.FragmentMovieBinding
-import com.example.worldcinema.ui.model.Movie
+import com.example.worldcinema.databinding.ActivityMovieBinding
 import com.example.worldcinema.ui.model.MovieEpisode
 import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
+import com.example.worldcinema.ui.screen.movie.episode.EpisodeActivity
 import com.example.worldcinema.ui.screen.movie.movie.adapter.IMovieEpisodeActionListener
 import com.example.worldcinema.ui.screen.movie.movie.adapter.MovieEpisodesAdapter
 import com.example.worldcinema.ui.screen.movie.movie.adapter.MovieImagesAdapter
 
-class MovieFragment : Fragment() {
+class MovieActivity : AppCompatActivity() {
 
-    private var _binding: FragmentMovieBinding? = null
+    private var _binding: ActivityMovieBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: MovieViewModel
-    private lateinit var navController: NavController
-
-    // Intent Data
-    private var movieData: Movie? = null
-    private var movieId: String? = null
-    private var collectionId: String? = null
 
     private lateinit var movieImagesAdapter: MovieImagesAdapter
     private lateinit var movieEpisodesAdapter: MovieEpisodesAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMovieBinding.inflate(inflater, container, false)
-        getIntentData()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val intentMovie = try {
+            val args: MovieActivityArgs by navArgs()
+            args.movieData
+        } catch (_: Exception) {
+            null
+        }
+        val intentMovieId =
+            intent.getStringExtra(getString(R.string.intent_data_for_movies_collection_movie_id))
+        val intentCollectionId =
+            intent.getStringExtra(getString(R.string.intent_data_for_movies_collection_collection_id))
+
+        _binding = ActivityMovieBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(
             this,
             MovieViewModelFactory(
-                requireContext(),
-                movieId,
-                collectionId,
-                movieData
+                this,
+                intentMovieId,
+                intentCollectionId,
+                intentMovie
             )
         )[MovieViewModel::class.java]
-        navController = findNavController()
 
         binding.imageButtonMovieArrowBack.setOnClickListener {
-            activity?.finish()
+            finish()
         }
 
-        viewModel.isMovieDataLoading.observe(viewLifecycleOwner) {
+        viewModel.isMovieDataLoading.observe(this) {
             if (it) {
                 binding.movieContent.visibility = View.GONE
                 binding.progressBarMovie.visibility = View.VISIBLE
             } else {
                 binding.movieContent.visibility = View.VISIBLE
                 binding.progressBarMovie.visibility = View.GONE
-                onMovieDataLoaded(inflater)
+                onMovieDataLoaded(layoutInflater)
             }
         }
 
-        return binding.root
+        setContentView(binding.root)
     }
 
     private fun onMovieDataLoaded(inflater: LayoutInflater) {
 
         binding.imageButtonMovieChat.setOnClickListener {
-            val intent = Intent(view?.context, ChatActivity::class.java)
+            val intent = Intent(this, ChatActivity::class.java)
             intent.putExtra(
                 getString(R.string.intent_data_for_chat_chat_id),
                 viewModel.movie.value?.chatInfo?.chatId ?: ""
@@ -91,7 +90,7 @@ class MovieFragment : Fragment() {
                 showEpisode(viewModel.movieEpisodes.value!![0])
         }
 
-        viewModel.isEpisodesDataLoading.observe(viewLifecycleOwner) {
+        viewModel.isEpisodesDataLoading.observe(this) {
             if (it) {
                 binding.progressBarMovieEpisodes.visibility = View.VISIBLE
                 binding.textViewMovieEpisodesTitle.visibility = View.GONE
@@ -111,16 +110,21 @@ class MovieFragment : Fragment() {
             }
         }
 
-        viewModel.movieAge.observe(viewLifecycleOwner) {
+        viewModel.movieAge.observe(this) {
             if (it != null) {
                 with(binding.textViewMovieAge) {
                     text = it
-                    setTextColor(getColor(context, viewModel.getMovieAgeColor()))
+                    setTextColor(
+                        ContextCompat.getColor(
+                            this@MovieActivity,
+                            viewModel.getMovieAgeColor()
+                        )
+                    )
                 }
             }
         }
 
-        viewModel.movie.observe(viewLifecycleOwner) {
+        viewModel.movie.observe(this) {
             binding.FlexboxMovieTags.removeAllViews()
             if (it != null) {
                 val tags = it.tags
@@ -148,7 +152,7 @@ class MovieFragment : Fragment() {
         movieImagesAdapter = MovieImagesAdapter()
         binding.RecyclerViewMovieImages.adapter = movieImagesAdapter
 
-        viewModel.movieImages.observe(viewLifecycleOwner) {
+        viewModel.movieImages.observe(this) {
             if (it != null) {
                 movieImagesAdapter.data = it
             }
@@ -170,7 +174,7 @@ class MovieFragment : Fragment() {
         })
         binding.RecyclerViewMovieEpisodes.adapter = movieEpisodesAdapter
 
-        viewModel.movieEpisodes.observe(viewLifecycleOwner) {
+        viewModel.movieEpisodes.observe(this) {
             if (it != null)
                 movieEpisodesAdapter.data = it
         }
@@ -178,30 +182,29 @@ class MovieFragment : Fragment() {
 
     private fun showEpisode(episode: MovieEpisode) {
         if (viewModel.movie.value != null) {
-            val action = MovieFragmentDirections.actionMovieFragmentToEpisodeFragment(
-                viewModel.movie.value!!,
-                episode,
-                viewModel.getEpisodesCount(),
+            val intent = Intent(this, EpisodeActivity::class.java)
+            intent.putExtra(
+                getString(R.string.intent_data_for_episode_movie),
+                viewModel.movie.value!!
+            )
+            intent.putExtra(
+                getString(R.string.intent_data_for_episode_episode),
+                episode
+            )
+            intent.putExtra(
+                getString(R.string.intent_data_for_episode_episodes_count),
+                viewModel.getEpisodesCount()
+            )
+            intent.putExtra(
+                getString(R.string.intent_data_for_episode_movie_years),
                 viewModel.getMovieYears()
             )
-            navController.navigate(action)
+            startActivity(intent)
         }
     }
 
-    private fun getIntentData() {
-        try {
-            val args: MovieFragmentArgs by navArgs()
-            movieData = args.movieData
-        } catch (_: Exception) {
-        }
-        movieId =
-            arguments?.getString(getString(R.string.intent_data_for_movies_collection_movie_id))
-        collectionId =
-            arguments?.getString(getString(R.string.intent_data_for_movies_collection_collection_id))
-    }
-
-    override fun onDestroyView() {
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
-        super.onDestroyView()
     }
 }
