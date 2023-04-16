@@ -13,7 +13,9 @@ import com.example.worldcinema.ui.helper.CollectionMapper
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MovieEpisode
 import com.example.worldcinema.ui.model.UsersCollection
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class EpisodeViewModel(
@@ -49,31 +51,22 @@ class EpisodeViewModel(
         loadCollections()
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun saveVideoPosition(contentPosition: Long) {
         var time = contentPosition.toInt() / 1000
         if (time > _episode.value!!.runtime)
             time = _episode.value!!.runtime
 
-        viewModelScope.launch(Dispatchers.IO) {
-            saveEpisodeTimeUseCase.execute(_episode.value!!.episodeId, time).collect { result ->
-                result.onFailure {
-                    // TODO(Показать ошибку)
-                }
-            }
+        GlobalScope.launch(Dispatchers.IO) {
+            saveEpisodeTimeUseCase.execute(_episode.value!!.episodeId, time)
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun addMovieToCollection(collectionId: String) {
         if (_movie.value != null) {
-            viewModelScope.launch(Dispatchers.IO) {
+            GlobalScope.launch(Dispatchers.IO) {
                 addMovieToCollectionUseCase.execute(collectionId, _movie.value!!.movieId)
-                    .collect { result ->
-                        result.onSuccess {
-                            // TODO(Мб кинуть тост)
-                        }.onFailure {
-                            // TODO(Показать ошибку)
-                        }
-                    }
             }
         }
     }
