@@ -51,6 +51,10 @@ class EpisodeViewModel(
         loadCollections()
     }
 
+    fun like() {
+        addMovieToCollection(getFavouritesCollectionIdUseCase.execute())
+    }
+
     @OptIn(DelicateCoroutinesApi::class)
     fun saveVideoPosition(contentPosition: Long) {
         var time = contentPosition.toInt() / 1000

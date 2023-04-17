@@ -208,8 +208,8 @@ class HomeFragment : Fragment() {
     }
 
     override fun onResume() {
-        viewModel.loadHistory()
         super.onResume()
+        viewModel.loadHistory()
     }
 
     override fun onDestroyView() {

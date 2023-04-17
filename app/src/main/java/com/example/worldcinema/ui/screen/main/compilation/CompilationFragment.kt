@@ -149,8 +149,8 @@ class CompilationFragment : Fragment() {
     }
 
     override fun onResume() {
-        viewModel.onViewResume()
         super.onResume()
+        viewModel.onViewResume()
     }
 
     override fun onDestroyView() {

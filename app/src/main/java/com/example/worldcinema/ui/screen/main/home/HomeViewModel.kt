@@ -135,9 +135,15 @@ class HomeViewModel(
 
     private fun loadData() {
         loadHistory()
-        loadMovies(MovieFilter.InTrend, _trendMovies, _trendMoviesPosters)
-        loadMovies(MovieFilter.New, _newMovies, _newMoviesPosters)
-        loadMovies(MovieFilter.ForMe, _recommendedMovies, _recommendedMoviesPosters)
+        viewModelScope.launch(Dispatchers.IO) {
+            loadMovies(MovieFilter.InTrend, _trendMovies, _trendMoviesPosters)
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            loadMovies(MovieFilter.New, _newMovies, _newMoviesPosters)
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            loadMovies(MovieFilter.ForMe, _recommendedMovies, _recommendedMoviesPosters)
+        }
     }
 
     private fun dataLoaded() {
@@ -183,26 +189,24 @@ class HomeViewModel(
         }
     }
 
-    private fun loadMovies(
+    private suspend fun loadMovies(
         filter: MovieFilter,
         movies: MutableLiveData<MutableList<Movie>>,
         posters: MutableLiveData<MutableList<MoviePoster>>
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getMoviesUseCase.execute(filter).collect { result ->
-                result.onSuccess {
-                    if (filter != MovieFilter.LastView)
-                        dataLoaded()
-                    val data = MovieMapper.mapMovies(it)
-                    movies.postValue(data)
-                    if (filter == MovieFilter.New || filter == MovieFilter.LastView)
-                        posters.postValue(MovieToPosterMapper.mapMoviesImagesToPosters(data))
-                    else
-                        posters.postValue(MovieToPosterMapper.mapMovies(data))
-                }.onFailure {
-                    // TODO(Отобразить ошибку загрузки фильмов)
-                    Log.e("MOVIES LOADING ERROR", it.message.toString())
-                }
+        getMoviesUseCase.execute(filter).collect { result ->
+            result.onSuccess {
+                if (filter != MovieFilter.LastView)
+                    dataLoaded()
+                val data = MovieMapper.mapMovies(it)
+                movies.postValue(data)
+                if (filter == MovieFilter.New || filter == MovieFilter.LastView)
+                    posters.postValue(MovieToPosterMapper.mapMoviesImagesToPosters(data))
+                else
+                    posters.postValue(MovieToPosterMapper.mapMovies(data))
+            }.onFailure {
+                // TODO(Отобразить ошибку загрузки фильмов)
+                Log.e("MOVIES LOADING ERROR", it.message.toString())
             }
         }
     }

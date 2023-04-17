@@ -79,6 +79,10 @@ class EpisodeActivity : AppCompatActivity() {
                 binding.EpisodeCollectionsRecyclerView.visibility = View.GONE
         }
 
+        binding.imageViewEpisodeLike.setOnClickListener {
+            viewModel.like()
+        }
+
         viewModel.movie.observe(this) { movie ->
             if (movie != null) {
                 binding.textViewEpisodeDescriptionText.text = movie.description
