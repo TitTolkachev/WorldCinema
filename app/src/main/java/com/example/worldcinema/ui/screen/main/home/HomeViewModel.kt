@@ -17,8 +17,7 @@ import com.example.worldcinema.ui.helper.MovieToPosterMapper
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MovieEpisode
 import com.example.worldcinema.ui.model.MoviePoster
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class HomeViewModel(
     private val favouritesCollectionName: String,
@@ -72,7 +71,7 @@ class HomeViewModel(
     val isLoading: LiveData<Boolean> = _isLoading
 
     private var dataLoadedCounter = 0
-    private val requestsCount = 6
+    private val requestsCount = 5
 
     init {
         _isLoading.value = true
@@ -80,6 +79,28 @@ class HomeViewModel(
         checkIsFirstEnter()
         loadCover()
         loadData()
+    }
+
+    fun loadHistory() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            loadMovies(MovieFilter.LastView, _lastViewMovies, _lastViewMoviesPosters)
+
+            getHistoryUseCase.execute().collect { result ->
+                result.onSuccess {
+                    val lastEpisode = it.last()
+                    val lastMovie = getMovie(lastEpisode.movieId)
+                    if (lastMovie != null) {
+                        _lastViewMovie.postValue(lastMovie!!)
+                        loadLastMovieEpisodes(lastMovie, lastEpisode)
+                    }
+                }.onFailure {
+                    dataLoaded()
+                    // TODO(Отобразить ошибку загрузки фильмов)
+                    Log.e("MOVIES LOADING ERROR", it.message.toString())
+                }
+            }
+        }
     }
 
     private fun checkIsFirstEnter() {
@@ -113,13 +134,10 @@ class HomeViewModel(
     }
 
     private fun loadData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            loadMovies(MovieFilter.LastView, _lastViewMovies, _lastViewMoviesPosters)
-            loadMovies(MovieFilter.InTrend, _trendMovies, _trendMoviesPosters)
-            loadMovies(MovieFilter.New, _newMovies, _newMoviesPosters)
-            loadMovies(MovieFilter.ForMe, _recommendedMovies, _recommendedMoviesPosters)
-            loadHistory()
-        }
+        loadHistory()
+        loadMovies(MovieFilter.InTrend, _trendMovies, _trendMoviesPosters)
+        loadMovies(MovieFilter.New, _newMovies, _newMoviesPosters)
+        loadMovies(MovieFilter.ForMe, _recommendedMovies, _recommendedMoviesPosters)
     }
 
     private fun dataLoaded() {
@@ -136,25 +154,6 @@ class HomeViewModel(
                 }.onFailure {
                     // TODO(Обработать ошибку)
                     Log.e("GET COVER ERROR", it.message.toString())
-                }
-            }
-        }
-    }
-
-    private suspend fun loadHistory() {
-        viewModelScope.launch(Dispatchers.IO) {
-            getHistoryUseCase.execute().collect { result ->
-                result.onSuccess {
-                    val lastEpisode = it.last()
-                    val lastMovie = getMovie(lastEpisode.movieId)
-                    if (lastMovie != null) {
-                        _lastViewMovie.postValue(lastMovie!!)
-                        loadLastMovieEpisodes(lastMovie, lastEpisode)
-                    }
-                }.onFailure {
-                    dataLoaded()
-                    // TODO(Отобразить ошибку загрузки фильмов)
-                    Log.e("MOVIES LOADING ERROR", it.message.toString())
                 }
             }
         }
@@ -184,28 +183,31 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun loadMovies(
+    private fun loadMovies(
         filter: MovieFilter,
         movies: MutableLiveData<MutableList<Movie>>,
         posters: MutableLiveData<MutableList<MoviePoster>>
     ) {
-        getMoviesUseCase.execute(filter).collect { result ->
-            result.onSuccess {
-                dataLoaded()
-                val data = MovieMapper.mapMovies(it)
-                movies.postValue(data)
-                if (filter == MovieFilter.New || filter == MovieFilter.LastView)
-                    posters.postValue(MovieToPosterMapper.mapMoviesImagesToPosters(data))
-                else
-                    posters.postValue(MovieToPosterMapper.mapMovies(data))
-            }.onFailure {
-                // TODO(Отобразить ошибку загрузки фильмов)
-                Log.e("MOVIES LOADING ERROR", it.message.toString())
+        viewModelScope.launch(Dispatchers.IO) {
+            getMoviesUseCase.execute(filter).collect { result ->
+                result.onSuccess {
+                    if (filter != MovieFilter.LastView)
+                        dataLoaded()
+                    val data = MovieMapper.mapMovies(it)
+                    movies.postValue(data)
+                    if (filter == MovieFilter.New || filter == MovieFilter.LastView)
+                        posters.postValue(MovieToPosterMapper.mapMoviesImagesToPosters(data))
+                    else
+                        posters.postValue(MovieToPosterMapper.mapMovies(data))
+                }.onFailure {
+                    // TODO(Отобразить ошибку загрузки фильмов)
+                    Log.e("MOVIES LOADING ERROR", it.message.toString())
+                }
             }
         }
     }
 
-    fun getMovieYears(episodes: List<MovieEpisode>): String {
+    private fun getMovieYears(episodes: List<MovieEpisode>): String {
         var min = episodes[0].year
         var max = episodes[0].year
         for (e in episodes) {

@@ -207,6 +207,11 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        viewModel.loadHistory()
+        super.onResume()
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()

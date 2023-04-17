@@ -58,7 +58,7 @@ class EpisodeViewModel(
             time = _episode.value!!.runtime
 
         GlobalScope.launch(Dispatchers.IO) {
-            saveEpisodeTimeUseCase.execute(_episode.value!!.episodeId, time)
+            saveEpisodeTimeUseCase.execute(_episode.value!!.episodeId, time).collect {}
         }
     }
 
@@ -66,7 +66,7 @@ class EpisodeViewModel(
     fun addMovieToCollection(collectionId: String) {
         if (_movie.value != null) {
             GlobalScope.launch(Dispatchers.IO) {
-                addMovieToCollectionUseCase.execute(collectionId, _movie.value!!.movieId)
+                addMovieToCollectionUseCase.execute(collectionId, _movie.value!!.movieId).collect {}
             }
         }
     }
