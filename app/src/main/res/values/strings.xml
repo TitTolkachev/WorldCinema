@@ -82,4 +82,9 @@
 
     <!-- Dialog Fragment Data -->
     <string name="dialog_data_for_profile_avatar">profileAvatar</string>
+
+    <!-- Alert Dialog -->
+    <string name="alert_dialog_retry_btn_text"><b>Попробовать снова</b></string>
+    <string name="alert_dialog_exit_btn_text"><b>Выйти</b></string>
+    <string name="alert_dialog_error_text">Ошибка\nзагрузки данных</string>
 </resources>

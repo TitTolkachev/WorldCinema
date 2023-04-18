@@ -31,4 +31,5 @@
     <color name="chat_default_message_background_color">#2E2B2A</color>
 
     <color name="profile_dialog_fragment_background_color">#2E1D18</color>
+    <color name="alert_dialog_fragment_background_color">#2E1D18</color>
 </resources>
