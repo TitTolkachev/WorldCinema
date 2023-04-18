@@ -8,10 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityChatBinding
 import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.discussions.chat.adapter.ChatAdapter
 
-class ChatActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
+class ChatActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener,
+    AlertDialog.IAlertDialogListener {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var viewModel: ChatViewModel
@@ -34,6 +37,28 @@ class ChatActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
             finish()
         }
 
+        viewModel.chatName.observe(this) {
+            binding.textViewChatTitle.text = it
+        }
+
+        viewModel.chatData.observe(this) {
+            if (it != null) {
+                viewModel.newData()
+                onDataLoaded()
+            }
+        }
+
+        viewModel.showAlertDialog.observe(this) {
+            if (it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
+            }
+        }
+
+        setContentView(binding.root)
+    }
+
+    private fun onDataLoaded() {
+
         binding.imageButtonSendMessage.setOnClickListener {
             if (binding.chatMessageInput.text.toString().isNotEmpty()) {
                 viewModel.sendMessage(binding.chatMessageInput.text.toString())
@@ -41,17 +66,7 @@ class ChatActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
             }
         }
 
-        viewModel.chatData.observe(this) {
-            viewModel.newData()
-        }
-
-        viewModel.chatName.observe(this) {
-            binding.textViewChatTitle.text = it
-        }
-
         initChatAdapter()
-
-        setContentView(binding.root)
     }
 
     private fun initChatAdapter() {
@@ -92,5 +107,13 @@ class ChatActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
                     or Intent.FLAG_ACTIVITY_NEW_TASK
         )
         startActivity(intent)
+    }
+
+    override fun alertDialogRetry() {
+        viewModel.reload()
+    }
+
+    override fun onAlertDialogDismiss() {
+        viewModel.alertShowed()
     }
 }

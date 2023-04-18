@@ -9,6 +9,7 @@ import com.example.worldcinema.domain.usecase.network.GetCollectionsUseCase
 import com.example.worldcinema.domain.usecase.network.GetEpisodeTimeUseCase
 import com.example.worldcinema.domain.usecase.network.SaveEpisodeTimeUseCase
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
+import com.example.worldcinema.ui.dialog.AlertType
 import com.example.worldcinema.ui.helper.CollectionMapper
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MovieEpisode
@@ -46,6 +47,13 @@ class EpisodeViewModel(
         MutableLiveData()
     val episodeCollections: LiveData<MutableList<UsersCollection>> = _episodeCollections
 
+    // Alert
+    private val _showAlertDialog = MutableLiveData(false)
+    val showAlertDialog: LiveData<Boolean> = _showAlertDialog
+
+    private val _alertType = MutableLiveData(AlertType.DEFAULT)
+    val alertType: LiveData<AlertType> = _alertType
+
     init {
         loadEpisodeTime()
         loadCollections()
@@ -80,6 +88,8 @@ class EpisodeViewModel(
             getCollectionsUseCase.execute().collect { result ->
                 result.onSuccess {
                     _episodeCollections.postValue(CollectionMapper.mapCollections(it, listOf()))
+                }.onFailure {
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
@@ -94,9 +104,26 @@ class EpisodeViewModel(
                     else
                         _episodeTime.postValue(it)
                 }.onFailure {
-                    // TODO(Показать ошибку)
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
+    }
+
+    fun reload() {
+        loadEpisodeTime()
+        loadCollections()
+    }
+
+    private fun showAlert(alert: AlertType) {
+        if (_showAlertDialog.value != true) {
+            _alertType.postValue(alert)
+            _showAlertDialog.postValue(true)
+        }
+    }
+
+    fun alertShowed() {
+        _showAlertDialog.value = false
+        _alertType.value = AlertType.DEFAULT
     }
 }

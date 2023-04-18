@@ -67,14 +67,12 @@ class HomeViewModel(
     private val _lastViewMovieYears = MutableLiveData("")
     val lastViewMovieYears: LiveData<String> = _lastViewMovieYears
 
-
     // Loading
     private val _isLoading = MutableLiveData(true)
     val isLoading: LiveData<Boolean> = _isLoading
 
     private var dataLoadedCounter = 0
     private val requestsCount = 5
-
 
     // Alert
     private val _showAlertDialog = MutableLiveData(false)

@@ -1,6 +1,5 @@
 package com.example.worldcinema.data.network.web_sockets
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.worldcinema.data.network.web_sockets.WebServicesProvider.Companion.NORMAL_CLOSURE_STATUS
 import kotlinx.coroutines.*
@@ -14,14 +13,12 @@ class ChatWebSocketListener : WebSocketListener() {
 
     val chat = MutableLiveData<List<ChatMessageDto>>(listOf())
 
-    override fun onOpen(webSocket: WebSocket, response: Response) {
-
-    }
+    override fun onOpen(webSocket: WebSocket, response: Response) {}
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onMessage(webSocket: WebSocket, text: String) {
         GlobalScope.launch(Dispatchers.Main) {
-            Log.d("WEB SOCKET DATA RECEIVED", text)
+            //Log.d("WEB SOCKET DATA RECEIVED", text)
             val data = chat.value?.toMutableList()
             data?.add(Json.decodeFromString(text))
             chat.value = data?.toList()
@@ -35,6 +32,6 @@ class ChatWebSocketListener : WebSocketListener() {
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         chat.postValue(listOf())
-        Log.e("WEB SOCKET CONNECTION ERROR", t.message.toString())
+        //Log.e("WEB SOCKET CONNECTION ERROR", t.message.toString())
     }
 }

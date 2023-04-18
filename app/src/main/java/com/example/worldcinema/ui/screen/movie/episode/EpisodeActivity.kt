@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityEpisodeBinding
 import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MovieEpisode
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
@@ -23,7 +25,8 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.StyledPlayerView
 
-class EpisodeActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
+class EpisodeActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener,
+    AlertDialog.IAlertDialogListener {
 
     private var _binding: ActivityEpisodeBinding? = null
     private val binding get() = _binding!!
@@ -60,6 +63,12 @@ class EpisodeActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListene
                 intentMovieYears
             )
         )[EpisodeViewModel::class.java]
+
+        viewModel.showAlertDialog.observe(this) {
+            if (it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
+            }
+        }
 
         binding.imageButtonEpisodeArrowBack.setOnClickListener {
             finish()
@@ -196,5 +205,13 @@ class EpisodeActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListene
                     or Intent.FLAG_ACTIVITY_NEW_TASK
         )
         startActivity(intent)
+    }
+
+    override fun alertDialogRetry() {
+        viewModel.reload()
+    }
+
+    override fun onAlertDialogDismiss() {
+        viewModel.alertShowed()
     }
 }

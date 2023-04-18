@@ -15,6 +15,8 @@ import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityMovieBinding
 import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.model.MovieEpisode
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
@@ -23,7 +25,8 @@ import com.example.worldcinema.ui.screen.movie.movie.adapter.IMovieEpisodeAction
 import com.example.worldcinema.ui.screen.movie.movie.adapter.MovieEpisodesAdapter
 import com.example.worldcinema.ui.screen.movie.movie.adapter.MovieImagesAdapter
 
-class MovieActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
+class MovieActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener,
+    AlertDialog.IAlertDialogListener {
 
     private var _binding: ActivityMovieBinding? = null
     private val binding get() = _binding!!
@@ -70,6 +73,12 @@ class MovieActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener 
                 binding.movieContent.visibility = View.VISIBLE
                 binding.progressBarMovie.visibility = View.GONE
                 onMovieDataLoaded(layoutInflater)
+            }
+        }
+
+        viewModel.showAlertDialog.observe(this) {
+            if (it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
             }
         }
 
@@ -218,5 +227,13 @@ class MovieActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener 
                     or Intent.FLAG_ACTIVITY_NEW_TASK
         )
         startActivity(intent)
+    }
+
+    override fun alertDialogRetry() {
+        viewModel.reload()
+    }
+
+    override fun onAlertDialogDismiss() {
+        viewModel.alertShowed()
     }
 }

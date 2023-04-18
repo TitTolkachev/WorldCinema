@@ -7,6 +7,7 @@ import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
 class WebServicesProvider(
@@ -26,6 +27,7 @@ class WebServicesProvider(
         .readTimeout(20, TimeUnit.SECONDS)
         .connectTimeout(20, TimeUnit.SECONDS)
         .hostnameVerifier { _, _ -> true }
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .addInterceptor(AuthInterceptor(useCases.getTokenFromLocalStorageUseCase))
         .authenticator(
             TokenAuthenticator(

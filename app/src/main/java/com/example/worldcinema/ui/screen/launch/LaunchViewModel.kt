@@ -23,6 +23,7 @@ class LaunchViewModel(
     private val _navigateToSignInScreen: MutableLiveData<Boolean> =
         MutableLiveData(false)
     val navigateToSignInScreen: LiveData<Boolean> = _navigateToSignInScreen
+
     fun isEnterFirst(): Boolean {
         return getFavouritesCollectionIdUseCase.execute().isEmpty()
     }

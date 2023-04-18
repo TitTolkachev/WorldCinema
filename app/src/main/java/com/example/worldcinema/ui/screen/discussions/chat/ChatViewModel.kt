@@ -1,12 +1,12 @@
 package com.example.worldcinema.ui.screen.discussions.chat
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.worldcinema.domain.usecase.network.GetChatInfoUseCase
 import com.example.worldcinema.domain.usecase.network.GetUserProfileUseCase
 import com.example.worldcinema.domain.usecase.network.web_sockets.GetChatDataUseCase
 import com.example.worldcinema.domain.usecase.network.web_sockets.SendChatMessageUseCase
 import com.example.worldcinema.domain.usecase.network.web_sockets.StopChatConnectionUseCase
+import com.example.worldcinema.ui.dialog.AlertType
 import com.example.worldcinema.ui.helper.ChatDataToMessagesMapper
 import com.example.worldcinema.ui.model.Message
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +34,12 @@ class ChatViewModel(
         MutableLiveData("")
     val chatName: LiveData<String> = _chatName
 
+    // Alert
+    private val _showAlertDialog = MutableLiveData(false)
+    val showAlertDialog: LiveData<Boolean> = _showAlertDialog
+
+    private val _alertType = MutableLiveData(AlertType.DEFAULT)
+    val alertType: LiveData<AlertType> = _alertType
 
     init {
         loadChatName()
@@ -46,8 +52,7 @@ class ChatViewModel(
                 result.onSuccess {
                     _userId.postValue(it.userId)
                 }.onFailure {
-                    // TODO(Показать ошибку)
-                    Log.e("PROFILE LOADING ERROR", it.message.toString())
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
@@ -59,8 +64,7 @@ class ChatViewModel(
                 result.onSuccess {
                     _chatName.postValue(it)
                 }.onFailure {
-                    // TODO(Показать ошибку)
-                    Log.e("CHAT NAME ERROR", it.message.toString())
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
@@ -77,5 +81,22 @@ class ChatViewModel(
     fun sendMessage(message: String) {
         if (message.trim().isNotEmpty())
             sendChatMessageUseCase.execute(message)
+    }
+
+    fun reload() {
+        loadChatName()
+        loadUserProfile()
+    }
+
+    private fun showAlert(alert: AlertType) {
+        if (_showAlertDialog.value != true) {
+            _alertType.postValue(alert)
+            _showAlertDialog.postValue(true)
+        }
+    }
+
+    fun alertShowed() {
+        _showAlertDialog.value = false
+        _alertType.value = AlertType.DEFAULT
     }
 }

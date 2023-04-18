@@ -1,6 +1,5 @@
 package com.example.worldcinema.ui.screen.movie.movie
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.R
 import com.example.worldcinema.domain.usecase.network.GetEpisodesUseCase
 import com.example.worldcinema.domain.usecase.network.GetMoviesInCollectionUseCase
+import com.example.worldcinema.ui.dialog.AlertType
 import com.example.worldcinema.ui.helper.EpisodeMapper
 import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.model.Movie
@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieViewModel(
-    movie: Movie?,
+    private val movieFromFactory: Movie?,
     private val movieId: String,
     private val collectionId: String,
     private val getEpisodesUseCase: GetEpisodesUseCase,
@@ -37,20 +37,27 @@ class MovieViewModel(
         MutableLiveData()
     val movieAge: LiveData<String> = _movieAge
 
-    private val _isMovieDataLoading = MutableLiveData(movie == null)
+    private val _isMovieDataLoading = MutableLiveData(movieFromFactory == null)
     val isMovieDataLoading: LiveData<Boolean> = _isMovieDataLoading
 
     private val _isEpisodesDataLoading = MutableLiveData(true)
     val isEpisodesDataLoading: LiveData<Boolean> = _isEpisodesDataLoading
 
+    // Alert
+    private val _showAlertDialog = MutableLiveData(false)
+    val showAlertDialog: LiveData<Boolean> = _showAlertDialog
+
+    private val _alertType = MutableLiveData(AlertType.DEFAULT)
+    val alertType: LiveData<AlertType> = _alertType
+
     init {
-        if (movie == null) {
+        if (movieFromFactory == null) {
             loadMovieAndEpisodes()
         } else {
-            _movie.value = movie!!
+            _movie.value = movieFromFactory!!
             _movieImages.value = _movie.value?.imageUrls
             _movieAge.value = _movie.value?.age
-            loadEpisodes(movie.movieId)
+            loadEpisodes(movieFromFactory.movieId)
         }
     }
 
@@ -112,8 +119,7 @@ class MovieViewModel(
                     _movieEpisodes.postValue(EpisodeMapper.mapEpisodes(it))
                     episodesDataLoaded()
                 }.onFailure {
-                    // TODO(Показать ошибку)
-                    Log.e("EPISODE LOADING ERROR", it.message.toString())
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
@@ -123,7 +129,7 @@ class MovieViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            getMoviesInCollectionUseCase.execute(collectionId).collect{result->
+            getMoviesInCollectionUseCase.execute(collectionId).collect { result ->
                 result.onSuccess { movieList ->
                     val loadedMovie = movieList.single { it.movieId == movieId }
                     _movie.postValue(MovieMapper.mapMovie(loadedMovie))
@@ -131,11 +137,37 @@ class MovieViewModel(
                     _movieAge.postValue(loadedMovie.age)
                     movieDataLoaded()
                 }.onFailure {
-                    // TODO(Показать ошибку!!!!)
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
 
         loadEpisodes(movieId)
+    }
+
+    fun reload() {
+        _isMovieDataLoading.value = movieFromFactory == null
+        _isEpisodesDataLoading.value = true
+
+        if (movieFromFactory == null) {
+            loadMovieAndEpisodes()
+        } else {
+            _movie.value = movieFromFactory!!
+            _movieImages.value = _movie.value?.imageUrls
+            _movieAge.value = _movie.value?.age
+            loadEpisodes(movieFromFactory.movieId)
+        }
+    }
+
+    private fun showAlert(alert: AlertType) {
+        if (_showAlertDialog.value != true) {
+            _alertType.postValue(alert)
+            _showAlertDialog.postValue(true)
+        }
+    }
+
+    fun alertShowed() {
+        _showAlertDialog.value = false
+        _alertType.value = AlertType.DEFAULT
     }
 }

@@ -3,17 +3,21 @@ package com.example.worldcinema.ui.screen.discussions.discussions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityDiscussionsBinding
 import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
 import com.example.worldcinema.ui.screen.discussions.discussions.adapter.DiscussionAdapter
 import com.example.worldcinema.ui.screen.discussions.discussions.adapter.IDiscussionActionListener
 
-class DiscussionsActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
+class DiscussionsActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener,
+    AlertDialog.IAlertDialogListener {
 
     private lateinit var binding: ActivityDiscussionsBinding
     private lateinit var viewModel: DiscussionsViewModel
@@ -33,6 +37,28 @@ class DiscussionsActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitLis
             finish()
         }
 
+        viewModel.isLoading.observe(this) {
+            if (it) {
+                binding.progressBarDiscussions.visibility = View.VISIBLE
+                binding.RecyclerViewDiscussions.visibility = View.GONE
+            } else {
+                binding.progressBarDiscussions.visibility = View.GONE
+                binding.RecyclerViewDiscussions.visibility = View.VISIBLE
+                onDataLoaded()
+            }
+        }
+
+        viewModel.showAlertDialog.observe(this) {
+            if (it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
+            }
+        }
+
+        setContentView(binding.root)
+    }
+
+    private fun onDataLoaded() {
+
         viewModel.showChat.observe(this) {
             if (it) {
                 val intent = Intent(this, ChatActivity::class.java)
@@ -46,8 +72,6 @@ class DiscussionsActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitLis
         }
 
         initDiscussionsAdapter()
-
-        setContentView(binding.root)
     }
 
     private fun initDiscussionsAdapter() {
@@ -75,5 +99,13 @@ class DiscussionsActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitLis
                     or Intent.FLAG_ACTIVITY_NEW_TASK
         )
         startActivity(intent)
+    }
+
+    override fun alertDialogRetry() {
+        viewModel.reload()
+    }
+
+    override fun onAlertDialogDismiss() {
+        viewModel.alertShowed()
     }
 }
