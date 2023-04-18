@@ -7,10 +7,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityUpdateCollectionBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
 import com.example.worldcinema.ui.model.UsersCollection
+import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.collection.icon.IconCollectionActivity
 
-class UpdateCollectionActivity : AppCompatActivity() {
+class UpdateCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
 
     private lateinit var binding: ActivityUpdateCollectionBinding
     private lateinit var viewModel: UpdateCollectionViewModel
@@ -59,6 +61,16 @@ class UpdateCollectionActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+    }
+
+    override fun alertDialogExit() {
+        val intent = Intent(this, SignInActivity::class.java)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+        startActivity(intent)
     }
 
     private fun setIcon(index: Int) {

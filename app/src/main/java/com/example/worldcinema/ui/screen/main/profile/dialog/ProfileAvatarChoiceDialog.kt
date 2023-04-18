@@ -26,11 +26,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.DialogFragmentProfilePictureChoiceBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProfileAvatarChoiceDialog : DialogFragment() {
+class ProfileAvatarChoiceDialog : DialogFragment(), AlertDialog.IAlertDialogListener {
 
     private lateinit var binding: DialogFragmentProfilePictureChoiceBinding
     private lateinit var viewModel: ProfileAvatarDialogViewModel
@@ -69,6 +72,12 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
             "com.example.worldcinema.fileprovider",
             file
         )
+
+        viewModel.showAlertDialog.observe(viewLifecycleOwner) {
+            if(it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
+            }
+        }
 
         return binding.root
     }
@@ -195,7 +204,7 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
             if (isGranted) {
                 getCameraImageActivityResultLauncher.launch(imageUri)
             } else {
-                // TODO(Ошибка, не дал права)
+                viewModel.showAlert(AlertType.NO_PERMISSIONS)
             }
         }
 
@@ -209,6 +218,14 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
             ".jpg",
             storageDir
         )
+    }
+
+    override fun alertDialogRetry() {
+        dialog?.dismiss()
+    }
+
+    override fun onAlertDialogDismiss() {
+        viewModel.alertShowed()
     }
 
     companion object {

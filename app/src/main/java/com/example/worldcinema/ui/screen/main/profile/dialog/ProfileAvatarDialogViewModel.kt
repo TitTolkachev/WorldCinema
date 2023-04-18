@@ -1,12 +1,12 @@
 package com.example.worldcinema.ui.screen.main.profile.dialog
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.usecase.network.SaveUserAvatarUseCase
+import com.example.worldcinema.ui.dialog.AlertType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,6 +23,14 @@ class ProfileAvatarDialogViewModel(
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
+
+    // Alert
+    private val _showAlertDialog = MutableLiveData(false)
+    val showAlertDialog: LiveData<Boolean> = _showAlertDialog
+
+    private val _alertType = MutableLiveData(AlertType.DEFAULT)
+    val alertType: LiveData<AlertType> = _alertType
+
     fun sendAvatarImage(image: Bitmap?) {
         if (image != null)
             viewModelScope.launch(Dispatchers.IO) {
@@ -31,8 +39,7 @@ class ProfileAvatarDialogViewModel(
                     result.onSuccess {
                         _remoteImageChanged.postValue(true)
                     }.onFailure {
-                        // TODO(Показать ошибку, не удалось отправить аватарку)
-                        Log.e("AVATAR CHANGE IMAGE RESPONSE", it.message.toString())
+                        showAlert(AlertType.SERVER_ERROR)
                     }
                 }
                 _isLoading.postValue(false)
@@ -41,5 +48,17 @@ class ProfileAvatarDialogViewModel(
 
     fun profileReloaded() {
         _closeDialog.postValue(true)
+    }
+
+    fun showAlert(alert: AlertType) {
+        if (_showAlertDialog.value != true) {
+            _alertType.postValue(alert)
+            _showAlertDialog.postValue(true)
+        }
+    }
+
+    fun alertShowed() {
+        _showAlertDialog.value = false
+        _alertType.value = AlertType.DEFAULT
     }
 }

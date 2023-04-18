@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.model.CollectionIcon
 import com.example.worldcinema.domain.usecase.network.GetCollectionsUseCase
 import com.example.worldcinema.domain.usecase.storage.GetCollectionsIconsUseCase
+import com.example.worldcinema.ui.dialog.AlertType
 import com.example.worldcinema.ui.helper.CollectionMapper
 import com.example.worldcinema.ui.model.UsersCollection
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +36,14 @@ class CollectionsViewModel(
     private var dataLoadedCounter = 0
     private val requestsCount = 1
 
+
+    // Alert
+    private val _showAlertDialog = MutableLiveData(false)
+    val showAlertDialog: LiveData<Boolean> = _showAlertDialog
+
+    private val _alertType = MutableLiveData(AlertType.DEFAULT)
+    val alertType: LiveData<AlertType> = _alertType
+
     init {
         _isLoading.value = true
         dataLoadedCounter = 0
@@ -62,7 +71,7 @@ class CollectionsViewModel(
                     dataLoaded()
                     _collections.postValue(CollectionMapper.mapCollections(it, icons))
                 }.onFailure {
-                    // TODO(Показать ошибку)
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
@@ -71,5 +80,23 @@ class CollectionsViewModel(
     private fun dataLoaded() {
         if(++dataLoadedCounter == requestsCount)
             _isLoading.postValue(false)
+    }
+
+    fun reload() {
+        _isLoading.value = true
+        dataLoadedCounter = 0
+        loadData()
+    }
+
+    fun showAlert(alert: AlertType) {
+        if (_showAlertDialog.value != true) {
+            _alertType.postValue(alert)
+            _showAlertDialog.postValue(true)
+        }
+    }
+
+    fun alertShowed() {
+        _showAlertDialog.value = false
+        _alertType.value = AlertType.DEFAULT
     }
 }

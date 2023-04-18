@@ -1,14 +1,17 @@
 package com.example.worldcinema.ui.screen.discussions.chat
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityChatBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.discussions.chat.adapter.ChatAdapter
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var viewModel: ChatViewModel
@@ -79,5 +82,15 @@ class ChatActivity : AppCompatActivity() {
     override fun onDestroy() {
         viewModel.onViewDestroyed()
         super.onDestroy()
+    }
+
+    override fun alertDialogExit() {
+        val intent = Intent(this, SignInActivity::class.java)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+        startActivity(intent)
     }
 }

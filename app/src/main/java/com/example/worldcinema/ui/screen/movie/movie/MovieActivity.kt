@@ -14,14 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityMovieBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
 import com.example.worldcinema.ui.model.MovieEpisode
+import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
 import com.example.worldcinema.ui.screen.movie.episode.EpisodeActivity
 import com.example.worldcinema.ui.screen.movie.movie.adapter.IMovieEpisodeActionListener
 import com.example.worldcinema.ui.screen.movie.movie.adapter.MovieEpisodesAdapter
 import com.example.worldcinema.ui.screen.movie.movie.adapter.MovieImagesAdapter
 
-class MovieActivity : AppCompatActivity() {
+class MovieActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
 
     private var _binding: ActivityMovieBinding? = null
     private val binding get() = _binding!!
@@ -206,5 +208,15 @@ class MovieActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun alertDialogExit() {
+        val intent = Intent(this, SignInActivity::class.java)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+        startActivity(intent)
     }
 }

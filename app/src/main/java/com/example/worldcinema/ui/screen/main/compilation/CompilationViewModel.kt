@@ -1,6 +1,5 @@
 package com.example.worldcinema.ui.screen.main.compilation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.usecase.model.MovieFilter
 import com.example.worldcinema.domain.usecase.network.*
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
+import com.example.worldcinema.ui.dialog.AlertType
 import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.helper.MovieToCardMapper
 import com.example.worldcinema.ui.model.Card
@@ -49,6 +49,14 @@ class CompilationViewModel(
     private var dataLoadedCounter = 0
     private val requestsCount = 1
 
+
+    // Alert
+    private val _showAlertDialog = MutableLiveData(false)
+    val showAlertDialog: LiveData<Boolean> = _showAlertDialog
+
+    private val _alertType = MutableLiveData(AlertType.DEFAULT)
+    val alertType: LiveData<AlertType> = _alertType
+
     init {
         _isLoading.value = true
         dataLoadedCounter = 0
@@ -67,8 +75,7 @@ class CompilationViewModel(
                 movieId
             ).collect { result ->
                 result.onFailure {
-                    // TODO(Показать ошибку)
-                    Log.e("LIKE ERROR", it.message.toString())
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
@@ -90,14 +97,12 @@ class CompilationViewModel(
                 movieId
             ).collect { result ->
                 result.onFailure {
-                    // TODO(Показать ошибку)
-                    Log.e("DELETE FROM FAVOURITES ERROR", it.message.toString())
+                    showAlert(AlertType.DEFAULT)
                 }
             }
             dislikeMovieUseCase.execute(movieId).collect { result ->
                 result.onFailure {
-                    // TODO(Показать ошибку)
-                    Log.e("DISLIKE ERROR", it.message.toString())
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
@@ -141,8 +146,7 @@ class CompilationViewModel(
                         _displayedTitle.postValue(data[0].name)
                     }
                 }.onFailure {
-                    // TODO(Отобразить ошибку загрузки фильмов)
-                    Log.e("MOVIES LOADING ERROR", it.message.toString())
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
@@ -157,5 +161,23 @@ class CompilationViewModel(
         if(swipedCardsCount < _movies.value!!.size)
             return _movies.value!![swipedCardsCount]
         return null
+    }
+
+    fun reload() {
+        _isLoading.value = true
+        dataLoadedCounter = 0
+        loadData()
+    }
+
+    fun showAlert(alert: AlertType) {
+        if (_showAlertDialog.value != true) {
+            _alertType.postValue(alert)
+            _showAlertDialog.postValue(true)
+        }
+    }
+
+    fun alertShowed() {
+        _showAlertDialog.value = false
+        _alertType.value = AlertType.DEFAULT
     }
 }

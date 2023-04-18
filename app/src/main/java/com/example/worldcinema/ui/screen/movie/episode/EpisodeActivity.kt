@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityEpisodeBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
 import com.example.worldcinema.ui.model.Movie
 import com.example.worldcinema.ui.model.MovieEpisode
+import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
 import com.example.worldcinema.ui.screen.movie.episode.adapter.EpisodeCollectionsAdapter
 import com.example.worldcinema.ui.screen.movie.episode.adapter.IEpisodeCollectionActionListener
@@ -21,7 +23,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.StyledPlayerView
 
-class EpisodeActivity : AppCompatActivity() {
+class EpisodeActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
 
     private var _binding: ActivityEpisodeBinding? = null
     private val binding get() = _binding!!
@@ -184,5 +186,15 @@ class EpisodeActivity : AppCompatActivity() {
         exoPlayer.stop()
         _binding = null
         super.onDestroy()
+    }
+
+    override fun alertDialogExit() {
+        val intent = Intent(this, SignInActivity::class.java)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+        startActivity(intent)
     }
 }

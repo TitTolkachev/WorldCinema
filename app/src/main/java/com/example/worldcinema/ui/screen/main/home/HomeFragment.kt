@@ -13,11 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentHomeBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.screen.main.home.adapter.GalleryAdapter
 import com.example.worldcinema.ui.screen.main.home.adapter.IMovieActionListener
 import com.example.worldcinema.ui.screen.movie.episode.EpisodeActivity
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), AlertDialog.IAlertDialogListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -58,10 +61,17 @@ class HomeFragment : Fragment() {
             }
         }
 
+        viewModel.showAlertDialog.observe(viewLifecycleOwner) {
+            if(it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
+            }
+        }
+
         return binding.root
     }
 
     private fun onDataLoaded() {
+
         initRecyclerViews()
 
         viewModel.coverImage.observe(viewLifecycleOwner) {
@@ -84,12 +94,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.imageButton.setOnClickListener {
-            showLastViewEpisode()
+        binding.buttonHomeWatchMovie.setOnClickListener {
+            viewModel.showAlert(AlertType.BAD_FIGMA)
         }
 
-        binding.buttonHomeWatchMovie.setOnClickListener {
-            // TODO(Показать, что апишка не позваляет получить данные о фильме)
+        binding.buttonHomeSetInterenstingTags.setOnClickListener {
+            viewModel.showAlert(AlertType.BAD_API)
+        }
+
+        binding.imageButton.setOnClickListener {
+            showLastViewEpisode()
         }
     }
 
@@ -215,5 +229,13 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    override fun alertDialogRetry() {
+        viewModel.reload()
+    }
+
+    override fun onAlertDialogDismiss() {
+        viewModel.alertShowed()
     }
 }

@@ -13,10 +13,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentProfileBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.main.profile.dialog.ProfileAvatarChoiceDialog
 
-class ProfileFragment : Fragment(), ProfileAvatarChoiceDialog.IReloadListener  {
+class ProfileFragment : Fragment(), ProfileAvatarChoiceDialog.IReloadListener, AlertDialog.IAlertDialogListener  {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
@@ -44,6 +47,12 @@ class ProfileFragment : Fragment(), ProfileAvatarChoiceDialog.IReloadListener  {
                 binding.profileContent.visibility = View.VISIBLE
                 binding.progressBarProfile.visibility = View.GONE
                 onDataLoaded()
+            }
+        }
+
+        viewModel.showAlertDialog.observe(viewLifecycleOwner) {
+            if(it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
             }
         }
 
@@ -111,5 +120,13 @@ class ProfileFragment : Fragment(), ProfileAvatarChoiceDialog.IReloadListener  {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    override fun alertDialogRetry() {
+        viewModel.reload()
+    }
+
+    override fun onAlertDialogDismiss() {
+        viewModel.alertShowed()
     }
 }

@@ -1,6 +1,5 @@
 package com.example.worldcinema.ui.screen.main.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +10,7 @@ import com.example.worldcinema.domain.usecase.network.*
 import com.example.worldcinema.domain.usecase.storage.DeleteCollectionsIconsUseCase
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
+import com.example.worldcinema.ui.dialog.AlertType
 import com.example.worldcinema.ui.helper.EpisodeMapper
 import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.helper.MovieToPosterMapper
@@ -67,11 +67,21 @@ class HomeViewModel(
     private val _lastViewMovieYears = MutableLiveData("")
     val lastViewMovieYears: LiveData<String> = _lastViewMovieYears
 
+
+    // Loading
     private val _isLoading = MutableLiveData(true)
     val isLoading: LiveData<Boolean> = _isLoading
 
     private var dataLoadedCounter = 0
     private val requestsCount = 5
+
+
+    // Alert
+    private val _showAlertDialog = MutableLiveData(false)
+    val showAlertDialog: LiveData<Boolean> = _showAlertDialog
+
+    private val _alertType = MutableLiveData(AlertType.DEFAULT)
+    val alertType: LiveData<AlertType> = _alertType
 
     init {
         _isLoading.value = true
@@ -95,9 +105,8 @@ class HomeViewModel(
                         loadLastMovieEpisodes(lastMovie, lastEpisode)
                     }
                 }.onFailure {
-                    dataLoaded()
-                    // TODO(Отобразить ошибку загрузки фильмов)
-                    Log.e("MOVIES LOADING ERROR", it.message.toString())
+                    // dataLoaded()
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
@@ -119,14 +128,14 @@ class HomeViewModel(
                                     result.onSuccess {
                                         saveFavouritesCollectionIdUseCase.execute(it)
                                     }.onFailure {
-                                        // TODO(Показать ошибку)
+                                        showAlert(AlertType.DEFAULT)
                                     }
                                 }
                         } else {
                             saveFavouritesCollectionIdUseCase.execute(favouritesCollection.collectionId)
                         }
                     }.onFailure {
-                        // TODO(Показать ошибку)
+                        showAlert(AlertType.DEFAULT)
                     }
                 }
             }
@@ -158,8 +167,7 @@ class HomeViewModel(
                     dataLoaded()
                     _coverImage.postValue(it.backgroundImage)
                 }.onFailure {
-                    // TODO(Обработать ошибку)
-                    Log.e("GET COVER ERROR", it.message.toString())
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }
@@ -184,7 +192,8 @@ class HomeViewModel(
                         )
                 }
             }.onFailure {
-                dataLoaded()
+                //dataLoaded()
+                showAlert(AlertType.DEFAULT)
             }
         }
     }
@@ -205,8 +214,7 @@ class HomeViewModel(
                 else
                     posters.postValue(MovieToPosterMapper.mapMovies(data))
             }.onFailure {
-                // TODO(Отобразить ошибку загрузки фильмов)
-                Log.e("MOVIES LOADING ERROR", it.message.toString())
+                showAlert(AlertType.DEFAULT)
             }
         }
     }
@@ -243,5 +251,25 @@ class HomeViewModel(
                 return m
         }
         return null
+    }
+
+    fun reload() {
+        _isLoading.value = true
+        dataLoadedCounter = 0
+        checkIsFirstEnter()
+        loadCover()
+        loadData()
+    }
+
+    fun showAlert(alert: AlertType) {
+        if (_showAlertDialog.value != true) {
+            _alertType.postValue(alert)
+            _showAlertDialog.postValue(true)
+        }
+    }
+
+    fun alertShowed() {
+        _showAlertDialog.value = false
+        _alertType.value = AlertType.DEFAULT
     }
 }

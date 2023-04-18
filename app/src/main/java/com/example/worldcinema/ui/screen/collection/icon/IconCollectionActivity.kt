@@ -8,8 +8,10 @@ import android.widget.ImageView
 import androidx.core.view.get
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityIconCollectionBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 
-class IconCollectionActivity : AppCompatActivity() {
+class IconCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
 
     private lateinit var binding: ActivityIconCollectionBinding
 
@@ -25,6 +27,16 @@ class IconCollectionActivity : AppCompatActivity() {
         inflateIcons()
 
         setContentView(binding.root)
+    }
+
+    override fun alertDialogExit() {
+        val intent = Intent(this, SignInActivity::class.java)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+        startActivity(intent)
     }
 
     private fun inflateIcons() {

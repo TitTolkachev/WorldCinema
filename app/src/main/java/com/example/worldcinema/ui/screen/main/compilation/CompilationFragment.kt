@@ -10,10 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.worldcinema.databinding.FragmentCompilationBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.screen.main.compilation.adapter.CardAdapter
 import com.yuyakaido.android.cardstackview.*
 
-class CompilationFragment : Fragment() {
+class CompilationFragment : Fragment(), AlertDialog.IAlertDialogListener  {
 
     private var _binding: FragmentCompilationBinding? = null
     private val binding get() = _binding!!
@@ -44,6 +47,12 @@ class CompilationFragment : Fragment() {
                 binding.progressBarCompilation.visibility = View.GONE
                 binding.compilationContent.visibility = View.VISIBLE
                 onDataLoaded()
+            }
+        }
+
+        viewModel.showAlertDialog.observe(viewLifecycleOwner) {
+            if(it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
             }
         }
 
@@ -156,5 +165,13 @@ class CompilationFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    override fun alertDialogRetry() {
+        viewModel.reload()
+    }
+
+    override fun onAlertDialogDismiss() {
+        viewModel.alertShowed()
     }
 }

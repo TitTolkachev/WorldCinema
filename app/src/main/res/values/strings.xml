@@ -83,8 +83,30 @@
     <!-- Dialog Fragment Data -->
     <string name="dialog_data_for_profile_avatar">profileAvatar</string>
 
-    <!-- Alert Dialog -->
-    <string name="alert_dialog_retry_btn_text"><b>Попробовать снова</b></string>
-    <string name="alert_dialog_exit_btn_text"><b>Выйти</b></string>
+    <!-- Alert Dialog Data -->
+    <string name="alert_dialog_data_text">alertDialogText</string>
+
+    <!-- Alert Text -->
+    <string name="alert_text_empty_first_name">Пропущено поле "Имя"</string>
+    <string name="alert_text_empty_last_name">Пропущено поле "Фамилия"</string>
+    <string name="alert_text_empty_email">Пропущено поле "Email"</string>
+    <string name="alert_text_empty_password">Пропущено поле "Пароль"</string>
+    <string name="alert_text_empty_repeat_password">Пропущено поле "Повтор пароля"</string>
+    <string name="alert_text_empty_chat_message">Сообщение не может быть пустым</string>
+    <string name="alert_text_empty_collection_name">Название коллекции не должно быть пустым</string>
+    <string name="alert_text_wrong_email">Некорректный email</string>
+    <string name="alert_text_wrong_repeat_password">Пароли не совпадают</string>
+    <string name="alert_text_auth_not_success">Неверный логин или пароль</string>
+    <string name="alert_text_default">Ошибка на стороне сервера</string>
+    <string name="alert_text_bad_api">Функционал не реализован на стороне сервера (:</string>
+    <string name="alert_text_bad_figma">В тз и макете этого нет ¯\_(ツ)_/¯</string>
+    <string name="alert_text_no_permissions">У приложения недостаточно прав</string>
+
+    <!-- Alert Buttons Text -->
+    <string name="alert_button_text_ok">Ок</string>
+    <string name="alert_button_text_lol">Лол</string>
+    <string name="alert_button_text_understandable">Понятно</string>
+    <string name="alert_dialog_retry_btn_text">Попробовать снова</string>
+    <string name="alert_dialog_exit_btn_text">Выйти</string>
     <string name="alert_dialog_error_text">Ошибка\nзагрузки данных</string>
 </resources>

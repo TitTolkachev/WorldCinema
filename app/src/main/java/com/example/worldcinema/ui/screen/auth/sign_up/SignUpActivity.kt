@@ -5,10 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.databinding.ActivitySignUpBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.main.MainActivity
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
 
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var viewModel: SignUpViewModel
@@ -54,5 +55,15 @@ class SignUpActivity : AppCompatActivity() {
     override fun onResume() {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         super.onResume()
+    }
+
+    override fun alertDialogExit() {
+        val intent = Intent(this, SignInActivity::class.java)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+        startActivity(intent)
     }
 }

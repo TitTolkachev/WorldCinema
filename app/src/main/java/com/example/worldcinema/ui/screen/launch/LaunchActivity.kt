@@ -6,12 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.R
+import com.example.worldcinema.ui.dialog.AlertDialog
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.auth.sign_up.SignUpActivity
 import com.example.worldcinema.ui.screen.main.MainActivity
 
 @SuppressLint("CustomSplashScreen")
-class LaunchActivity : AppCompatActivity() {
+class LaunchActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         setTheme(R.style.Theme_WorldCinema)
@@ -43,5 +44,9 @@ class LaunchActivity : AppCompatActivity() {
 
             viewModel.checkToken()
         }
+    }
+
+    override fun alertDialogExit() {
+        finish()
     }
 }

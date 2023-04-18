@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityDiscussionsBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.discussions.chat.ChatActivity
 import com.example.worldcinema.ui.screen.discussions.discussions.adapter.DiscussionAdapter
 import com.example.worldcinema.ui.screen.discussions.discussions.adapter.IDiscussionActionListener
 
-class DiscussionsActivity : AppCompatActivity() {
+class DiscussionsActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
 
     private lateinit var binding: ActivityDiscussionsBinding
     private lateinit var viewModel: DiscussionsViewModel
@@ -63,5 +65,15 @@ class DiscussionsActivity : AppCompatActivity() {
                 adapter.data = it
             }
         }
+    }
+
+    override fun alertDialogExit() {
+        val intent = Intent(this, SignInActivity::class.java)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+        startActivity(intent)
     }
 }

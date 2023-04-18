@@ -11,11 +11,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentCollectionsBinding
+import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.model.UsersCollection
 import com.example.worldcinema.ui.screen.main.collections.adapter.CollectionsAdapter
 import com.example.worldcinema.ui.screen.main.collections.adapter.ICollectionActionListener
 
-class CollectionsFragment : Fragment() {
+class CollectionsFragment : Fragment(), AlertDialog.IAlertDialogListener {
 
     private var _binding: FragmentCollectionsBinding? = null
     private val binding get() = _binding!!
@@ -47,6 +50,12 @@ class CollectionsFragment : Fragment() {
                 binding.collectionsContent.visibility = View.VISIBLE
                 binding.progressBarCollections.visibility = View.GONE
                 onDataLoaded()
+            }
+        }
+
+        viewModel.showAlertDialog.observe(viewLifecycleOwner) {
+            if(it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
             }
         }
 
@@ -139,5 +148,13 @@ class CollectionsFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    override fun alertDialogRetry() {
+        viewModel.reload()
+    }
+
+    override fun onAlertDialogDismiss() {
+        viewModel.alertShowed()
     }
 }
