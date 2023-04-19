@@ -26,7 +26,7 @@ class HistoryRepository(useCases: AuthNetworkUseCases) : IHistoryRepository {
                 )
             }))
         } catch (e: Exception) {
-            emit(Result.failure(e))
+            emit(Result.failure(Throwable(e)))
         }
     }
 }

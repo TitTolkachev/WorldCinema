@@ -95,11 +95,11 @@ class HomeFragment : Fragment(), AlertDialog.IAlertDialogListener {
         }
 
         binding.buttonHomeWatchMovie.setOnClickListener {
-            viewModel.showAlert(AlertType.BAD_FIGMA)
+            viewModel.showAlert(AlertType.BAD_API)
         }
 
         binding.buttonHomeSetInterenstingTags.setOnClickListener {
-            viewModel.showAlert(AlertType.BAD_API)
+            viewModel.showAlert(AlertType.BAD_FIGMA)
         }
 
         binding.imageButton.setOnClickListener {

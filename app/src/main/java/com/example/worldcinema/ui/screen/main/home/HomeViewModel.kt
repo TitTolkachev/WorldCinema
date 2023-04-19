@@ -60,8 +60,8 @@ class HomeViewModel(
 
     private val _lastViewMovie = MutableLiveData<Movie>()
     val lastViewMovie: LiveData<Movie> = _lastViewMovie
-    private val _lastViewEpisode = MutableLiveData<MovieEpisode>()
-    val lastViewEpisode: LiveData<MovieEpisode> = _lastViewEpisode
+    private val _lastViewEpisode = MutableLiveData<MovieEpisode?>()
+    val lastViewEpisode: MutableLiveData<MovieEpisode?> = _lastViewEpisode
     private val _lastViewMovieEpisodesCount = MutableLiveData(0)
     val lastViewMovieEpisodesCount: LiveData<Int> = _lastViewMovieEpisodesCount
     private val _lastViewMovieYears = MutableLiveData("")
@@ -96,11 +96,16 @@ class HomeViewModel(
 
             getHistoryUseCase.execute().collect { result ->
                 result.onSuccess {
-                    val lastEpisode = it.last()
-                    val lastMovie = getMovie(lastEpisode.movieId)
-                    if (lastMovie != null) {
-                        _lastViewMovie.postValue(lastMovie!!)
-                        loadLastMovieEpisodes(lastMovie, lastEpisode)
+                    if (it.isNotEmpty()) {
+                        val lastEpisode = it.first()
+                        val lastMovie = getMovie(lastEpisode.movieId)
+                        if (lastMovie != null) {
+                            _lastViewMovie.postValue(lastMovie!!)
+                            loadLastMovieEpisodes(lastMovie, lastEpisode)
+                        }
+                    } else {
+                        dataLoaded()
+                        _lastViewEpisode.postValue(null)
                     }
                 }.onFailure {
                     // dataLoaded()
