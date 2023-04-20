@@ -81,8 +81,6 @@ class ChatActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener,
         viewModel.messages.observe(this) {
             if (it != null) {
                 adapter.data = it
-
-                // TODO(Когда приходит новое сообщение, вниз не скроллится)
                 binding.RecyclerViewChat.scrollToPosition(-1)
             }
         }
