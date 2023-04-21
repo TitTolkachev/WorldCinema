@@ -33,8 +33,12 @@ class ChatAdapter :
 
         fun bind(message: Message, shape: ChatItemShape, bottomPadding: ChatItemPadding) {
 
+            binding.chatMessageAvatarCardView.visibility = View.VISIBLE
+            binding.chatMessageCardView.visibility = View.VISIBLE
+            binding.chatMessageBackground.visibility = View.VISIBLE
+
             if (shape == ChatItemShape.ROUNDED) {
-                binding.ChatDefaultMessageConstraintLayout.setBackgroundResource(R.drawable.chat_top_default_message_card_background)
+                binding.chatMessageBackground.setBackgroundResource(R.drawable.chat_top_default_message_card_background)
             }
 
             if (bottomPadding == ChatItemPadding.EXTRA_BIG) {
@@ -84,8 +88,12 @@ class ChatAdapter :
 
         fun bind(message: Message, shape: ChatItemShape, bottomPadding: ChatItemPadding) {
 
+            binding.chatMessageAvatarCardView.visibility = View.VISIBLE
+            binding.chatMessageCardView.visibility = View.VISIBLE
+            binding.chatMessageBackground.visibility = View.VISIBLE
+
             if (shape == ChatItemShape.ROUNDED) {
-                binding.ChatUserMessageConstraintLayout.setBackgroundResource(R.drawable.chat_top_user_message_card_background)
+                binding.chatMessageBackground.setBackgroundResource(R.drawable.chat_top_user_message_card_background)
             }
 
             if (bottomPadding == ChatItemPadding.EXTRA_BIG) {
@@ -180,9 +188,6 @@ class ChatAdapter :
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-        // TODO(Нужно поменять на что-то адекватное)
-        holder.setIsRecyclable(false)
 
         when (holder.itemViewType) {
             1 -> {

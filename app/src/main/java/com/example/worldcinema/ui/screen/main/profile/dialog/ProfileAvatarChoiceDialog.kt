@@ -85,10 +85,10 @@ class ProfileAvatarChoiceDialog : DialogFragment(), AlertDialog.IAlertDialogList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.profileDialogCancelBnt.setOnClickListener {
+        binding.profileDialogCancelBtn.setOnClickListener {
             dialog?.dismiss()
         }
-        binding.profileDialogSaveBnt.setOnClickListener {
+        binding.profileDialogSaveBtn.setOnClickListener {
             if (newImageLoaded)
                 viewModel.sendAvatarImage(
                     getResizedBitmap(
@@ -101,7 +101,7 @@ class ProfileAvatarChoiceDialog : DialogFragment(), AlertDialog.IAlertDialogList
                 dialog?.dismiss()
         }
 
-        binding.profileDialogCameraBnt.setOnClickListener {
+        binding.profileDialogCameraBtn.setOnClickListener {
             when (ContextCompat.checkSelfPermission(requireContext(), CAMERA_PERMISSION)) {
                 PackageManager.PERMISSION_GRANTED -> {
                     val file = createImageFile()
@@ -115,7 +115,7 @@ class ProfileAvatarChoiceDialog : DialogFragment(), AlertDialog.IAlertDialogList
                 else -> requestPermissionLauncher.launch(CAMERA_PERMISSION)
             }
         }
-        binding.profileDialogGalleryBnt.setOnClickListener {
+        binding.profileDialogGalleryBtn.setOnClickListener {
             getGalleryImageActivityResultLauncher.launch("image/*")
         }
 

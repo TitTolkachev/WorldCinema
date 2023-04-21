@@ -14,7 +14,7 @@
         android:padding="24dp">
 
         <Button
-            android:id="@+id/profileDialogGalleryBnt"
+            android:id="@+id/profileDialogGalleryBtn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -23,13 +23,13 @@
             android:text="@string/profile_dialog_fragment_gallery_btn"
             android:textAllCaps="false"
             android:textColor="@color/orange"
-            app:layout_constraintEnd_toEndOf="@+id/profileDialogCancelBnt"
-            app:layout_constraintStart_toStartOf="@+id/profileDialogCancelBnt"
+            app:layout_constraintEnd_toEndOf="@+id/profileDialogCancelBtn"
+            app:layout_constraintStart_toStartOf="@+id/profileDialogCancelBtn"
             app:layout_constraintTop_toBottomOf="@+id/progressBarProfileDialog"
             tools:ignore="TextContrastCheck" />
 
         <Button
-            android:id="@+id/profileDialogCameraBnt"
+            android:id="@+id/profileDialogCameraBtn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -38,8 +38,8 @@
             android:text="@string/profile_dialog_fragment_camera_btn"
             android:textAllCaps="false"
             android:textColor="@color/orange"
-            app:layout_constraintEnd_toEndOf="@+id/profileDialogSaveBnt"
-            app:layout_constraintStart_toStartOf="@+id/profileDialogSaveBnt"
+            app:layout_constraintEnd_toEndOf="@+id/profileDialogSaveBtn"
+            app:layout_constraintStart_toStartOf="@+id/profileDialogSaveBtn"
             app:layout_constraintTop_toBottomOf="@+id/progressBarProfileDialog"
             tools:ignore="TextContrastCheck" />
 
@@ -80,7 +80,7 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <Button
-            android:id="@+id/profileDialogSaveBnt"
+            android:id="@+id/profileDialogSaveBtn"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -91,11 +91,11 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/profileDialogCameraBnt"
+            app:layout_constraintTop_toBottomOf="@+id/profileDialogCameraBtn"
             tools:ignore="TextContrastCheck" />
 
         <Button
-            android:id="@+id/profileDialogCancelBnt"
+            android:id="@+id/profileDialogCancelBtn"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -106,7 +106,7 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/profileDialogGalleryBnt"
+            app:layout_constraintTop_toBottomOf="@+id/profileDialogGalleryBtn"
             tools:ignore="TextContrastCheck" />
 
         <ProgressBar
@@ -116,8 +116,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:indeterminateTint="@color/orange"
-            app:layout_constraintEnd_toStartOf="@+id/profileDialogSaveBnt"
-            app:layout_constraintStart_toEndOf="@+id/profileDialogCancelBnt"
+            app:layout_constraintEnd_toStartOf="@+id/profileDialogSaveBtn"
+            app:layout_constraintStart_toEndOf="@+id/profileDialogCancelBtn"
             app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
