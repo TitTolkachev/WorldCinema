@@ -1,6 +1,7 @@
 package com.example.worldcinema.ui.screen.main.home
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.FragmentHomeBinding
 import com.example.worldcinema.ui.dialog.AlertDialog
@@ -19,6 +22,7 @@ import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.screen.main.home.adapter.GalleryAdapter
 import com.example.worldcinema.ui.screen.main.home.adapter.IMovieActionListener
 import com.example.worldcinema.ui.screen.movie.episode.EpisodeActivity
+
 
 class HomeFragment : Fragment(), AlertDialog.IAlertDialogListener {
 
@@ -62,7 +66,7 @@ class HomeFragment : Fragment(), AlertDialog.IAlertDialogListener {
         }
 
         viewModel.showAlertDialog.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
             }
         }
@@ -86,7 +90,16 @@ class HomeFragment : Fragment(), AlertDialog.IAlertDialogListener {
                 binding.imageButton.visibility = View.VISIBLE
                 binding.textView7.visibility = View.VISIBLE
                 binding.textView7.text = viewModel.lastViewMovie.value?.name ?: ""
-                Glide.with(this).load(it.preview).into(binding.imageButton)
+                Glide.with(this).load(it.preview).centerCrop().into(object :
+                    CustomTarget<Drawable>() {
+                    override fun onLoadCleared(placeholder: Drawable?) {}
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable>?
+                    ) {
+                        binding.imageButton.background = resource
+                    }
+                })
             } else {
                 binding.textView3.visibility = View.GONE
                 binding.imageButton.visibility = View.GONE

@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,24 +36,12 @@
                 android:layout_width="0dp"
                 android:layout_height="400dp"
                 android:contentDescription="@string/image_default_description"
+                android:foreground="@drawable/movie_shadow"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/test_image"
-                tools:ignore="ImageContrastCheck" />
-
-            <ImageView
-                android:id="@+id/imageViewShadow"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:contentDescription="@string/image_default_description"
-                android:scaleType="fitXY"
-                android:src="@drawable/movie_shadow"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ImageContrastCheck" />
 
             <Button
@@ -101,34 +90,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerViewTrends" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/imageButton"
                 android:layout_width="0dp"
                 android:layout_height="240dp"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/image_default_description"
                 android:foreground="@drawable/home_history_watch_btn"
                 android:foregroundGravity="center"
                 android:padding="0dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/test_image"
+                android:src="@drawable/episode_last_view_shadow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3"
                 tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
-
-            <ImageView
-                android:id="@+id/imageViewShadow2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:contentDescription="@string/image_default_description"
-                android:scaleType="fitXY"
-                android:src="@drawable/movie_shadow"
-                app:layout_constraintBottom_toBottomOf="@+id/imageButton"
-                app:layout_constraintEnd_toEndOf="@id/imageButton"
-                app:layout_constraintStart_toStartOf="@+id/imageButton"
-                app:layout_constraintTop_toTopOf="@id/imageButton" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -139,7 +115,6 @@
                 android:layout_marginBottom="16dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="@string/default_text"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/imageButton"

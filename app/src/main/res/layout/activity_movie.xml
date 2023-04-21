@@ -29,24 +29,12 @@
                 android:layout_height="400dp"
                 android:contentDescription="@string/image_default_description"
                 android:scaleType="centerCrop"
+                android:foreground="@drawable/episode_shadow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/test_image"
                 tools:ignore="ImageContrastCheck" />
-
-            <ImageView
-                android:id="@+id/imageViewMovieShadow"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:contentDescription="@string/image_default_description"
-                android:scaleType="fitXY"
-                android:src="@drawable/movie_shadow"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewMovie"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/imageViewMovie"
-                app:layout_constraintTop_toTopOf="parent" />
-
 
             <Button
                 android:id="@+id/buttonWatchMovie"
