@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.model.EpisodeView
 import com.example.worldcinema.domain.usecase.model.MovieFilter
 import com.example.worldcinema.domain.usecase.network.*
-import com.example.worldcinema.domain.usecase.storage.DeleteCollectionsIconsUseCase
-import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
-import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
+import com.example.worldcinema.domain.usecase.storage.*
 import com.example.worldcinema.ui.dialog.AlertType
 import com.example.worldcinema.ui.helper.EpisodeMapper
 import com.example.worldcinema.ui.helper.MovieMapper
@@ -29,7 +27,8 @@ class HomeViewModel(
     private val getCollectionsUseCase: GetCollectionsUseCase,
     private val deleteCollectionsIconsUseCase: DeleteCollectionsIconsUseCase,
     private val getHistoryUseCase: GetHistoryUseCase,
-    private val getEpisodesUseCase: GetEpisodesUseCase
+    private val getEpisodesUseCase: GetEpisodesUseCase,
+    private val setFirstEnterInfoUseCase: SetFirstEnterInfoUseCase
 ) : ViewModel() {
 
     private val _coverImage: MutableLiveData<String> =
@@ -116,30 +115,30 @@ class HomeViewModel(
     }
 
     private fun checkIsFirstEnter() {
-        if (getFavouritesCollectionIdUseCase.execute().isEmpty()) {
-            viewModelScope.launch(Dispatchers.IO) {
-
-                deleteCollectionsIconsUseCase.execute()
-
-                getCollectionsUseCase.execute().collect { result ->
-                    result.onSuccess { collectionListItems ->
-                        val favouritesCollection =
-                            collectionListItems.singleOrNull { el -> el.name == favouritesCollectionName }
-                        if (favouritesCollection == null) {
-                            createCollectionUseCase.execute(favouritesCollectionName)
-                                .collect { result ->
-                                    result.onSuccess {
-                                        saveFavouritesCollectionIdUseCase.execute(it)
-                                    }.onFailure {
-                                        showAlert(AlertType.DEFAULT)
-                                    }
+        setFirstEnterInfoUseCase.execute(false)
+        viewModelScope.launch(Dispatchers.IO) {
+            getCollectionsUseCase.execute().collect { result ->
+                result.onSuccess { collectionListItems ->
+                    val favouritesCollection =
+                        collectionListItems.singleOrNull { el -> el.name == favouritesCollectionName }
+                    if (favouritesCollection == null) {
+                        createCollectionUseCase.execute(favouritesCollectionName)
+                            .collect { result ->
+                                result.onSuccess {
+                                    saveFavouritesCollectionIdUseCase.execute(it)
+                                    deleteCollectionsIconsUseCase.execute()
+                                }.onFailure {
+                                    showAlert(AlertType.DEFAULT)
                                 }
-                        } else {
+                            }
+                    } else {
+                        if (getFavouritesCollectionIdUseCase.execute() != favouritesCollection.collectionId) {
+                            deleteCollectionsIconsUseCase.execute()
                             saveFavouritesCollectionIdUseCase.execute(favouritesCollection.collectionId)
                         }
-                    }.onFailure {
-                        showAlert(AlertType.DEFAULT)
                     }
+                }.onFailure {
+                    showAlert(AlertType.DEFAULT)
                 }
             }
         }

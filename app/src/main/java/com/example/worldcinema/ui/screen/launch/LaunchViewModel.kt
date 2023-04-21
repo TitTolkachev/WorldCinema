@@ -5,15 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.usecase.network.GetCoverUseCase
-import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
-import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
+import com.example.worldcinema.domain.usecase.storage.GetFirstEnterInfoUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LaunchViewModel(
     private val getCoverUseCase: GetCoverUseCase,
-    private val getFavouritesCollectionIdUseCase: GetFavouritesCollectionIdUseCase,
-    private val saveFavouritesCollectionIdUseCase: SaveFavouritesCollectionIdUseCase
+    private val getFirstEnterInfoUseCase: GetFirstEnterInfoUseCase
 ) : ViewModel() {
 
     private val _navigateToMainScreen: MutableLiveData<Boolean> =
@@ -25,7 +23,7 @@ class LaunchViewModel(
     val navigateToSignInScreen: LiveData<Boolean> = _navigateToSignInScreen
 
     fun isEnterFirst(): Boolean {
-        return getFavouritesCollectionIdUseCase.execute().isEmpty()
+        return getFirstEnterInfoUseCase.execute()
     }
 
     fun checkToken() {
@@ -34,7 +32,6 @@ class LaunchViewModel(
                 result.onSuccess {
                     _navigateToMainScreen.postValue(true)
                 }.onFailure {
-                    saveFavouritesCollectionIdUseCase.execute("")
                     _navigateToSignInScreen.postValue(true)
                 }
             }

@@ -13,6 +13,8 @@ import com.example.worldcinema.data.storage.db.CollectionIconRepository
 import com.example.worldcinema.data.storage.db.CollectionsDatabase
 import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.FavouritesCollectionStorageRepository
 import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.SharedPrefFavouritesCollectionStorage
+import com.example.worldcinema.data.storage.shared_prefs.first_enter.FirstEnterRepository
+import com.example.worldcinema.data.storage.shared_prefs.first_enter.FirstEnterStorage
 import com.example.worldcinema.data.storage.shared_prefs.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.shared_prefs.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
@@ -124,6 +126,10 @@ class HomeViewModelFactory(
         GetEpisodesUseCase(movieRepository)
     }
 
+    private val setFirstEnterInfoUseCase by lazy {
+        SetFirstEnterInfoUseCase(FirstEnterRepository(FirstEnterStorage(context)))
+    }
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return HomeViewModel(
             favouritesCollectionName,
@@ -135,7 +141,8 @@ class HomeViewModelFactory(
             getCollectionsUseCase,
             deleteCollectionsIconsUseCase,
             getHistoryUseCase,
-            getEpisodesUseCase
+            getEpisodesUseCase,
+            setFirstEnterInfoUseCase
         ) as T
     }
 }

@@ -5,16 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.data.network.requests.auth.AuthRefreshRepository
 import com.example.worldcinema.data.network.requests.cover.CoverRepository
-import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.FavouritesCollectionStorageRepository
-import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.SharedPrefFavouritesCollectionStorage
+import com.example.worldcinema.data.storage.shared_prefs.first_enter.FirstEnterRepository
+import com.example.worldcinema.data.storage.shared_prefs.first_enter.FirstEnterStorage
 import com.example.worldcinema.data.storage.shared_prefs.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.shared_prefs.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
 import com.example.worldcinema.domain.usecase.network.GetCoverUseCase
 import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
-import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
+import com.example.worldcinema.domain.usecase.storage.GetFirstEnterInfoUseCase
 import com.example.worldcinema.domain.usecase.storage.GetTokenFromLocalStorageUseCase
-import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
 
 class LaunchViewModelFactory(context: Context) : ViewModelProvider.Factory {
@@ -41,27 +40,14 @@ class LaunchViewModelFactory(context: Context) : ViewModelProvider.Factory {
         )
     }
 
-    private val getFavouritesCollectionIdUseCase by lazy {
-        GetFavouritesCollectionIdUseCase(
-            FavouritesCollectionStorageRepository(
-                SharedPrefFavouritesCollectionStorage(context)
-            )
-        )
-    }
-
-    private val saveFavouritesCollectionIdUseCase by lazy {
-        SaveFavouritesCollectionIdUseCase(
-            FavouritesCollectionStorageRepository(
-                SharedPrefFavouritesCollectionStorage(context)
-            )
-        )
+    private val getFirstEnterInfoUseCase by lazy {
+        GetFirstEnterInfoUseCase(FirstEnterRepository(FirstEnterStorage(context)))
     }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return LaunchViewModel(
             getCoverUseCase,
-            getFavouritesCollectionIdUseCase,
-            saveFavouritesCollectionIdUseCase
+            getFirstEnterInfoUseCase
         ) as T
     }
 }
