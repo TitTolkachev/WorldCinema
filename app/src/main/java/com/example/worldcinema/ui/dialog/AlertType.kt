@@ -17,6 +17,8 @@ enum class AlertType {
     AUTH_NOT_SUCCESS,
     REGISTER_NOT_SUCCESS,
 
+    COLLECTION_WITH_FAVOURITE_NAME,
+
     DEFAULT,
 
     BAD_API,

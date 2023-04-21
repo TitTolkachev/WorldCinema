@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worldcinema.domain.usecase.network.GetMoviesInCollectionUseCase
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
+import com.example.worldcinema.ui.dialog.AlertType
 import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.model.MovieInCollection
 import com.example.worldcinema.ui.model.UsersCollection
@@ -31,6 +32,13 @@ class MoviesCollectionViewModel(
     private var dataLoadedCounter = 0
     private val requestsCount = 1
 
+    // Alert
+    private val _showAlertDialog = MutableLiveData(false)
+    val showAlertDialog: LiveData<Boolean> = _showAlertDialog
+
+    private val _alertType = MutableLiveData(AlertType.DEFAULT)
+    val alertType: LiveData<AlertType> = _alertType
+
     init {
         _isLoading.value = true
         dataLoadedCounter = 0
@@ -50,10 +58,17 @@ class MoviesCollectionViewModel(
                     dataLoaded()
                     _movies.postValue(MovieMapper.mapMoviesToCollectionMovies(it))
                 }.onFailure {
-                    // TODO(Показать ошибку)
+                    _alertType.postValue(AlertType.DEFAULT)
+                    _showAlertDialog.postValue(true)
                 }
             }
         }
+    }
+
+    fun reload() {
+        _isLoading.value = true
+        dataLoadedCounter = 0
+        loadMovies()
     }
 
     private fun dataLoaded() {

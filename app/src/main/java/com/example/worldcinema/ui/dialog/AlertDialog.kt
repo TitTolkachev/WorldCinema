@@ -128,6 +128,8 @@ class AlertDialog : DialogFragment() {
             AlertType.AUTH_NOT_SUCCESS -> getString(R.string.alert_text_auth_not_success)
             AlertType.REGISTER_NOT_SUCCESS -> getString(R.string.alert_text_register_not_success)
 
+            AlertType.COLLECTION_WITH_FAVOURITE_NAME -> getString(R.string.alert_text_collection_with_favourite_name)
+
             AlertType.DEFAULT -> getString(R.string.alert_text_default)
 
             AlertType.BAD_API -> getString(R.string.alert_text_bad_api)
@@ -156,6 +158,8 @@ class AlertDialog : DialogFragment() {
 
             AlertType.AUTH_NOT_SUCCESS -> AlertDisplayType.VALIDATION
             AlertType.REGISTER_NOT_SUCCESS -> AlertDisplayType.VALIDATION
+
+            AlertType.COLLECTION_WITH_FAVOURITE_NAME -> AlertDisplayType.VALIDATION
 
             AlertType.DEFAULT -> AlertDisplayType.SERVER_ERROR
 

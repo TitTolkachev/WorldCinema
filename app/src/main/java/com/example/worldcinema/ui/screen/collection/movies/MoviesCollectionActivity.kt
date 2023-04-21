@@ -10,13 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityMoviesCollectionBinding
 import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.collection.movies.adapter.IMoviesCollectionActionListener
 import com.example.worldcinema.ui.screen.collection.movies.adapter.MoviesCollectionAdapter
 import com.example.worldcinema.ui.screen.collection.update.UpdateCollectionActivity
 import com.example.worldcinema.ui.screen.movie.movie.MovieActivity
 
-class MoviesCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
+class MoviesCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener,
+    AlertDialog.IAlertDialogListener {
 
     private lateinit var binding: ActivityMoviesCollectionBinding
     private lateinit var viewModel: MoviesCollectionViewModel
@@ -67,6 +70,12 @@ class MoviesCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogEx
             }
         }
 
+        viewModel.showAlertDialog.observe(this) {
+            if (it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
+            }
+        }
+
         setContentView(binding.root)
     }
 
@@ -111,4 +120,10 @@ class MoviesCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogEx
         )
         startActivity(intent)
     }
+
+    override fun alertDialogRetry() {
+        viewModel.reload()
+    }
+
+    override fun onAlertDialogDismiss() {}
 }

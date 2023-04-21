@@ -8,11 +8,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityUpdateCollectionBinding
 import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.model.UsersCollection
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.collection.icon.IconCollectionActivity
 
-class UpdateCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
+class UpdateCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener,
+    AlertDialog.IAlertDialogListener {
 
     private lateinit var binding: ActivityUpdateCollectionBinding
     private lateinit var viewModel: UpdateCollectionViewModel
@@ -56,6 +59,12 @@ class UpdateCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogEx
                 finish()
         }
 
+        viewModel.showAlertDialog.observe(this) {
+            if (it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
+            }
+        }
+
         viewModel.iconIndex.observe(this) {
             setIcon(it)
         }
@@ -72,6 +81,10 @@ class UpdateCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogEx
         )
         startActivity(intent)
     }
+
+    override fun alertDialogRetry() {}
+
+    override fun onAlertDialogDismiss() {}
 
     private fun setIcon(index: Int) {
         when (index) {

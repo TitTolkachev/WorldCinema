@@ -8,10 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.R
 import com.example.worldcinema.databinding.ActivityCreateCollectionBinding
 import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.collection.icon.IconCollectionActivity
 
-class CreateCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
+class CreateCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener,
+    AlertDialog.IAlertDialogListener {
 
     private lateinit var binding: ActivityCreateCollectionBinding
     private lateinit var viewModel: CreateCollectionViewModel
@@ -42,6 +45,12 @@ class CreateCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogEx
                 finish()
         }
 
+        viewModel.showAlertDialog.observe(this) {
+            if (it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
+            }
+        }
+
         binding.imageButtonArrowBack.setOnClickListener {
             finish()
         }
@@ -70,6 +79,12 @@ class CreateCollectionActivity : AppCompatActivity(), AlertDialog.IAlertDialogEx
         )
         startActivity(intent)
     }
+
+    override fun alertDialogRetry() {
+        viewModel.createCollection(binding.collectionNameInput.text.toString())
+    }
+
+    override fun onAlertDialogDismiss() {}
 
     private fun setIcon(index: Int) {
         when (index) {

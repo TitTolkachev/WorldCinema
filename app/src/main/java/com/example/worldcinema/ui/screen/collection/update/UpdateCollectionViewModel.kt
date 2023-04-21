@@ -9,6 +9,7 @@ import com.example.worldcinema.domain.usecase.network.DeleteCollectionUseCase
 import com.example.worldcinema.domain.usecase.storage.DeleteCollectionIconUseCase
 import com.example.worldcinema.domain.usecase.storage.GetCollectionsIconsUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveCollectionIconUseCase
+import com.example.worldcinema.ui.dialog.AlertType
 import com.example.worldcinema.ui.model.UsersCollection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +29,13 @@ class UpdateCollectionViewModel(
     private val _iconIndex = MutableLiveData(0)
     val iconIndex: LiveData<Int> = _iconIndex
 
+    // Alert
+    private val _showAlertDialog = MutableLiveData(false)
+    val showAlertDialog: LiveData<Boolean> = _showAlertDialog
+
+    private val _alertType = MutableLiveData(AlertType.DEFAULT)
+    val alertType: LiveData<AlertType> = _alertType
+
     init {
         loadIconIndex()
     }
@@ -40,11 +48,11 @@ class UpdateCollectionViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             deleteCollectionUseCase.execute(collection.collectionId).collect { result ->
                 result.onSuccess {
-                    _exit.postValue(true)
                     deleteCollectionIconUseCase.execute(collection.collectionId)
-                }.onFailure {
-                    // TODO(Показать ошибку)
                     _exit.postValue(true)
+                }.onFailure {
+                    _alertType.postValue(AlertType.SERVER_ERROR)
+                    _showAlertDialog.postValue(true)
                 }
             }
         }
@@ -63,7 +71,8 @@ class UpdateCollectionViewModel(
             ).onSuccess {
                 _exit.postValue(true)
             }.onFailure {
-                // TODO(Показать ошибку)
+                _alertType.postValue(AlertType.SERVER_ERROR)
+                _showAlertDialog.postValue(true)
             }
         }
     }
