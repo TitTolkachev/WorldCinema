@@ -126,6 +126,7 @@ class AlertDialog : DialogFragment() {
             AlertType.WRONG_REPEAT_PASSWORD -> getString(R.string.alert_text_wrong_repeat_password)
 
             AlertType.AUTH_NOT_SUCCESS -> getString(R.string.alert_text_auth_not_success)
+            AlertType.REGISTER_NOT_SUCCESS -> getString(R.string.alert_text_register_not_success)
 
             AlertType.DEFAULT -> getString(R.string.alert_text_default)
 
@@ -154,6 +155,7 @@ class AlertDialog : DialogFragment() {
             AlertType.WRONG_REPEAT_PASSWORD -> AlertDisplayType.VALIDATION
 
             AlertType.AUTH_NOT_SUCCESS -> AlertDisplayType.VALIDATION
+            AlertType.REGISTER_NOT_SUCCESS -> AlertDisplayType.VALIDATION
 
             AlertType.DEFAULT -> AlertDisplayType.SERVER_ERROR
 

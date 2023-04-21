@@ -97,6 +97,7 @@
     <string name="alert_text_wrong_email">Некорректный email</string>
     <string name="alert_text_wrong_repeat_password">Пароли не совпадают</string>
     <string name="alert_text_auth_not_success">Неверный логин или пароль</string>
+    <string name="alert_text_register_not_success">Запрос с ошибкой. Возможно, пользователь с указанным Email уже существует</string>
     <string name="alert_text_default">Ошибка на стороне сервера</string>
     <string name="alert_text_bad_api">Функционал не реализован на стороне сервера (:</string>
     <string name="alert_text_bad_figma">В тз и макете этого нет ¯\_(ツ)_/¯</string>

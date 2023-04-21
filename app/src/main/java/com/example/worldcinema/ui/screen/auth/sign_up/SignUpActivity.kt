@@ -6,10 +6,13 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.databinding.ActivitySignUpBinding
 import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.screen.auth.sign_in.SignInActivity
 import com.example.worldcinema.ui.screen.main.MainActivity
 
-class SignUpActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
+class SignUpActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener,
+    AlertDialog.IAlertDialogListener {
 
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var viewModel: SignUpViewModel
@@ -28,6 +31,12 @@ class SignUpActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
+            }
+        }
+
+        viewModel.showAlertDialog.observe(this) {
+            if (it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
             }
         }
 
@@ -66,4 +75,18 @@ class SignUpActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener
         )
         startActivity(intent)
     }
+
+    override fun alertDialogRetry() {
+        with(binding) {
+            viewModel.onRegisterBtnClick(
+                nameInputEditText.text.toString(),
+                surnameInputEditText.text.toString(),
+                emailInputEditText.text.toString(),
+                passwordInputEditText.text.toString(),
+                passwordRepeatInputEditText.text.toString()
+            )
+        }
+    }
+
+    override fun onAlertDialogDismiss() {}
 }

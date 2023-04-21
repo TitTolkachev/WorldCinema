@@ -15,6 +15,7 @@ enum class AlertType {
     WRONG_REPEAT_PASSWORD,
 
     AUTH_NOT_SUCCESS,
+    REGISTER_NOT_SUCCESS,
 
     DEFAULT,
 

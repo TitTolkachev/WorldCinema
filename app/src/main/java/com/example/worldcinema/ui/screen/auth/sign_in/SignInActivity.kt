@@ -6,10 +6,13 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.worldcinema.databinding.ActivitySignInBinding
 import com.example.worldcinema.ui.dialog.AlertDialog
+import com.example.worldcinema.ui.dialog.AlertType
+import com.example.worldcinema.ui.dialog.showAlertDialog
 import com.example.worldcinema.ui.screen.auth.sign_up.SignUpActivity
 import com.example.worldcinema.ui.screen.main.MainActivity
 
-class SignInActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener {
+class SignInActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener,
+    AlertDialog.IAlertDialogListener {
 
     private lateinit var binding: ActivitySignInBinding
     private lateinit var viewModel: SignInViewModel
@@ -28,6 +31,12 @@ class SignInActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
+            }
+        }
+
+        viewModel.showAlertDialog.observe(this) {
+            if (it) {
+                showAlertDialog(viewModel.alertType.value ?: AlertType.DEFAULT)
             }
         }
 
@@ -54,4 +63,13 @@ class SignInActivity : AppCompatActivity(), AlertDialog.IAlertDialogExitListener
     override fun alertDialogExit() {
         finish()
     }
+
+    override fun alertDialogRetry() {
+        viewModel.login(
+            binding.emailInputEditText.text.toString(),
+            binding.passwordInputEditText.text.toString()
+        )
+    }
+
+    override fun onAlertDialogDismiss() {}
 }

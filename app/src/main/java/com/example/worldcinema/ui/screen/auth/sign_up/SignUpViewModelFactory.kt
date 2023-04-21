@@ -8,6 +8,7 @@ import com.example.worldcinema.data.storage.shared_prefs.token.SharedPrefTokenSt
 import com.example.worldcinema.data.storage.shared_prefs.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.network.RegisterUseCase
 import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
+import com.example.worldcinema.domain.usecase.validation.ValidateAuthUseCase
 
 class SignUpViewModelFactory(context: Context) : ViewModelProvider.Factory {
 
@@ -24,11 +25,15 @@ class SignUpViewModelFactory(context: Context) : ViewModelProvider.Factory {
     private val registerUseCase by lazy {
         RegisterUseCase(authRepository)
     }
+    private val validateAuthUseCase by lazy {
+        ValidateAuthUseCase()
+    }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SignUpViewModel(
             saveTokenToLocalStorageUseCase,
-            registerUseCase
+            registerUseCase,
+            validateAuthUseCase
         ) as T
     }
 }
