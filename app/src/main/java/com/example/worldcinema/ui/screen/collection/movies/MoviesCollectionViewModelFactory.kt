@@ -10,6 +10,7 @@ import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.S
 import com.example.worldcinema.data.storage.shared_prefs.token.SharedPrefTokenStorage
 import com.example.worldcinema.data.storage.shared_prefs.token.TokenStorageRepository
 import com.example.worldcinema.domain.usecase.model.AuthNetworkUseCases
+import com.example.worldcinema.domain.usecase.network.DeleteMovieFromCollectionUseCase
 import com.example.worldcinema.domain.usecase.network.GetMoviesInCollectionUseCase
 import com.example.worldcinema.domain.usecase.network.RefreshTokenUseCase
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
@@ -33,16 +34,22 @@ class MoviesCollectionViewModelFactory(
         SaveTokenToLocalStorageUseCase(tokenRepository)
     }
 
-    private val getMoviesInCollectionUseCase by lazy {
-        GetMoviesInCollectionUseCase(
-            CollectionsRepository(
-                AuthNetworkUseCases(
-                    getTokenFromLocalStorageUseCase,
-                    saveTokenToLocalStorageUseCase,
-                    RefreshTokenUseCase(AuthRefreshRepository(getTokenFromLocalStorageUseCase))
-                )
+    private val collectionsRepository by lazy {
+        CollectionsRepository(
+            AuthNetworkUseCases(
+                getTokenFromLocalStorageUseCase,
+                saveTokenToLocalStorageUseCase,
+                RefreshTokenUseCase(AuthRefreshRepository(getTokenFromLocalStorageUseCase))
             )
         )
+    }
+
+    private val getMoviesInCollectionUseCase by lazy {
+        GetMoviesInCollectionUseCase(collectionsRepository)
+    }
+
+    private val deleteMovieFromCollectionUseCase by lazy {
+        DeleteMovieFromCollectionUseCase(collectionsRepository)
     }
 
     private val getFavouritesCollectionIdUseCase by lazy {
@@ -55,6 +62,7 @@ class MoviesCollectionViewModelFactory(
         return MoviesCollectionViewModel(
             collection,
             getMoviesInCollectionUseCase,
+            deleteMovieFromCollectionUseCase,
             getFavouritesCollectionIdUseCase
         ) as T
     }

@@ -4,18 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.worldcinema.domain.usecase.network.DeleteMovieFromCollectionUseCase
 import com.example.worldcinema.domain.usecase.network.GetMoviesInCollectionUseCase
 import com.example.worldcinema.domain.usecase.storage.GetFavouritesCollectionIdUseCase
 import com.example.worldcinema.ui.dialog.AlertType
 import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.model.MovieInCollection
 import com.example.worldcinema.ui.model.UsersCollection
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MoviesCollectionViewModel(
     private val collection: UsersCollection,
     private val getMoviesInCollectionUseCase: GetMoviesInCollectionUseCase,
+    private val deleteMovieFromCollectionUseCase: DeleteMovieFromCollectionUseCase,
     getFavouritesCollectionIdUseCase: GetFavouritesCollectionIdUseCase
 ) : ViewModel() {
 
@@ -55,8 +59,8 @@ class MoviesCollectionViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             getMoviesInCollectionUseCase.execute(collection.collectionId).collect { result ->
                 result.onSuccess {
-                    dataLoaded()
                     _movies.postValue(MovieMapper.mapMoviesToCollectionMovies(it))
+                    dataLoaded()
                 }.onFailure {
                     _alertType.postValue(AlertType.DEFAULT)
                     _showAlertDialog.postValue(true)
@@ -74,5 +78,17 @@ class MoviesCollectionViewModel(
     private fun dataLoaded() {
         if (++dataLoadedCounter == requestsCount)
             _isLoading.postValue(false)
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun deleteMovie(position: Int) {
+        val id = _movies.value!![position].movieId
+        GlobalScope.launch(Dispatchers.IO) {
+            deleteMovieFromCollectionUseCase.execute(
+                collection.collectionId,
+                id
+            ).collect {}
+        }
+        _movies.value?.removeAt(position)
     }
 }

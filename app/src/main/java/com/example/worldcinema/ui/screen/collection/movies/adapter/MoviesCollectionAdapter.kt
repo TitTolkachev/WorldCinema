@@ -8,10 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.worldcinema.databinding.CollectionMovieItemBinding
 import com.example.worldcinema.ui.model.MovieInCollection
+import com.example.worldcinema.ui.screen.collection.movies.helper.SwipeListener
 
-class MoviesCollectionAdapter(private val moviesCollectionActionListener: IMoviesCollectionActionListener) :
+class MoviesCollectionAdapter(
+    private val moviesCollectionActionListener: IMoviesCollectionActionListener,
+    private val swipeListener: SwipeListener
+) :
     RecyclerView.Adapter<MoviesCollectionAdapter.MoviesCollectionViewHolder>(),
-    View.OnClickListener {
+    View.OnClickListener,
+    SwipeListener {
 
     var data: MutableList<MovieInCollection> = mutableListOf()
         @SuppressLint("NotifyDataSetChanged")
@@ -53,6 +58,12 @@ class MoviesCollectionAdapter(private val moviesCollectionActionListener: IMovie
     override fun onClick(view: View) {
         val movieId: String = view.tag as String
         moviesCollectionActionListener.onItemClicked(movieId)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun deleteMovie(position: Int) {
+        swipeListener.deleteMovie(position)
+        notifyDataSetChanged()
     }
 }
 

@@ -12,7 +12,9 @@ import com.example.worldcinema.ui.helper.MovieMapper
 import com.example.worldcinema.ui.helper.MovieToCardMapper
 import com.example.worldcinema.ui.model.Card
 import com.example.worldcinema.ui.model.Movie
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class CompilationViewModel(
@@ -63,10 +65,11 @@ class CompilationViewModel(
         loadData()
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun like() {
 
         val movieId = _movies.value!![swipedCardsCount].movieId
-        viewModelScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.IO) {
             addMovieToCollectionUseCase.execute(
                 favouritesCollectionId,
                 movieId
@@ -85,10 +88,11 @@ class CompilationViewModel(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun skip() {
 
         val movieId = _movies.value!![swipedCardsCount].movieId
-        viewModelScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.IO) {
             deleteMovieFromCollectionUseCase.execute(
                 favouritesCollectionId,
                 movieId

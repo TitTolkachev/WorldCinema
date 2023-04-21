@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.worldcinema.R
 
-
-interface SwipeAdapter{
-    fun deleteCollection(position: Int): Unit
+interface SwipeListener {
+    fun deleteMovie(position: Int)
 }
 
-class SimpleItemTouchHelperCollectionCallback (private val adapter: SwipeAdapter) :
+class SimpleItemTouchHelperCollectionCallback(private val listener: SwipeListener) :
     ItemTouchHelper.Callback() {
 
     override fun onChildDraw(
@@ -24,24 +23,24 @@ class SimpleItemTouchHelperCollectionCallback (private val adapter: SwipeAdapter
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        // TODO(Сделать нормально)
-        val trashIcon = AppCompatResources.getDrawable(viewHolder.itemView.context, R.drawable.test_image)
+        val trashIcon =
+            AppCompatResources.getDrawable(viewHolder.itemView.context, R.drawable.trash_icon)
 
         c.clipRect(0f, viewHolder.itemView.top.toFloat(), dX, viewHolder.itemView.bottom.toFloat())
 
         if (trashIcon != null) {
             val intrinsicHeight = trashIcon.intrinsicHeight
-            val xMarkTop = viewHolder.itemView.top + ((viewHolder.itemView.bottom - viewHolder.itemView.top) - intrinsicHeight) / 2
+            val xMarkTop =
+                viewHolder.itemView.top + ((viewHolder.itemView.bottom - viewHolder.itemView.top) - intrinsicHeight) / 2
             val xMarkBottom = xMarkTop + intrinsicHeight
 
             trashIcon.bounds = Rect(
-                viewHolder.itemView.left + 50,
+                viewHolder.itemView.left + 75,
                 xMarkTop,
-                viewHolder.itemView.left + trashIcon.intrinsicWidth + 50,
+                viewHolder.itemView.left + trashIcon.intrinsicWidth + 75,
                 xMarkBottom
             )
             trashIcon.draw(c)
-
         }
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
@@ -61,7 +60,7 @@ class SimpleItemTouchHelperCollectionCallback (private val adapter: SwipeAdapter
     ): Int {
         val dragFlags = 0
         val swipeFlags = ItemTouchHelper.END
-        return if (viewHolder.itemViewType != 0) makeMovementFlags(dragFlags, swipeFlags) else 0 // you cannot delete favourite collection
+        return makeMovementFlags(dragFlags, swipeFlags)
     }
 
     override fun onMove(
@@ -69,10 +68,10 @@ class SimpleItemTouchHelperCollectionCallback (private val adapter: SwipeAdapter
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        return viewHolder.itemViewType != 0 // you cannot delete favourite collection
+        return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        adapter.deleteCollection(viewHolder.absoluteAdapterPosition)
+        listener.deleteMovie(viewHolder.absoluteAdapterPosition)
     }
 }
