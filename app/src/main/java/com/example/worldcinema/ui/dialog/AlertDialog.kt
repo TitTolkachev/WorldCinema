@@ -10,7 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.worldcinema.R
+import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.FavouritesCollectionStorageRepository
+import com.example.worldcinema.data.storage.shared_prefs.favourites_collection.SharedPrefFavouritesCollectionStorage
+import com.example.worldcinema.data.storage.shared_prefs.token.SharedPrefTokenStorage
+import com.example.worldcinema.data.storage.shared_prefs.token.TokenStorageRepository
 import com.example.worldcinema.databinding.DialogFragmentAlertBinding
+import com.example.worldcinema.domain.model.Token
+import com.example.worldcinema.domain.usecase.storage.SaveFavouritesCollectionIdUseCase
+import com.example.worldcinema.domain.usecase.storage.SaveTokenToLocalStorageUseCase
 
 class AlertDialog : DialogFragment() {
 
@@ -81,6 +88,20 @@ class AlertDialog : DialogFragment() {
                 binding.imageView4.setImageResource(R.drawable.error_icon_4)
 
                 binding.alertDialogExitBtn.setOnClickListener {
+                    SaveTokenToLocalStorageUseCase(
+                        TokenStorageRepository(
+                            SharedPrefTokenStorage(
+                                requireContext()
+                            )
+                        )
+                    ).execute(
+                        Token("", "")
+                    )
+                    SaveFavouritesCollectionIdUseCase(
+                        FavouritesCollectionStorageRepository(
+                            SharedPrefFavouritesCollectionStorage(requireContext())
+                        )
+                    ).execute("")
                     dialog?.dismiss()
                     exitListener?.alertDialogExit()
                 }
