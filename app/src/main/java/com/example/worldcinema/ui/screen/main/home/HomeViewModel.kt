@@ -92,7 +92,7 @@ class HomeViewModel(
     fun loadHistory() {
 
         viewModelScope.launch(Dispatchers.IO) {
-            loadMovies(MovieFilter.LastView, _lastViewMovies, _lastViewMoviesPosters)
+            loadMovies(MovieFilter.LAST_VIEW, _lastViewMovies, _lastViewMoviesPosters)
 
             getHistoryUseCase.execute().collect { result ->
                 result.onSuccess {
@@ -148,13 +148,13 @@ class HomeViewModel(
     private fun loadData() {
         loadHistory()
         viewModelScope.launch(Dispatchers.IO) {
-            loadMovies(MovieFilter.InTrend, _trendMovies, _trendMoviesPosters)
+            loadMovies(MovieFilter.IN_TREND, _trendMovies, _trendMoviesPosters)
         }
         viewModelScope.launch(Dispatchers.IO) {
-            loadMovies(MovieFilter.New, _newMovies, _newMoviesPosters)
+            loadMovies(MovieFilter.NEW, _newMovies, _newMoviesPosters)
         }
         viewModelScope.launch(Dispatchers.IO) {
-            loadMovies(MovieFilter.ForMe, _recommendedMovies, _recommendedMoviesPosters)
+            loadMovies(MovieFilter.FOR_ME, _recommendedMovies, _recommendedMoviesPosters)
         }
     }
 
@@ -208,11 +208,11 @@ class HomeViewModel(
     ) {
         getMoviesUseCase.execute(filter).collect { result ->
             result.onSuccess {
-                if (filter != MovieFilter.LastView)
+                if (filter != MovieFilter.LAST_VIEW)
                     dataLoaded()
                 val data = MovieMapper.mapMovies(it)
                 movies.postValue(data)
-                if (filter == MovieFilter.New || filter == MovieFilter.LastView)
+                if (filter == MovieFilter.NEW || filter == MovieFilter.LAST_VIEW)
                     posters.postValue(MovieToPosterMapper.mapMoviesImagesToPosters(data))
                 else
                     posters.postValue(MovieToPosterMapper.mapMovies(data))

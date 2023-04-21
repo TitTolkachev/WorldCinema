@@ -10,11 +10,11 @@ class GetMoviesUseCase(private val movieRepository: IMovieRepository) {
     suspend fun execute(filter: MovieFilter): Flow<Result<List<Movie>>> {
 
         return when(filter) {
-            MovieFilter.New -> movieRepository.getMovies("new")
-            MovieFilter.InTrend -> movieRepository.getMovies("inTrend")
-            MovieFilter.ForMe -> movieRepository.getMovies("forMe")
-            MovieFilter.LastView -> movieRepository.getMovies("lastView")
-            MovieFilter.Compilation -> movieRepository.getMovies("compilation")
+            MovieFilter.NEW -> movieRepository.getMovies("new")
+            MovieFilter.IN_TREND -> movieRepository.getMovies("inTrend")
+            MovieFilter.FOR_ME -> movieRepository.getMovies("forMe")
+            MovieFilter.LAST_VIEW -> movieRepository.getMovies("lastView")
+            MovieFilter.COMPILATION -> movieRepository.getMovies("compilation")
         }
     }
 }

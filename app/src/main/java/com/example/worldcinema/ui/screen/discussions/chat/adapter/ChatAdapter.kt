@@ -33,25 +33,25 @@ class ChatAdapter :
 
         fun bind(message: Message, shape: ChatItemShape, bottomPadding: ChatItemPadding) {
 
-            if (shape == ChatItemShape.Rounded) {
+            if (shape == ChatItemShape.ROUNDED) {
                 binding.ChatDefaultMessageConstraintLayout.setBackgroundResource(R.drawable.chat_top_default_message_card_background)
             }
 
-            if (bottomPadding == ChatItemPadding.ExtraBig) {
+            if (bottomPadding == ChatItemPadding.EXTRA_BIG) {
                 binding.root.setPadding(
                     0, 0, 0,
                     binding.root.context.resources.getDimension(R.dimen.chat_message_extra_big_padding)
                         .toInt()
                 )
             }
-            if (bottomPadding == ChatItemPadding.Big) {
+            if (bottomPadding == ChatItemPadding.BIG) {
                 binding.root.setPadding(
                     0, 0, 0,
                     binding.root.context.resources.getDimension(R.dimen.chat_message_big_padding)
                         .toInt()
                 )
             }
-            if (bottomPadding == ChatItemPadding.Small) {
+            if (bottomPadding == ChatItemPadding.SMALL) {
                 binding.root.setPadding(
                     0, 0, 0,
                     binding.root.context.resources.getDimension(R.dimen.chat_message_small_padding)
@@ -59,7 +59,7 @@ class ChatAdapter :
                 )
             }
 
-            if (bottomPadding == ChatItemPadding.Small)
+            if (bottomPadding == ChatItemPadding.SMALL)
                 binding.chatMessageAvatarCardView.visibility = View.INVISIBLE
             else
                 with(binding) {
@@ -84,25 +84,25 @@ class ChatAdapter :
 
         fun bind(message: Message, shape: ChatItemShape, bottomPadding: ChatItemPadding) {
 
-            if (shape == ChatItemShape.Rounded) {
+            if (shape == ChatItemShape.ROUNDED) {
                 binding.ChatUserMessageConstraintLayout.setBackgroundResource(R.drawable.chat_top_user_message_card_background)
             }
 
-            if (bottomPadding == ChatItemPadding.ExtraBig) {
+            if (bottomPadding == ChatItemPadding.EXTRA_BIG) {
                 binding.root.setPadding(
                     0, 0, 0,
                     binding.root.context.resources.getDimension(R.dimen.chat_message_extra_big_padding)
                         .toInt()
                 )
             }
-            if (bottomPadding == ChatItemPadding.Big) {
+            if (bottomPadding == ChatItemPadding.BIG) {
                 binding.root.setPadding(
                     0, 0, 0,
                     binding.root.context.resources.getDimension(R.dimen.chat_message_big_padding)
                         .toInt()
                 )
             }
-            if (bottomPadding == ChatItemPadding.Small) {
+            if (bottomPadding == ChatItemPadding.SMALL) {
                 binding.root.setPadding(
                     0, 0, 0,
                     binding.root.context.resources.getDimension(R.dimen.chat_message_small_padding)
@@ -110,7 +110,7 @@ class ChatAdapter :
                 )
             }
 
-            if (bottomPadding == ChatItemPadding.Small)
+            if (bottomPadding == ChatItemPadding.SMALL)
                 binding.chatMessageAvatarCardView.visibility = View.INVISIBLE
             else
                 with(binding) {
@@ -134,7 +134,7 @@ class ChatAdapter :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(date: String, bottomPadding: ChatItemPadding) {
-            if (bottomPadding == ChatItemPadding.ExtraBig) {
+            if (bottomPadding == ChatItemPadding.EXTRA_BIG) {
                 binding.root.setPadding(
                     0, 0, 0,
                     binding.root.context.resources.getDimension(R.dimen.chat_message_extra_big_padding)
@@ -207,34 +207,34 @@ class ChatAdapter :
 
     private fun calculateItemShape(position: Int): ChatItemShape {
         if (position == 0)
-            return ChatItemShape.Rounded
+            return ChatItemShape.ROUNDED
         if (data[position - 1].date != data[position].date)
-            return ChatItemShape.Rounded
+            return ChatItemShape.ROUNDED
         if (data[position - 1].authorId != data[position].authorId)
-            return ChatItemShape.Rounded
-        return ChatItemShape.Rectangle
+            return ChatItemShape.ROUNDED
+        return ChatItemShape.RECTANGLE
     }
 
     private fun calculateBottomItemPadding(position: Int): ChatItemPadding {
         if (position == data.size - 1)
-            return ChatItemPadding.Big
+            return ChatItemPadding.BIG
         if (data[position].messageId == "")
-            return ChatItemPadding.ExtraBig
+            return ChatItemPadding.EXTRA_BIG
         if (data[position + 1].messageId == "")
-            return ChatItemPadding.ExtraBig
+            return ChatItemPadding.EXTRA_BIG
         if (data[position + 1].authorId != data[position].authorId)
-            return ChatItemPadding.Big
-        return ChatItemPadding.Small
+            return ChatItemPadding.BIG
+        return ChatItemPadding.SMALL
     }
 }
 
 enum class ChatItemShape {
-    Rounded,
-    Rectangle
+    ROUNDED,
+    RECTANGLE
 }
 
 enum class ChatItemPadding {
-    Small,
-    Big,
-    ExtraBig
+    SMALL,
+    BIG,
+    EXTRA_BIG
 }

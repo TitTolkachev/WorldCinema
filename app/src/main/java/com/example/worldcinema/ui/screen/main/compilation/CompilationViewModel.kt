@@ -60,9 +60,6 @@ class CompilationViewModel(
     init {
         _isLoading.value = true
         dataLoadedCounter = 0
-    }
-
-    fun onViewResume() {
         loadData()
     }
 
@@ -95,20 +92,12 @@ class CompilationViewModel(
             deleteMovieFromCollectionUseCase.execute(
                 favouritesCollectionId,
                 movieId
-            ).collect { result ->
-                result.onFailure {
-                    showAlert(AlertType.DEFAULT)
-                }
-            }
-            dislikeMovieUseCase.execute(movieId).collect { result ->
-                result.onFailure {
-                    showAlert(AlertType.DEFAULT)
-                }
-            }
+            ).collect {}
+            dislikeMovieUseCase.execute(movieId).collect {}
         }
 
         swipedCardsCount++
-        if (swipedCardsCount == _cards.value?.size) {
+        if (swipedCardsCount == _movies.value?.size) {
             _isCardStackEmpty.value = true
         } else {
             _displayedTitle.value = _movies.value?.get(swipedCardsCount)?.name ?: ""
@@ -127,7 +116,7 @@ class CompilationViewModel(
                 }
             }
 
-            getMoviesUseCase.execute(MovieFilter.Compilation).collect { result ->
+            getMoviesUseCase.execute(MovieFilter.COMPILATION).collect { result ->
                 result.onSuccess { movieList ->
 
                     val collectedMovies = movieList.toMutableList()
@@ -158,7 +147,7 @@ class CompilationViewModel(
     }
 
     fun getCurrentMovie(): Movie? {
-        if(swipedCardsCount < _movies.value!!.size)
+        if (swipedCardsCount < _movies.value!!.size)
             return _movies.value!![swipedCardsCount]
         return null
     }
@@ -167,6 +156,12 @@ class CompilationViewModel(
         _isLoading.value = true
         dataLoadedCounter = 0
         loadData()
+    }
+
+    fun refresh() {
+        val refreshedCards =
+            _cards.value?.slice(swipedCardsCount..(_cards.value?.lastIndex ?: 0))?.toMutableList()
+        _cards.value = refreshedCards ?: _cards.value
     }
 
     fun showAlert(alert: AlertType) {

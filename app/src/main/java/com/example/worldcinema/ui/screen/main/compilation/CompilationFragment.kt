@@ -158,8 +158,13 @@ class CompilationFragment : Fragment(), AlertDialog.IAlertDialogListener  {
     }
 
     override fun onResume() {
+        viewModel.refresh()
         super.onResume()
-        viewModel.onViewResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.refresh()
     }
 
     override fun onDestroyView() {
