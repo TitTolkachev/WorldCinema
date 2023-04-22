@@ -50,9 +50,6 @@ class UpdateCollectionViewModel(
                 result.onSuccess {
                     deleteCollectionIconUseCase.execute(collection.collectionId)
                     _exit.postValue(true)
-                }.onFailure {
-                    _alertType.postValue(AlertType.SERVER_ERROR)
-                    _showAlertDialog.postValue(true)
                 }
             }
         }
