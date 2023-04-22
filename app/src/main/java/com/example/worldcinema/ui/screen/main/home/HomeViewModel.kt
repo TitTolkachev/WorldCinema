@@ -71,7 +71,7 @@ class HomeViewModel(
     val isLoading: LiveData<Boolean> = _isLoading
 
     private var dataLoadedCounter = 0
-    private val requestsCount = 5
+    private val requestsCount = 6
 
     // Alert
     private val _showAlertDialog = MutableLiveData(false)
@@ -89,7 +89,6 @@ class HomeViewModel(
     }
 
     fun loadHistory() {
-
         viewModelScope.launch(Dispatchers.IO) {
             loadMovies(MovieFilter.LAST_VIEW, _lastViewMovies, _lastViewMoviesPosters)
 
@@ -145,7 +144,6 @@ class HomeViewModel(
     }
 
     private fun loadData() {
-        loadHistory()
         viewModelScope.launch(Dispatchers.IO) {
             loadMovies(MovieFilter.IN_TREND, _trendMovies, _trendMoviesPosters)
         }
@@ -178,7 +176,6 @@ class HomeViewModel(
     private suspend fun loadLastMovieEpisodes(lastMovie: Movie, lastEpisode: EpisodeView) {
         getEpisodesUseCase.execute(lastMovie.movieId).collect { episodesResult ->
             episodesResult.onSuccess { episodes ->
-                dataLoaded()
                 _lastViewMovieEpisodesCount.postValue(episodes.size)
                 if (episodes.isNotEmpty()) {
                     _lastViewMovieYears.postValue(
@@ -193,6 +190,7 @@ class HomeViewModel(
                             )
                         )
                 }
+                dataLoaded()
             }.onFailure {
                 //dataLoaded()
                 showAlert(AlertType.DEFAULT)
@@ -207,8 +205,7 @@ class HomeViewModel(
     ) {
         getMoviesUseCase.execute(filter).collect { result ->
             result.onSuccess {
-                if (filter != MovieFilter.LAST_VIEW)
-                    dataLoaded()
+                dataLoaded()
                 val data = MovieMapper.mapMovies(it)
                 movies.postValue(data)
                 if (filter == MovieFilter.NEW || filter == MovieFilter.LAST_VIEW)
@@ -261,6 +258,7 @@ class HomeViewModel(
         checkIsFirstEnter()
         loadCover()
         loadData()
+        loadHistory()
     }
 
     fun showAlert(alert: AlertType) {
