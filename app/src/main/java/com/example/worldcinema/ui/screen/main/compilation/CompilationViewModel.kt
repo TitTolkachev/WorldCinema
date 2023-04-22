@@ -164,8 +164,9 @@ class CompilationViewModel(
 
     fun refresh() {
         val refreshedCards =
-            _cards.value?.slice(swipedCardsCount..(_cards.value?.lastIndex ?: 0))?.toMutableList()
-        _cards.value = refreshedCards ?: _cards.value
+            _movies.value?.slice(swipedCardsCount..(_movies.value?.lastIndex ?: 0))?.toMutableList()
+        _cards.value =
+            MovieToCardMapper.mapMovies(refreshedCards?.toList() ?: listOf())
     }
 
     fun showAlert(alert: AlertType) {
